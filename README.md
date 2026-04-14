@@ -6,28 +6,27 @@ A collection of custom Matchbox shaders for Autodesk Flame.
 
 ## What is a Matchbox Shader?
 
-Matchbox is Autodesk Flame's framework for custom GLSL fragment shaders. A Matchbox shader is a small GPU program that runs per-pixel on a frame, allowing artists to create effects that aren't possible with Flame's built-in tools — or to build highly specific, purpose-built utilities tailored to a particular workflow.
-
-Each Matchbox shader is a pair of files:
-
-- **`.glsl`** — the fragment shader written in GLSL (OpenGL Shading Language). This is where all the image processing logic lives. It runs on the GPU once per pixel, every frame.
-- **`.xml`** — the UI definition. This tells Flame what controls to display in the node's parameter panel: sliders, colour pots, popup menus, canvas drag handles, and multi-page layouts.
-
-Matchbox shaders are placed in Flame's designated Matchbox directory and appear inside Flame's effect library. They can be used in Batch, the Timeline, and Action. Inputs are connected as textures (`sampler2D`), and Flame provides built-in uniforms for resolution (`adsk_result_w`, `adsk_result_h`), time (`adsk_time`), and more.
+Matchbox is Autodesk Flame's framework for custom GLSL fragment shaders — small GPU programs that run per-pixel on a frame. Each shader is a pair of files: a `.glsl` file containing the image processing logic and an `.xml` file defining the Flame UI (sliders, colour pots, canvas handles, and multi-page layouts). Matchbox shaders are installed to Flame's matchbox directory and appear in the effect library for use in Batch, the Timeline, and Action.
 
 ---
 
-## Shaders in This Collection
+## Shaders
 
-*Descriptions coming soon.*
+### BB_PerspectiveLines
+A perspective guide line overlay for layout and composition work. Draws a fan of lines converging at a computed vanishing point derived from two user-defined outer lines. Supports two independent VP line sets for two-point perspective, a horizon line, crosshatch grid mode, dashed lines, and per-VP opacity falloff. When the vanishing point falls off-screen, an arrowhead at the frame edge indicates its direction. Includes a matte output mode for use as a luma matte source downstream.
+
+### BB_BokehGenerator
+A procedural bokeh generator that creates cinematic lens bokeh entirely from scratch — no input image required. Features polygon aperture shape control (circle through any n-sided polygon), chromatic aberration, diffraction spikes, near/far depth layering with parallax drift, per-bokeh flicker and fade, and a final lens blur pass. Two-pass shader architecture.
+
+### BB_ColorDensity
+A film-style colour density tool modelled on Beer-Lambert law. Isolates each of the six colour vectors (RGB + CMY) and applies independent density and saturation compensation, producing deep, rich colour shifts similar to film emulation workflows. Supports Rec.709, Scene-Linear, ACEScg, and ACEScct colour spaces.
 
 ---
 
-## Repository Structure
+## Installation
 
+Copy the shader folder to Flame's matchbox directory:
 ```
-/BB_PerspectiveLines    — Perspective vanishing point line overlay
-/BB_BokehGenerator      — Bokeh / depth-of-field effect
-/BB_ColorDensity        — Colour density grading tool
-/examples               — Reference shaders used during development (not BB originals)
+/opt/Autodesk/shared/matchbox/shaders/
 ```
+Each shader folder must be kept intact — the `.glsl` and `.xml` files need to be in the same directory.
