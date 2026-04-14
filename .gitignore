@@ -1,0 +1,5 @@
+# Flame compiled shader cache
+*.p
+
+# macOS
+.DS_Store
