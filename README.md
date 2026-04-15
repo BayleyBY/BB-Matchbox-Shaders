@@ -24,6 +24,9 @@ A social media safe zone overlay for vertical and square delivery formats. Draws
 ### BB_Seascape
 A procedural animated ocean — no input image required. Raymarches a multi-octave wave surface with physically-based lighting, fresnel reflection, and sky colour. Camera position and angle are fully manual (X, Height, Z, Pitch, Yaw, Roll), so the scene can be locked off or animated by keyframing sliders in Flame. Wave shape, choppiness, speed, frequency, and colour are all exposed as controls. Ported from "Seascape" by Alexander Alekseev aka TDM (CC BY-NC-SA 3.0).
 
+### BB_Clouds
+A procedural animated sky and cloud layer — no input image required. Casts a perspective ray to a horizontal cloud plane, giving natural depth as the camera tilts toward the horizon. Four independently seeded cloud layers are distributed across a controllable vertical span, so clouds appear to have real height when viewed at low angles. Cloud shape, coverage, softness, speed, and colour are all exposed as controls. Two-pass shader: pass 1 generates the clouds, pass 2 applies an optional circular defocus blur.
+
 ### BB_ColorDensity
 A film-style colour density tool modelled on Beer-Lambert law. Isolates each of the six colour vectors (RGB + CMY) and applies independent density and saturation compensation, producing deep, rich colour shifts similar to film emulation workflows. Supports Rec.709, Scene-Linear, ACEScg, and ACEScct colour spaces.
 

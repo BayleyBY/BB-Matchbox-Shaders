@@ -1,0 +1,126 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Procedural animated sky and cloud layer with perspective camera. No input required – pure generator." Name="BB_Clouds">
+
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+
+      <!-- ======================================================== -->
+      <!-- CLOUD SHAPE – Col 0                                      -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.1" Inc="0.05" Tooltip="Overall scale of the cloud pattern" Row="0" Col="0" Page="0" DisplayName="Cloud Scale" Type="float" Name="cloudscale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="4.0" Inc="0.1" Tooltip="Cloud coverage – 0 = clear sky, 10 = maximum coverage" Row="1" Col="0" Page="0" DisplayName="Cloud Cover" Type="float" Name="cloudcover">
+      </Uniform>
+      <Uniform ResDependent="None" Max="20.0" Min="0.0" Default="8.0" Inc="0.1" Tooltip="Cloud density / opacity" Row="2" Col="0" Page="0" DisplayName="Cloud Alpha" Type="float" Name="cloudalpha">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.03" Inc="0.005" Tooltip="Cloud animation drift speed" Row="3" Col="0" Page="0" DisplayName="Speed" Type="float" Name="cloud_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Vertical separation between cloud layers — increases apparent cloud height when looking toward the horizon" Row="4" Col="0" Page="0" DisplayName="Layer Depth" Type="float" Name="cloud_depth">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="0 = sharp detailed edges, 1 = soft diffuse clouds" Row="5" Col="0" Page="0" DisplayName="Softness" Type="float" Name="cloud_softness">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CLOUD LIGHTING – Col 1                                   -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="Darkness of cloud shadow areas" Row="0" Col="1" Page="0" DisplayName="Cloud Dark" Type="float" Name="clouddark">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="0.3" Inc="0.01" Tooltip="Brightness of cloud highlight areas" Row="1" Col="1" Page="0" DisplayName="Cloud Light" Type="float" Name="cloudlight">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="How much sky colour tints the cloud edges" Row="2" Col="1" Page="0" DisplayName="Sky Tint" Type="float" Name="skytint">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- COLOUR – Col 2                                           -->
+      <!-- ======================================================== -->
+      <Uniform Inc="0.01" Tooltip="Sky colour at the zenith (top)" Row="0" Col="2" Page="0" DisplayName="Sky Zenith" ValueType="Colour" Type="vec3" Name="skycolour1">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.6">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Sky colour at the horizon" Row="1" Col="2" Page="0" DisplayName="Sky Horizon" ValueType="Colour" Type="vec3" Name="skycolour2">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.7">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Base cloud colour" Row="2" Col="2" Page="0" DisplayName="Cloud Colour" ValueType="Colour" Type="vec3" Name="cloud_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.1">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.1">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.9">
+         </SubUniform>
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CAMERA ANGLE – Col 0                                     -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="90.0" Min="0.0" Default="20.0" Inc="0.5" Tooltip="0 = head-on / horizontal, 90 = looking straight up at the clouds" Row="0" Col="0" Page="1" DisplayName="Pitch" Type="float" Name="cam_pitch">
+      </Uniform>
+      <Uniform ResDependent="None" Max="360.0" Min="-360.0" Default="0.0" Inc="0.5" Tooltip="Rotates the overhead view" Row="1" Col="0" Page="1" DisplayName="Yaw" Type="float" Name="cam_yaw">
+      </Uniform>
+      <Uniform ResDependent="None" Max="120.0" Min="1.0" Default="60.0" Inc="1.0" Tooltip="Horizontal field of view in degrees" Row="2" Col="0" Page="1" DisplayName="FOV" Type="float" Name="fov">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.01" Default="1.0" Inc="0.05" Tooltip="Height of the cloud plane – higher values push clouds further away" Row="3" Col="0" Page="1" DisplayName="Cloud Height" Type="float" Name="cloud_height">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CAMERA OFFSET – Col 1                                    -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="0.0" Inc="0.01" Tooltip="Shift the cloud field left or right" Row="0" Col="1" Page="1" DisplayName="Pan X" Type="float" Name="pan_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="0.0" Inc="0.01" Tooltip="Shift the cloud field forward or back" Row="1" Col="1" Page="1" DisplayName="Pan Y" Type="float" Name="pan_y">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- ANIMATION – Col 0                                        -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Animation speed multiplier (1.0 = original speed at 25 fps)" Row="0" Col="0" Page="2" DisplayName="Time Scale" Type="float" Name="time_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="1" Col="0" Page="2" DisplayName="Time Offset" Type="float" Name="time_offset">
+      </Uniform>
+
+   </Shader>
+
+   <!-- ===== PASS 2: Defocus blur ===== -->
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="2">
+
+      <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- QUALITY – Col 1                                          -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="100.0" Min="0.0" Default="10.0" Inc="0.5" Tooltip="Defocus blur radius in pixels. 0 = off. Uses a 32-tap circular disc kernel on the rendered cloud image — much cheaper than resampling the procedural field." Row="0" Col="1" Page="2" DisplayName="Blur Radius" Type="float" Name="blur_amount">
+      </Uniform>
+
+   </Shader>
+
+   <Page Name="Clouds" Page="0">
+      <Col Name="Shape" Col="0" Page="0">
+      </Col>
+      <Col Name="Lighting" Col="1" Page="0">
+      </Col>
+      <Col Name="Colour" Col="2" Page="0">
+      </Col>
+   </Page>
+
+   <Page Name="Camera" Page="1">
+      <Col Name="Angle" Col="0" Page="1">
+      </Col>
+      <Col Name="Offset" Col="1" Page="1">
+      </Col>
+   </Page>
+
+   <Page Name="Render" Page="2">
+      <Col Name="Animation" Col="0" Page="2">
+      </Col>
+      <Col Name="Quality" Col="1" Page="2">
+      </Col>
+   </Page>
+
+</ShaderNodePreset>
