@@ -26,6 +26,19 @@ A film-style colour density tool modelled on Beer-Lambert law. Isolates each of 
 
 ---
 
+## Tools
+
+### make_proxy
+Converts a PNG to an Autodesk `.p` proxy icon — the binary format Flame reads for matchbox shader thumbnails in the node browser. Each shader needs a 268×194 PNG (width must be divisible by 4) alongside its `.glsl` and `.xml` files, named to match the shader (e.g. `ShaderName.glsl.png` → `ShaderName.glsl.p`).
+
+```
+python3 make_proxy/make_proxy.py ShaderName.glsl.png
+```
+
+Accepts multiple files or a glob. Output is written alongside the input. Requires Pillow (`pip install pillow`).
+
+---
+
 ## Installation
 
 Copy the shader folder to Flame's matchbox directory:
