@@ -1,5 +1,7 @@
-# Flame compiled shader cache
-*.p
+# macOS metadata only — .glsl.p proxy icons are intentionally tracked
 
 # macOS
 .DS_Store
+
+# Reference examples — not part of the collection
+examples/
