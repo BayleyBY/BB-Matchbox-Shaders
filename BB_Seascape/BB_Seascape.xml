@@ -1,0 +1,71 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="False" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Procedural animated ocean. Based on Seascape by Alexander Alekseev aka TDM (CC BY-NC-SA 3.0). No input required – pure generator." Name="BB_Seascape">
+
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+
+      <!-- ======================================================== -->
+      <!-- SEA SHAPE – Col 0                                        -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="0.6" Inc="0.05" Tooltip="Overall wave height" Row="0" Col="0" Page="0" DisplayName="Height" Type="float" Name="sea_height">
+      </Uniform>
+      <Uniform ResDependent="None" Max="20.0" Min="0.0" Default="4.0" Inc="0.1" Tooltip="Wave choppiness – higher values create sharper crests" Row="1" Col="0" Page="0" DisplayName="Choppiness" Type="float" Name="sea_choppy">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.001" Default="0.16" Inc="0.01" Tooltip="Base spatial frequency of the waves" Row="2" Col="0" Page="0" DisplayName="Frequency" Type="float" Name="sea_freq">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="0.8" Inc="0.05" Tooltip="Wave animation speed" Row="3" Col="0" Page="0" DisplayName="Speed" Type="float" Name="sea_speed">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- SEA COLOUR – Col 1                                       -->
+      <!-- ======================================================== -->
+      <Uniform Inc="0.01" Tooltip="Deep water base colour" Row="0" Col="1" Page="0" DisplayName="Sea Base" ValueType="Colour" Type="vec3" Name="sea_base">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.09">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.18">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Shallow water and foam colour" Row="1" Col="1" Page="0" DisplayName="Water Colour" ValueType="Colour" Type="vec3" Name="sea_water_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.48">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.54">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.36">
+         </SubUniform>
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- ANIMATION – Col 0                                        -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Animation speed multiplier (1.0 = original speed at 25 fps)" Row="0" Col="0" Page="1" DisplayName="Time Scale" Type="float" Name="time_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="1" Col="0" Page="1" DisplayName="Time Offset" Type="float" Name="time_offset">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- QUALITY – Col 1                                          -->
+      <!-- ======================================================== -->
+      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="3x3 supersampling for smoother edges – significantly slower" Row="0" Col="1" Page="1" Type="int" ChannelName="aa_enable" DisplayName="Anti-Alias" Name="aa_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+
+   </Shader>
+
+   <Page Name="Sea" Page="0">
+      <Col Name="Shape" Col="0" Page="0">
+      </Col>
+      <Col Name="Colour" Col="1" Page="0">
+      </Col>
+   </Page>
+
+   <Page Name="Render" Page="1">
+      <Col Name="Animation" Col="0" Page="1">
+      </Col>
+      <Col Name="Quality" Col="1" Page="1">
+      </Col>
+   </Page>
+
+</ShaderNodePreset>
