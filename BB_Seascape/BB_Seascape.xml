@@ -35,17 +35,37 @@
       </Uniform>
 
       <!-- ======================================================== -->
+      <!-- CAMERA POSITION – Col 0                                  -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0" Inc="0.1" Tooltip="Camera lateral position" Row="0" Col="0" Page="1" DisplayName="X" Type="float" Name="cam_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="200.0" Min="0.1" Default="3.5" Inc="0.1" Tooltip="Camera height above the sea surface" Row="1" Col="0" Page="1" DisplayName="Height" Type="float" Name="cam_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10000.0" Min="-10000.0" Default="0.0" Inc="1.0" Tooltip="Camera forward position – keyframe this to fly through the scene" Row="2" Col="0" Page="1" DisplayName="Z" Type="float" Name="cam_z">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CAMERA ANGLE – Col 1                                     -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="90.0" Min="-90.0" Default="0.0" Inc="0.1" Tooltip="Tilt the camera up or down in degrees" Row="0" Col="1" Page="1" DisplayName="Pitch" Type="float" Name="cam_pitch">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.1" Tooltip="Pan the camera left or right in degrees" Row="1" Col="1" Page="1" DisplayName="Yaw" Type="float" Name="cam_yaw">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.1" Tooltip="Roll the camera in degrees" Row="2" Col="1" Page="1" DisplayName="Roll" Type="float" Name="cam_roll">
+      </Uniform>
+
+      <!-- ======================================================== -->
       <!-- ANIMATION – Col 0                                        -->
       <!-- ======================================================== -->
-      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Animation speed multiplier (1.0 = original speed at 25 fps)" Row="0" Col="0" Page="1" DisplayName="Time Scale" Type="float" Name="time_scale">
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Wave animation speed multiplier (1.0 = original speed at 25 fps)" Row="0" Col="0" Page="2" DisplayName="Time Scale" Type="float" Name="time_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="1" Col="0" Page="1" DisplayName="Time Offset" Type="float" Name="time_offset">
+      <Uniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0" Inc="0.1" Tooltip="Offset the wave animation start point in seconds" Row="1" Col="0" Page="2" DisplayName="Time Offset" Type="float" Name="time_offset">
       </Uniform>
 
       <!-- ======================================================== -->
       <!-- QUALITY – Col 1                                          -->
       <!-- ======================================================== -->
-      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="3x3 supersampling for smoother edges – significantly slower" Row="0" Col="1" Page="1" Type="int" ChannelName="aa_enable" DisplayName="Anti-Alias" Name="aa_enable" ValueType="Popup">
+      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="3x3 supersampling for smoother edges – significantly slower" Row="0" Col="1" Page="2" Type="int" ChannelName="aa_enable" DisplayName="Anti-Alias" Name="aa_enable" ValueType="Popup">
          <PopupEntry Title="Disable" Value="0">
          </PopupEntry>
          <PopupEntry Title="Enable" Value="1">
@@ -61,10 +81,17 @@
       </Col>
    </Page>
 
-   <Page Name="Render" Page="1">
-      <Col Name="Animation" Col="0" Page="1">
+   <Page Name="Camera" Page="1">
+      <Col Name="Position" Col="0" Page="1">
       </Col>
-      <Col Name="Quality" Col="1" Page="1">
+      <Col Name="Angle" Col="1" Page="1">
+      </Col>
+   </Page>
+
+   <Page Name="Render" Page="2">
+      <Col Name="Animation" Col="0" Page="2">
+      </Col>
+      <Col Name="Quality" Col="1" Page="2">
       </Col>
    </Page>
 

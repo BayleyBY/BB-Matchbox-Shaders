@@ -22,9 +22,17 @@ uniform float sea_freq;
 uniform vec3  sea_base;
 uniform vec3  sea_water_color;
 
+// Camera
+uniform float cam_x;        // lateral position
+uniform float cam_y;        // height above sea
+uniform float cam_z;        // forward position (keyframe to fly forward)
+uniform float cam_pitch;    // tilt up/down in degrees
+uniform float cam_yaw;      // pan left/right in degrees
+uniform float cam_roll;     // roll in degrees
+
 // Animation
-uniform float time_scale;   // speed multiplier (1.0 = original speed at 25 fps)
-uniform float time_offset;  // offset in seconds – scrub the animation position
+uniform float time_scale;   // wave speed multiplier (1.0 = original speed at 25 fps)
+uniform float time_offset;  // wave animation offset in seconds
 
 // Quality
 uniform int   aa_enable;    // 0 = off, 1 = 3x3 supersampling
@@ -208,8 +216,8 @@ vec3 getPixel(in vec2 coord, float time) {
 
     float sea_time = 1.0 + time * sea_speed;
 
-    vec3 ang = vec3(sin(time * 3.0) * 0.1, sin(time) * 0.2 + 0.3, time);
-    vec3 ori = vec3(0.0, 3.5, time * 5.0);
+    vec3 ori = vec3(cam_x, cam_y, cam_z);
+    vec3 ang = radians(vec3(cam_pitch, cam_yaw, cam_roll));
     vec3 dir = normalize(vec3(uv.xy, -2.0));
     dir.z += length(uv) * 0.14;
     dir = normalize(dir) * fromEuler(ang);
