@@ -91,11 +91,17 @@
       </Uniform>
       <Uniform Max="10" Min="1" Default="3" Inc="1" Tooltip="Number of cross lines between the outer lines" Row="1" Col="4" Page="0" Type="int" ChannelName="num_cross1" DisplayName="Cross Lines" Name="num_cross1">
       </Uniform>
-      <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="20.0" Inc="1.0" Tooltip="Length of each dash in pixels" Row="2" Col="4" Page="0" DisplayName="Dash Length" Type="float" Name="dash1_length">
+      <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="20.0" Inc="1.0" Tooltip="Length of each dash in pixels" Row="3" Col="3" Page="0" DisplayName="Dash Length" Type="float" Name="dash1_length">
       </Uniform>
-      <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="10.0" Inc="1.0" Tooltip="Length of each gap in pixels" Row="3" Col="4" Page="0" DisplayName="Gap Length" Type="float" Name="dash1_gap">
+      <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="10.0" Inc="1.0" Tooltip="Length of each gap in pixels" Row="4" Col="3" Page="0" DisplayName="Gap Length" Type="float" Name="dash1_gap">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Opacity falloff toward vanishing point (0=none, 1=full fade)" Row="4" Col="4" Page="0" DisplayName="VP Falloff" Type="float" Name="line_falloff">
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Opacity falloff toward vanishing point (0=none, 1=full fade)" Row="2" Col="4" Page="0" DisplayName="VP Falloff" Type="float" Name="line_falloff">
+      </Uniform>
+      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Extend each line from its nearest handle to the vanishing point" Row="3" Col="4" Page="0" Type="int" ChannelName="extend1_enable" DisplayName="Extend to VP" Name="extend1_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
       </Uniform>
 
       <!-- ======================================================== -->
@@ -183,11 +189,17 @@
       </Uniform>
       <Uniform Max="10" Min="1" Default="3" Inc="1" Tooltip="Number of cross lines between the outer lines" Row="1" Col="4" Page="1" Type="int" ChannelName="num_cross2" DisplayName="Cross Lines" Name="num_cross2">
       </Uniform>
-      <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="20.0" Inc="1.0" Tooltip="Length of each dash in pixels" Row="2" Col="4" Page="1" DisplayName="Dash Length" Type="float" Name="dash2_length">
+      <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="20.0" Inc="1.0" Tooltip="Length of each dash in pixels" Row="3" Col="3" Page="1" DisplayName="Dash Length" Type="float" Name="dash2_length">
       </Uniform>
-      <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="10.0" Inc="1.0" Tooltip="Length of each gap in pixels" Row="3" Col="4" Page="1" DisplayName="Gap Length" Type="float" Name="dash2_gap">
+      <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="10.0" Inc="1.0" Tooltip="Length of each gap in pixels" Row="4" Col="3" Page="1" DisplayName="Gap Length" Type="float" Name="dash2_gap">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Opacity falloff toward vanishing point (0=none, 1=full fade)" Row="4" Col="4" Page="1" DisplayName="VP Falloff" Type="float" Name="line_falloff2">
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Opacity falloff toward vanishing point (0=none, 1=full fade)" Row="2" Col="4" Page="1" DisplayName="VP Falloff" Type="float" Name="line_falloff2">
+      </Uniform>
+      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Extend each line from its nearest handle to the vanishing point" Row="3" Col="4" Page="1" Type="int" ChannelName="extend2_enable" DisplayName="Extend to VP" Name="extend2_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
       </Uniform>
 
       <!-- ======================================================== -->
@@ -199,9 +211,15 @@
          <PopupEntry Title="Enable" Value="1">
          </PopupEntry>
       </Uniform>
-      <Uniform ResDependent="None" Max="2.0" Min="-1.0" Default="0.5" Inc="0.001" Tooltip="Vertical position of the horizon line (0=bottom, 1=top)" Row="1" Col="0" Page="2" DisplayName="Y Position" Type="float" Name="horiz_y">
+      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Automatically place the horizon at the average Y of both vanishing points" Row="1" Col="0" Page="2" Type="int" ChannelName="horiz_auto_vp" DisplayName="Auto VP Average" Name="horiz_auto_vp" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
       </Uniform>
-      <Uniform ResDependent="None" Max="90.0" Min="-90.0" Default="0.0" Inc="0.1" Tooltip="Rotation in degrees around the horizontal centre of the frame" Row="2" Col="0" Page="2" DisplayName="Rotation" Type="float" Name="horiz_rot">
+      <Uniform UIConditionType="Hide" UIConditionValue="0" UIConditionSource="horiz_auto_vp" ResDependent="None" Max="2.0" Min="-1.0" Default="0.5" Inc="0.001" Tooltip="Vertical position of the horizon line (0=bottom, 1=top)" Row="2" Col="0" Page="2" DisplayName="Y Position" Type="float" Name="horiz_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="90.0" Min="-90.0" Default="0.0" Inc="0.1" Tooltip="Rotation in degrees around the horizontal centre of the frame" Row="3" Col="0" Page="2" DisplayName="Rotation" Type="float" Name="horiz_rot">
       </Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="0.5" Default="4.0" Inc="0.1" Tooltip="Horizon line width in pixels (hard edge)" Row="0" Col="1" Page="2" DisplayName="Width" Type="float" Name="horiz_width">
       </Uniform>

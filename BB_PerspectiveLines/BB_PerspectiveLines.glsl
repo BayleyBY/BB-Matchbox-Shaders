@@ -64,11 +64,16 @@ uniform int   num_cross2;
 uniform float line_falloff;    // 0 = none, 1 = full fade at VP
 uniform float line_falloff2;
 
+// Extend lines to VP
+uniform int   extend1_enable;  // 0 = off, 1 = extend to VP
+uniform int   extend2_enable;
+
 // Matte output
 uniform int   matte_enable;    // 0 = pass bg alpha, 1 = output drawing matte
 
 // Horizon line
 uniform int   horiz_enable;    // 0 = hide, 1 = show
+uniform int   horiz_auto_vp;   // 0 = manual Y, 1 = average of VP1 and VP2
 uniform float horiz_y;         // vertical position (0=bottom, 1=top)
 uniform float horiz_rot;       // rotation in degrees around horizontal centre
 uniform float horiz_width;     // pixels (hard edge)
@@ -155,6 +160,31 @@ void main() {
                     mask = max(mask, contrib);
                 }
             }
+
+            // Extension from nearest handle to VP
+            if (extend1_enable == 1 && vpValid) {
+                vec2 nearEnd;
+                if (length(segStart - vp) < length(segEnd - vp)) {
+                    nearEnd = segStart;
+                } else {
+                    nearEnd = segEnd;
+                }
+                float de = distToSeg(px, nearEnd, vp);
+                if (de <= halfW) {
+                    bool inDash = true;
+                    if (dash1_enable == 1) {
+                        vec2  seg   = vp - nearEnd;
+                        float len   = length(seg);
+                        float along = len > 0.001 ? dot(px - nearEnd, seg) / len : 0.0;
+                        inDash = mod(max(along, 0.0), dash1_length + dash1_gap) < dash1_length;
+                    }
+                    if (inDash) {
+                        float vpDist  = length(px - vp) / length(res);
+                        float contrib = mix(1.0, smoothstep(0.0, 0.35, vpDist), line_falloff);
+                        mask = max(mask, contrib);
+                    }
+                }
+            }
         }
 
         // Crosshatch: lines connecting corresponding points on Line A and Line B
@@ -186,22 +216,23 @@ void main() {
     // ---- Second VP line set (two-point perspective) --------------
     float mask2 = 0.0;
 
+    // VP2 geometry – computed regardless of enable state so the horizon
+    // auto-positioning can use it even when VP2 lines are hidden.
+    vec2  c0       = lc_start * res;
+    vec2  c1       = lc_end   * res;
+    vec2  e0       = ld_start * res;
+    vec2  e1       = ld_end   * res;
+    vec2  dc       = c1 - c0;
+    vec2  de       = e1 - e0;
+    float denom2   = cross2d(dc, de);
+    bool  vp2Valid = abs(denom2) > 1e-4;
+    float vp2T     = vp2Valid ? cross2d(e0 - c0, de) / denom2 : 0.0;
+    vec2  vp2      = c0 + vp2T * dc;
+    bool  vp2InFrame = vp2Valid
+                       && vp2.x >= 0.0 && vp2.x <= res.x
+                       && vp2.y >= 0.0 && vp2.y <= res.y;
+
     if (lines2_enable == 1) {
-        vec2  c0      = lc_start * res;
-        vec2  c1      = lc_end   * res;
-        vec2  e0      = ld_start * res;
-        vec2  e1      = ld_end   * res;
-
-        vec2  dc      = c1 - c0;
-        vec2  de      = e1 - e0;
-        float denom2  = cross2d(dc, de);
-        bool  vp2Valid = abs(denom2) > 1e-4;
-        float vp2T    = vp2Valid ? cross2d(e0 - c0, de) / denom2 : 0.0;
-        vec2  vp2     = c0 + vp2T * dc;
-        bool  vp2InFrame = vp2Valid
-                           && vp2.x >= 0.0 && vp2.x <= res.x
-                           && vp2.y >= 0.0 && vp2.y <= res.y;
-
         float halfW2 = line_width2 * 0.5;
         int   total2 = num_inter2 + 2;
 
@@ -224,6 +255,31 @@ void main() {
                     float vp2Dist  = vp2Valid ? length(px - vp2) / length(res) : 1.0;
                     float contrib2 = mix(1.0, smoothstep(0.0, 0.35, vp2Dist), line_falloff2);
                     mask2 = max(mask2, contrib2);
+                }
+            }
+
+            // Extension from nearest handle to VP2
+            if (extend2_enable == 1 && vp2Valid) {
+                vec2 nearEnd2;
+                if (length(seg2Start - vp2) < length(seg2End - vp2)) {
+                    nearEnd2 = seg2Start;
+                } else {
+                    nearEnd2 = seg2End;
+                }
+                float de2 = distToSeg(px, nearEnd2, vp2);
+                if (de2 <= halfW2) {
+                    bool inDash2 = true;
+                    if (dash2_enable == 1) {
+                        vec2  seg2   = vp2 - nearEnd2;
+                        float len2   = length(seg2);
+                        float along2 = len2 > 0.001 ? dot(px - nearEnd2, seg2) / len2 : 0.0;
+                        inDash2 = mod(max(along2, 0.0), dash2_length + dash2_gap) < dash2_length;
+                    }
+                    if (inDash2) {
+                        float vp2Dist  = length(px - vp2) / length(res);
+                        float contrib2 = mix(1.0, smoothstep(0.0, 0.35, vp2Dist), line_falloff2);
+                        mask2 = max(mask2, contrib2);
+                    }
                 }
             }
         }
@@ -284,7 +340,15 @@ void main() {
     // ---- Horizon line --------------------------------------------
     float horizMask = 0.0;
     if (horiz_enable == 1) {
-        vec2  centre   = vec2(res.x * 0.5, horiz_y * res.y);
+        float centreY = horiz_y * res.y;
+        if (horiz_auto_vp == 1) {
+            int   avpCount = 0;
+            float avpYSum  = 0.0;
+            if (vpValid)   { avpYSum += vp.y;  avpCount++; }
+            if (vp2Valid)  { avpYSum += vp2.y; avpCount++; }
+            if (avpCount > 0) centreY = avpYSum / float(avpCount);
+        }
+        vec2  centre   = vec2(res.x * 0.5, centreY);
         vec2  dir      = vec2(cos(radians(horiz_rot)), sin(radians(horiz_rot)));
         float d        = abs(cross2d(dir, px - centre));
         float horizHalfW = horiz_width * 0.5;
