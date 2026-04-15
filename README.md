@@ -21,6 +21,9 @@ A procedural bokeh generator that creates cinematic lens bokeh entirely from scr
 ### BB_SocialSafeZones
 A social media safe zone overlay for vertical and square delivery formats. Draws platform-specific safe zone boundaries, showing which parts of the frame will be covered by navigation bars, engagement buttons, and caption areas. Supports Instagram Reels, Meta Feed, Meta Stories, TikTok, YouTube Shorts, and YouTube DemandGen, each with accurate margins sourced from official platform guidelines. Includes per-platform UI cutout regions (TikTok/Instagram engagement button stacks, YouTube DemandGen corner overlays), adjustable corner rounding, border and fill colour controls, and a built-in scale/offset adjustment for repositioning the source image without disturbing the safe zone geometry.
 
+### BB_Seascape
+A procedural animated ocean — no input image required. Raymarches a multi-octave wave surface with physically-based lighting, fresnel reflection, and sky colour. Camera position and angle are fully manual (X, Height, Z, Pitch, Yaw, Roll), so the scene can be locked off or animated by keyframing sliders in Flame. Wave shape, choppiness, speed, frequency, and colour are all exposed as controls. Ported from "Seascape" by Alexander Alekseev aka TDM (CC BY-NC-SA 3.0).
+
 ### BB_ColorDensity
 A film-style colour density tool modelled on Beer-Lambert law. Isolates each of the six colour vectors (RGB + CMY) and applies independent density and saturation compensation, producing deep, rich colour shifts similar to film emulation workflows. Supports Rec.709, Scene-Linear, ACEScg, and ACEScct colour spaces.
 
