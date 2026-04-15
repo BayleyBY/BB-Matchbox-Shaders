@@ -25,7 +25,7 @@ uniform int num_inter;         // 1 – 10
 // Line appearance
 uniform vec3  line_color;
 uniform float line_opacity;
-uniform float line_width;      // pixels (hard edge)
+uniform float line_width;      // pixels (AA edge)
 
 // Vanishing point widget
 uniform int   show_vp;         // 0 = hide, 1 = show
@@ -144,9 +144,10 @@ void main() {
             float t        = float(i) / float(total - 1);
             vec2  segStart = mix(a0, b0, t);
             vec2  segEnd   = mix(a1, b1, t);
-            float d        = distToSeg(px, segStart, segEnd);
+            float d  = distToSeg(px, segStart, segEnd);
+            float aa = smoothstep(halfW + 0.5, halfW - 0.5, d);
 
-            if (d <= halfW) {
+            if (aa > 0.0) {
                 bool inDash = true;
                 if (dash1_enable == 1) {
                     vec2  seg   = segEnd - segStart;
@@ -157,7 +158,7 @@ void main() {
                 if (inDash) {
                     float vpDist  = vpValid ? length(px - vp) / length(res) : 1.0;
                     float contrib = mix(1.0, smoothstep(0.0, 0.35, vpDist), line_falloff);
-                    mask = max(mask, contrib);
+                    mask = max(mask, aa * contrib);
                 }
             }
 
@@ -169,8 +170,9 @@ void main() {
                 } else {
                     nearEnd = segEnd;
                 }
-                float de = distToSeg(px, nearEnd, vp);
-                if (de <= halfW) {
+                float de  = distToSeg(px, nearEnd, vp);
+                float aaE = smoothstep(halfW + 0.5, halfW - 0.5, de);
+                if (aaE > 0.0) {
                     bool inDash = true;
                     if (dash1_enable == 1) {
                         vec2  seg   = vp - nearEnd;
@@ -181,7 +183,7 @@ void main() {
                     if (inDash) {
                         float vpDist  = length(px - vp) / length(res);
                         float contrib = mix(1.0, smoothstep(0.0, 0.35, vpDist), line_falloff);
-                        mask = max(mask, contrib);
+                        mask = max(mask, aaE * contrib);
                     }
                 }
             }
@@ -194,8 +196,9 @@ void main() {
                 float u      = float(j + 1) / float(num_cross1 + 1);
                 vec2  cStart = mix(a0, a1, u);
                 vec2  cEnd   = mix(b0, b1, u);
-                float d      = distToSeg(px, cStart, cEnd);
-                if (d <= halfW) {
+                float d   = distToSeg(px, cStart, cEnd);
+                float aaC = smoothstep(halfW + 0.5, halfW - 0.5, d);
+                if (aaC > 0.0) {
                     bool inDash = true;
                     if (dash1_enable == 1) {
                         vec2  seg   = cEnd - cStart;
@@ -206,7 +209,7 @@ void main() {
                     if (inDash) {
                         float vpDist  = vpValid ? length(px - vp) / length(res) : 1.0;
                         float contrib = mix(1.0, smoothstep(0.0, 0.35, vpDist), line_falloff);
-                        mask = max(mask, contrib);
+                        mask = max(mask, aaC * contrib);
                     }
                 }
             }
@@ -243,7 +246,8 @@ void main() {
             vec2  seg2End   = mix(c1, e1, t);
             float d2        = distToSeg(px, seg2Start, seg2End);
 
-            if (d2 <= halfW2) {
+            float aa2 = smoothstep(halfW2 + 0.5, halfW2 - 0.5, d2);
+            if (aa2 > 0.0) {
                 bool inDash2 = true;
                 if (dash2_enable == 1) {
                     vec2  seg2   = seg2End - seg2Start;
@@ -254,7 +258,7 @@ void main() {
                 if (inDash2) {
                     float vp2Dist  = vp2Valid ? length(px - vp2) / length(res) : 1.0;
                     float contrib2 = mix(1.0, smoothstep(0.0, 0.35, vp2Dist), line_falloff2);
-                    mask2 = max(mask2, contrib2);
+                    mask2 = max(mask2, aa2 * contrib2);
                 }
             }
 
@@ -266,8 +270,9 @@ void main() {
                 } else {
                     nearEnd2 = seg2End;
                 }
-                float de2 = distToSeg(px, nearEnd2, vp2);
-                if (de2 <= halfW2) {
+                float de2  = distToSeg(px, nearEnd2, vp2);
+                float aaE2 = smoothstep(halfW2 + 0.5, halfW2 - 0.5, de2);
+                if (aaE2 > 0.0) {
                     bool inDash2 = true;
                     if (dash2_enable == 1) {
                         vec2  seg2   = vp2 - nearEnd2;
@@ -278,7 +283,7 @@ void main() {
                     if (inDash2) {
                         float vp2Dist  = length(px - vp2) / length(res);
                         float contrib2 = mix(1.0, smoothstep(0.0, 0.35, vp2Dist), line_falloff2);
-                        mask2 = max(mask2, contrib2);
+                        mask2 = max(mask2, aaE2 * contrib2);
                     }
                 }
             }
@@ -291,8 +296,9 @@ void main() {
                 float u       = float(j + 1) / float(num_cross2 + 1);
                 vec2  cStart2 = mix(c0, c1, u);
                 vec2  cEnd2   = mix(e0, e1, u);
-                float d       = distToSeg(px, cStart2, cEnd2);
-                if (d <= halfW2) {
+                float d    = distToSeg(px, cStart2, cEnd2);
+                float aaC2 = smoothstep(halfW2 + 0.5, halfW2 - 0.5, d);
+                if (aaC2 > 0.0) {
                     bool inDash2 = true;
                     if (dash2_enable == 1) {
                         vec2  seg2   = cEnd2 - cStart2;
@@ -303,7 +309,7 @@ void main() {
                     if (inDash2) {
                         float vp2Dist  = vp2Valid ? length(px - vp2) / length(res) : 1.0;
                         float contrib2 = mix(1.0, smoothstep(0.0, 0.35, vp2Dist), line_falloff2);
-                        mask2 = max(mask2, contrib2);
+                        mask2 = max(mask2, aaC2 * contrib2);
                     }
                 }
             }
@@ -350,9 +356,9 @@ void main() {
         }
         vec2  centre   = vec2(res.x * 0.5, centreY);
         vec2  dir      = vec2(cos(radians(horiz_rot)), sin(radians(horiz_rot)));
-        float d        = abs(cross2d(dir, px - centre));
+        float d          = abs(cross2d(dir, px - centre));
         float horizHalfW = horiz_width * 0.5;
-        if (d <= horizHalfW) horizMask = 1.0;
+        horizMask = smoothstep(horizHalfW + 0.5, horizHalfW - 0.5, d);
     }
 
     // ---- Vanishing point widget -----------------------------------
