@@ -13,7 +13,7 @@ uniform float time_scale;
 uniform float time_offset;
 
 // Rings
-uniform int   rings_enable;
+uniform bool  rings_enable;
 uniform float ring_glow;
 uniform float ring_speed;
 uniform float rings_opacity;
@@ -24,42 +24,42 @@ uniform float cam_tilt;         // YZ plane tilt in degrees — lifts camera abo
 uniform float cam_orbit_base;   // XZ base angle in degrees
 uniform float cam_orbit_speed;  // XZ sine swing speed
 uniform float cam_orbit_amount; // XZ sine swing amplitude in degrees
-uniform int   ring0_enable;
+uniform bool  ring0_enable;
 uniform float ring0_depth;
 uniform vec3  ring0_color;
 uniform float ring0_opacity;
 uniform float ring0_speed;
-uniform int   ring1_enable;
+uniform bool  ring1_enable;
 uniform float ring1_depth;
 uniform vec3  ring1_color;
 uniform float ring1_opacity;
 uniform float ring1_speed;
-uniform int   ring2_enable;
+uniform bool  ring2_enable;
 uniform float ring2_depth;
 uniform vec3  ring2_color;
 uniform float ring2_opacity;
 uniform float ring2_speed;
-uniform int   ring3_enable;
+uniform bool  ring3_enable;
 uniform float ring3_depth;
 uniform vec3  ring3_color;
 uniform float ring3_opacity;
 uniform float ring3_speed;
-uniform int   ring4_enable;
+uniform bool  ring4_enable;
 uniform float ring4_depth;
 uniform vec3  ring4_color;
 uniform float ring4_opacity;
 uniform float ring4_speed;
-uniform int   ring5_enable;
+uniform bool  ring5_enable;
 uniform float ring5_depth;
 uniform vec3  ring5_color;
 uniform float ring5_opacity;
 uniform float ring5_speed;
-uniform int   ring6_enable;
+uniform bool  ring6_enable;
 uniform float ring6_depth;
 uniform vec3  ring6_color;
 uniform float ring6_opacity;
 uniform float ring6_speed;
-uniform int   ring7_enable;
+uniform bool  ring7_enable;
 uniform float ring7_depth;
 uniform vec3  ring7_color;
 uniform float ring7_opacity;
@@ -67,7 +67,7 @@ uniform float ring7_speed;
 
 // Background
 // Background — Dot Grid
-uniform int   bg_dots_enable;
+uniform bool  bg_dots_enable;
 uniform vec3  bg_dots_color;
 uniform float bg_dots_glow;
 uniform float bg_dots_opacity;
@@ -76,9 +76,10 @@ uniform float bg_dots_time_offset;
 uniform float bg_dots_scale;
 uniform float bg_dots_pos_x;
 uniform float bg_dots_pos_y;
+uniform float bg_dots_rot;
 
 // Background — Cross Grid
-uniform int   bg_crosses_enable;
+uniform bool  bg_crosses_enable;
 uniform vec3  bg_crosses_color;
 uniform float bg_crosses_glow;
 uniform float bg_crosses_opacity;
@@ -87,9 +88,10 @@ uniform float bg_crosses_time_offset;
 uniform float bg_crosses_scale;
 uniform float bg_crosses_pos_x;
 uniform float bg_crosses_pos_y;
+uniform float bg_crosses_rot;
 
 // Background — Box Grid
-uniform int   bg_boxes_enable;
+uniform bool  bg_boxes_enable;
 uniform vec3  bg_boxes_color;
 uniform float bg_boxes_glow;
 uniform float bg_boxes_opacity;
@@ -101,9 +103,10 @@ uniform float bg_boxes_gap;
 uniform float bg_boxes_scale;
 uniform float bg_boxes_pos_x;
 uniform float bg_boxes_pos_y;
+uniform float bg_boxes_rot;
 
 // Overlay — per-element controls
-uniform int   ov_numbers_enable;
+uniform bool  ov_numbers_enable;
 uniform vec3  ov_numbers_color;
 uniform float ov_numbers_glow;
 uniform float ov_numbers_opacity;
@@ -114,7 +117,7 @@ uniform float ov_numbers_pos_x;
 uniform float ov_numbers_pos_y;
 uniform float ov_numbers_time_offset;
 
-uniform int   ov_blocks0_enable;
+uniform bool  ov_blocks0_enable;
 uniform vec3  ov_blocks0_color;
 uniform float ov_blocks0_glow;
 uniform float ov_blocks0_opacity;
@@ -124,8 +127,10 @@ uniform float ov_blocks0_scale;
 uniform float ov_blocks0_rot;
 uniform float ov_blocks0_pos_x;
 uniform float ov_blocks0_pos_y;
+uniform float ov_blocks0_width;
+uniform float ov_blocks0_height;
 
-uniform int   ov_blocks1_enable;
+uniform bool  ov_blocks1_enable;
 uniform vec3  ov_blocks1_color;
 uniform float ov_blocks1_glow;
 uniform float ov_blocks1_opacity;
@@ -135,8 +140,10 @@ uniform float ov_blocks1_scale;
 uniform float ov_blocks1_rot;
 uniform float ov_blocks1_pos_x;
 uniform float ov_blocks1_pos_y;
+uniform float ov_blocks1_width;
+uniform float ov_blocks1_height;
 
-uniform int   ov_arrows0_enable;
+uniform bool  ov_arrows0_enable;
 uniform vec3  ov_arrows0_color;
 uniform float ov_arrows0_glow;
 uniform float ov_arrows0_opacity;
@@ -146,7 +153,9 @@ uniform float ov_arrows0_scale;
 uniform float ov_arrows0_rot;
 uniform float ov_arrows0_pos_x;
 uniform float ov_arrows0_pos_y;
-uniform int   ov_arrows1_enable;
+uniform float ov_arrows0_width;
+uniform float ov_arrows0_height;
+uniform bool  ov_arrows1_enable;
 uniform vec3  ov_arrows1_color;
 uniform float ov_arrows1_glow;
 uniform float ov_arrows1_opacity;
@@ -156,8 +165,10 @@ uniform float ov_arrows1_scale;
 uniform float ov_arrows1_rot;
 uniform float ov_arrows1_pos_x;
 uniform float ov_arrows1_pos_y;
+uniform float ov_arrows1_width;
+uniform float ov_arrows1_height;
 
-uniform int   ov_graph0_enable;
+uniform bool  ov_graph0_enable;
 uniform vec3  ov_graph0_color;
 uniform float ov_graph0_glow;
 uniform float ov_graph0_opacity;
@@ -168,7 +179,7 @@ uniform float ov_graph0_scale;
 uniform float ov_graph0_rot;
 uniform float ov_graph0_pos_x;
 uniform float ov_graph0_pos_y;
-uniform int   ov_graph1_enable;
+uniform bool  ov_graph1_enable;
 uniform vec3  ov_graph1_color;
 uniform float ov_graph1_glow;
 uniform float ov_graph1_opacity;
@@ -180,7 +191,7 @@ uniform float ov_graph1_rot;
 uniform float ov_graph1_pos_x;
 uniform float ov_graph1_pos_y;
 
-uniform int   ov_circles0_enable;
+uniform bool  ov_circles0_enable;
 uniform vec3  ov_circles0_color;
 uniform float ov_circles0_glow;
 uniform float ov_circles0_opacity;
@@ -192,7 +203,7 @@ uniform float ov_circles0_rot;
 uniform float ov_circles0_pos_x;
 uniform float ov_circles0_pos_y;
 
-uniform int   ov_circles1_enable;
+uniform bool  ov_circles1_enable;
 uniform vec3  ov_circles1_color;
 uniform float ov_circles1_glow;
 uniform float ov_circles1_opacity;
@@ -204,7 +215,7 @@ uniform float ov_circles1_rot;
 uniform float ov_circles1_pos_x;
 uniform float ov_circles1_pos_y;
 
-uniform int   ov_rect_enable;
+uniform bool  ov_rect_enable;
 uniform vec3  ov_rect_color;
 uniform float ov_rect_glow;
 uniform float ov_rect_opacity;
@@ -218,7 +229,7 @@ uniform float ov_rect_rot;
 uniform float ov_rect_pos_x;
 uniform float ov_rect_pos_y;
 
-uniform int   ov_static_enable;
+uniform bool  ov_static_enable;
 uniform int   ov_static_mirror;
 uniform vec3  ov_static_color;
 uniform float ov_static_glow;
@@ -229,7 +240,7 @@ uniform float ov_static_rot;
 uniform float ov_static_pos_x;
 uniform float ov_static_pos_y;
 
-uniform int   ov_side_enable;
+uniform bool  ov_side_enable;
 uniform vec3  ov_side_color;
 uniform float ov_side_glow;
 uniform float ov_side_opacity;
@@ -560,11 +571,12 @@ vec3 R(vec2 uv, vec3 p, vec3 l, float z) {
 // Background elements — three independent tiling layers
 // ----------------------------------------------------------------
 
-// Tiny square dot grid — dense, no rotation
+// Tiny square dot grid — dense
 float bgDots(vec2 p) {
     float bt = gTime * bg_dots_speed + bg_dots_time_offset;
-    p.y -= bt * 0.1;
     p += vec2(bg_dots_pos_x, bg_dots_pos_y);
+    p *= Rot(radians(bg_dots_rot));
+    p.y -= bt * 0.1;   // scroll along rotated local Y — 90° makes it scroll horizontally
     p *= bg_dots_scale;
     p = mod(p, 0.02) - 0.01;
     return B(p, vec2(0.001));
@@ -573,8 +585,9 @@ float bgDots(vec2 p) {
 // Small cross grid — scrolling, denser tiling
 float bgCrosses(vec2 p) {
     float bt = gTime * bg_crosses_speed + bg_crosses_time_offset;
-    p.y -= bt * 0.1;
     p += vec2(bg_crosses_pos_x, bg_crosses_pos_y);
+    p *= Rot(radians(bg_crosses_rot));
+    p.y -= bt * 0.1;   // scroll along rotated local Y — 90° makes it scroll horizontally
     p *= 2.8 * bg_crosses_scale;
     vec2 gv2 = fract(p * 3.) - 0.5;
     return min(B(gv2, vec2(0.02, 0.09)), B(gv2, vec2(0.09, 0.02)));
@@ -583,14 +596,23 @@ float bgCrosses(vec2 p) {
 // Rotating square frame grid — N columns x M rows, centered in frame, random CW/CCW per cell
 float bgBoxes(vec2 p) {
     float bt = gTime * bg_boxes_speed + bg_boxes_time_offset;
-    p.y -= bt * 0.1;
     p += vec2(bg_boxes_pos_x, bg_boxes_pos_y);
-    float aspect = adsk_result_w / adsk_result_h;
-    p.x *= float(bg_boxes_cols) / (aspect * bg_boxes_scale);
-    p.y *= float(bg_boxes_rows) / bg_boxes_scale;
-    vec2 gv = fract(p) - 0.5;
-    vec2 id = floor(p);
+    p *= Rot(radians(bg_boxes_rot));
+    p.y -= bt * 0.1;   // scroll along rotated local Y — 90° makes it scroll horizontally
+
+    // Fixed cell size — scale controls zoom, cols/rows reveal more cells
+    float cellSize = 0.15 * bg_boxes_scale;
+
+    // Convert to cell space
+    vec2 tp = p / cellSize;
+    vec2 gv = fract(tp) - 0.5;
+    vec2 id = floor(tp);
     float n = Hash21(id);
+
+    // Clip to exactly cols × rows cells
+    float frameClip = max(abs(tp.x) - float(bg_boxes_cols) * 0.5,
+                          abs(tp.y) - float(bg_boxes_rows) * 0.5);
+
     float hs = clamp(0.5 - bg_boxes_gap, 0.02, 0.49);
     float cut = hs * 0.318;
     float d = abs(B(gv, vec2(hs))) - 0.015;
@@ -601,7 +623,8 @@ float bgBoxes(vec2 p) {
     }
     d = max(-(abs(gv.x) - cut), d);
     d = max(-(abs(gv.y) - cut), d);
-    return d;
+
+    return max(d, frameClip);
 }
 
 // ----------------------------------------------------------------
@@ -644,20 +667,20 @@ float numberWithCIrcleUI(vec2 p) {
     return d;
 }
 
-float blockUI(vec2 p) {
-    // 3 rows via Y mod: centers at p.y = -0.04, 0, +0.04
-    float py = mod(p.y + 0.06, 0.04) - 0.02;
+float blockUI(vec2 p, float W, float H) {
+    // Row tiling — fixed cell spacing 0.04, more rows revealed as H grows
+    float py = mod(p.y + 0.02, 0.04) - 0.02;
 
-    // Two interleaved X-scrolling layers — combined give 20 cols within ±0.2
+    // Two interleaved X-scrolling layers — fixed cell spacing 0.04
     float phase = gOvTime * 0.05;
     float px1 = mod(p.x + phase,        0.04) - 0.02;
     float px2 = mod(p.x + phase + 0.02, 0.04) - 0.02;
     float d  = min(B(vec2(px1, py), vec2(0.0085)),
                    B(vec2(px2, py), vec2(0.0085)));
 
-    // Clip to 20 cols × 3 rows  (±0.2 × ±0.06)
-    d = max(d, abs(p.x) - 0.2);
-    d = max(d, abs(p.y) - 0.06);
+    // Clip to frame — more cells appear as W/H grow, cell size stays fixed
+    d = max(d, abs(p.x) - W);
+    d = max(d, abs(p.y) - H);
     return abs(d) - 0.0002;
 }
 
@@ -794,8 +817,10 @@ float staticUI(vec2 p) {
     return d;
 }
 
-float arrowUI(vec2 p) {
+float arrowUI(vec2 p, float W, float H) {
     vec2 prevP = p;
+    // Y tiling — fixed row spacing 0.07, more rows revealed as H grows
+    p.y = mod(p.y + 0.035, 0.07) - 0.035;
     p.x *= -1.;
     p.x -= gOvTime * 0.12;
     p.x = mod(p.x, 0.07) - 0.035;
@@ -806,7 +831,8 @@ float arrowUI(vec2 p) {
     d = max(-Tri(p - vec2(0., -0.03), vec2(0.05), radians(45.)), d);
     d = abs(d) - 0.0005;
     p = prevP;
-    d = max(abs(p.x) - 0.15, d);
+    d = max(abs(p.x) - W, d);
+    d = max(abs(p.y) - H, d);
     return d;
 }
 
@@ -858,25 +884,25 @@ void main() {
     vec3 col = vec3(0.0);
 
     // Background — Dot Grid
-    if (bg_dots_enable == 1) {
+    if (bg_dots_enable) {
         float d = bgDots(uv);
         col = mix(col, bg_dots_color, ov_alpha(d, bg_dots_glow) * bg_dots_opacity);
     }
 
     // Background — Cross Grid
-    if (bg_crosses_enable == 1) {
+    if (bg_crosses_enable) {
         float d = bgCrosses(uv);
         col = mix(col, bg_crosses_color, ov_alpha(d, bg_crosses_glow) * bg_crosses_opacity);
     }
 
     // Background — Box Grid
-    if (bg_boxes_enable == 1) {
+    if (bg_boxes_enable) {
         float d = bgBoxes(uv);
         col = mix(col, bg_boxes_color, ov_alpha(d, bg_boxes_glow) * bg_boxes_opacity);
     }
 
     // Raymarched rings
-    if (rings_enable == 1) {
+    if (rings_enable) {
         vec3 ro = vec3(0.0, 0.0, -2.1);
         ro.yz *= Rot(radians(cam_tilt));
         ro.y   = max(-0.9, ro.y);
@@ -884,14 +910,14 @@ void main() {
         ro.xy *= Rot(radians(sin(gTime * cam_orbit_speed) * cam_orbit_amount));
         vec3 rd = R(uv, ro, vec3(0.0, 0.0, 0.0), 1.0);
         // Each ring raymarched independently so it can carry its own colour and opacity.
-        if (ring0_enable == 1) col += RayMarch(ro, rd, 0) * ring0_color * ring0_opacity * rings_opacity;
-        if (ring1_enable == 1) col += RayMarch(ro, rd, 1) * ring1_color * ring1_opacity * rings_opacity;
-        if (ring2_enable == 1) col += RayMarch(ro, rd, 2) * ring2_color * ring2_opacity * rings_opacity;
-        if (ring3_enable == 1) col += RayMarch(ro, rd, 3) * ring3_color * ring3_opacity * rings_opacity;
-        if (ring4_enable == 1) col += RayMarch(ro, rd, 4) * ring4_color * ring4_opacity * rings_opacity;
-        if (ring5_enable == 1) col += RayMarch(ro, rd, 5) * ring5_color * ring5_opacity * rings_opacity;
-        if (ring6_enable == 1) col += RayMarch(ro, rd, 6) * ring6_color * ring6_opacity * rings_opacity;
-        if (ring7_enable == 1) col += RayMarch(ro, rd, 7) * ring7_color * ring7_opacity * rings_opacity;
+        if (ring0_enable) col += RayMarch(ro, rd, 0) * ring0_color * ring0_opacity * rings_opacity;
+        if (ring1_enable) col += RayMarch(ro, rd, 1) * ring1_color * ring1_opacity * rings_opacity;
+        if (ring2_enable) col += RayMarch(ro, rd, 2) * ring2_color * ring2_opacity * rings_opacity;
+        if (ring3_enable) col += RayMarch(ro, rd, 3) * ring3_color * ring3_opacity * rings_opacity;
+        if (ring4_enable) col += RayMarch(ro, rd, 4) * ring4_color * ring4_opacity * rings_opacity;
+        if (ring5_enable) col += RayMarch(ro, rd, 5) * ring5_color * ring5_opacity * rings_opacity;
+        if (ring6_enable) col += RayMarch(ro, rd, 6) * ring6_color * ring6_opacity * rings_opacity;
+        if (ring7_enable) col += RayMarch(ro, rd, 7) * ring7_color * ring7_opacity * rings_opacity;
     }
 
     // Gamma correction (pre-overlay, matching original)
@@ -905,7 +931,7 @@ void main() {
     float d;
 
     // Rolling numbers + orbital ring — natural center (0.56, -0.34)
-    if (ov_numbers_enable == 1) {
+    if (ov_numbers_enable) {
         gOvTime = gTime * ov_numbers_speed;
         p = uv - vec2(ov_numbers_pos_x, ov_numbers_pos_y);
         p *= Rot(radians(ov_numbers_rot));
@@ -915,43 +941,43 @@ void main() {
     }
 
     // Scrolling block ticker — left set (blocks0) and right set (blocks1), each independent
-    if (ov_blocks0_enable == 1) {
+    if (ov_blocks0_enable) {
         gOvTime = gTime * ov_blocks0_speed + ov_blocks0_time_offset;
         p = uv - vec2(ov_blocks0_pos_x, ov_blocks0_pos_y);
         p *= Rot(radians(ov_blocks0_rot));
         p /= ov_blocks0_scale;
-        d = blockUI(p) * ov_blocks0_scale;
+        d = blockUI(p, ov_blocks0_width, ov_blocks0_height) * ov_blocks0_scale;
         col = mix(col, ov_blocks0_color, ov_alpha(d, ov_blocks0_glow) * ov_blocks0_opacity);
     }
-    if (ov_blocks1_enable == 1) {
+    if (ov_blocks1_enable) {
         gOvTime = gTime * ov_blocks1_speed + ov_blocks1_time_offset;
         p = uv - vec2(ov_blocks1_pos_x, ov_blocks1_pos_y);
         p *= Rot(radians(ov_blocks1_rot));
         p /= ov_blocks1_scale;
-        d = blockUI(p) * ov_blocks1_scale;
+        d = blockUI(p, ov_blocks1_width, ov_blocks1_height) * ov_blocks1_scale;
         col = mix(col, ov_blocks1_color, ov_alpha(d, ov_blocks1_glow) * ov_blocks1_opacity);
     }
 
     // Arrow ticker — left set (arrows0) and right set (arrows1), each independent
-    if (ov_arrows0_enable == 1) {
+    if (ov_arrows0_enable) {
         gOvTime = gTime * ov_arrows0_speed + ov_arrows0_time_offset;
         p = uv - vec2(ov_arrows0_pos_x, ov_arrows0_pos_y);
         p *= Rot(radians(ov_arrows0_rot));
         p /= ov_arrows0_scale;
-        d = arrowUI(p) * ov_arrows0_scale;
+        d = arrowUI(p, ov_arrows0_width, ov_arrows0_height) * ov_arrows0_scale;
         col = mix(col, ov_arrows0_color, ov_alpha(d, ov_arrows0_glow) * ov_arrows0_opacity);
     }
-    if (ov_arrows1_enable == 1) {
+    if (ov_arrows1_enable) {
         gOvTime = gTime * ov_arrows1_speed + ov_arrows1_time_offset;
         p = uv - vec2(ov_arrows1_pos_x, ov_arrows1_pos_y);
         p *= Rot(radians(ov_arrows1_rot));
         p /= ov_arrows1_scale;
-        d = arrowUI(p) * ov_arrows1_scale;
+        d = arrowUI(p, ov_arrows1_width, ov_arrows1_height) * ov_arrows1_scale;
         col = mix(col, ov_arrows1_color, ov_alpha(d, ov_arrows1_glow) * ov_arrows1_opacity);
     }
 
     // Waveform graph — left set (graph0) and right set (graph1), each independent
-    if (ov_graph0_enable == 1) {
+    if (ov_graph0_enable) {
         gOvTime       = gTime * ov_graph0_speed        + ov_graph0_time_offset;
         gOvBounceTime = gTime * ov_graph0_bounce_speed + ov_graph0_time_offset;
         p = uv - vec2(ov_graph0_pos_x, ov_graph0_pos_y);
@@ -960,7 +986,7 @@ void main() {
         d = graphUI(p) * ov_graph0_scale;
         col = mix(col, ov_graph0_color, ov_alpha(d, ov_graph0_glow) * ov_graph0_opacity);
     }
-    if (ov_graph1_enable == 1) {
+    if (ov_graph1_enable) {
         gOvTime       = gTime * ov_graph1_speed        + ov_graph1_time_offset;
         gOvBounceTime = gTime * ov_graph1_bounce_speed + ov_graph1_time_offset;
         p = uv - vec2(ov_graph1_pos_x, ov_graph1_pos_y);
@@ -971,7 +997,7 @@ void main() {
     }
 
     // Circles 1 — arc/wedge style (smallCircleUI2), N random instances
-    if (ov_circles0_enable == 1) {
+    if (ov_circles0_enable) {
         gOvTime = gTime * ov_circles0_speed + ov_circles0_time_offset;
         q = uv - vec2(ov_circles0_pos_x, ov_circles0_pos_y);
         q *= Rot(radians(ov_circles0_rot));
@@ -989,7 +1015,7 @@ void main() {
     }
 
     // Circles 2 — multi-ring complex style (smallCircleUI), N random instances
-    if (ov_circles1_enable == 1) {
+    if (ov_circles1_enable) {
         gOvTime = gTime * ov_circles1_speed + ov_circles1_time_offset;
         q = uv - vec2(ov_circles1_pos_x, ov_circles1_pos_y);
         q *= Rot(radians(ov_circles1_rot));
@@ -1007,7 +1033,7 @@ void main() {
     }
 
     // Diamond frame — natural center (-0.58, -0.3)
-    if (ov_rect_enable == 1) {
+    if (ov_rect_enable) {
         gOvTime = gTime * ov_rect_speed + ov_rect_time_offset;
         p = uv - vec2(ov_rect_pos_x, ov_rect_pos_y);
         p *= Rot(radians(ov_rect_rot));
@@ -1017,7 +1043,7 @@ void main() {
     }
 
     // Static — antenna icon, cascade: copy N at pos*N, rot*N, scale^N
-    if (ov_static_enable == 1) {
+    if (ov_static_enable) {
         d = 1e9;
         for (int i = 0; i < ov_static_number; i++) {
             float n  = float(i + 1);
@@ -1039,7 +1065,7 @@ void main() {
     }
 
     // Side brackets — each cascade copy is a mirrored group of 3 (both sides), pos*N, rot*N, scale^N
-    if (ov_side_enable == 1) {
+    if (ov_side_enable) {
         d = 1e9;
         for (int i = 0; i < ov_side_number; i++) {
             float n  = float(i + 1);
