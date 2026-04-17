@@ -30,6 +30,9 @@ A procedural animated sky and cloud layer — no input image required. Casts a p
 ### BB_ColorDensity
 A film-style colour density tool modelled on Beer-Lambert law. Isolates each of the six colour vectors (RGB + CMY) and applies independent density and saturation compensation, producing deep, rich colour shifts similar to film emulation workflows. Supports Rec.709, Scene-Linear, ACEScg, and ACEScct colour spaces.
 
+### BB_FutureHUD
+An animated sci-fi HUD overlay — no input image required. Camera is locked to screen with no orbit or mouse interaction. Fourteen pages of controls across fifteen independently enable/disable-able elements: eight concentric raymarched rings (each with individual colour, opacity, speed, and depth), a rolling number stopwatch, scrolling block ticker, arrow ticker, two waveform bar graphs with voice-like bounce cadence, two sets of random-positioned circles, a rotating diamond frame, a cascade-replicating antenna static icon, and bilateral side bracket decorations. Three background grid layers (dot grid, cross grid, rotating box grid) each composited independently. Box grid supports explicit column and row counts with gap control. Cascade elements replicate up to 20 copies with progressive position, rotation, and scale. Global animation speed and time offset on a dedicated Global Time page. All colours use Flame's native colour picker. Ported from "Future HUD" (Shadertoy).
+
 ---
 
 ## Tools

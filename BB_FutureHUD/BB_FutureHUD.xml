@@ -1,0 +1,958 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Animated sci-fi HUD overlay. Camera locked to screen. All elements independently enabled and colour-controlled." Name="BB_FutureHUD">
+
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+
+      <!-- ======================================================== -->
+      <!-- RINGS – Page 0 Col 0 Master                              -->
+      <!-- ======================================================== -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Show or hide all rings" Row="0" Col="0" Page="0" Type="int" ChannelName="rings_enable" DisplayName="Enable Rings" Name="rings_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.6" Inc="0.1" Tooltip="Glow width — larger values give softer, broader glow on the rings" Row="1" Col="0" Page="0" DisplayName="Ring Glow" Type="float" Name="ring_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Rotation speed multiplier for all rings" Row="1" Col="0" Page="0" DisplayName="Ring Speed" Type="float" Name="ring_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Overall opacity of the ring glow" Row="1" Col="0" Page="0" DisplayName="Opacity" Type="float" Name="rings_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="2.5" Inc="0.1" Tooltip="Ring cross-section thickness — higher values give thicker, chunkier rings" Row="1" Col="0" Page="0" DisplayName="Depth" Type="float" Name="ring_depth">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- RINGS A – Page 1, one col per ring (ring0–ring3)         -->
+      <!-- ======================================================== -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Inner dotted ring" Row="0" Col="0" Page="1" Type="int" ChannelName="ring0_enable" DisplayName="Enable" Name="ring0_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Depth multiplier — scales relative to master Depth" Row="1" Col="0" Page="1" DisplayName="Depth" Type="float" Name="ring0_depth">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Ring colour" Row="2" Col="0" Page="1" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ring0_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Ring opacity" Row="3" Col="0" Page="1" DisplayName="Opacity" Type="float" Name="ring0_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Per-ring speed multiplier. Negative values reverse rotation. Scaled by master Ring Speed." Row="4" Col="0" Page="1" DisplayName="Speed" Type="float" Name="ring0_speed">
+      </Uniform>
+
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Second ring layer" Row="0" Col="1" Page="1" Type="int" ChannelName="ring1_enable" DisplayName="Enable" Name="ring1_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Depth multiplier — scales relative to master Depth" Row="1" Col="1" Page="1" DisplayName="Depth" Type="float" Name="ring1_depth">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Ring colour" Row="2" Col="1" Page="1" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ring1_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Ring opacity" Row="3" Col="1" Page="1" DisplayName="Opacity" Type="float" Name="ring1_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Per-ring speed multiplier. Negative values reverse rotation. Scaled by master Ring Speed." Row="4" Col="1" Page="1" DisplayName="Speed" Type="float" Name="ring1_speed">
+      </Uniform>
+
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Third ring layer" Row="0" Col="2" Page="1" Type="int" ChannelName="ring2_enable" DisplayName="Enable" Name="ring2_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Depth multiplier — scales relative to master Depth" Row="1" Col="2" Page="1" DisplayName="Depth" Type="float" Name="ring2_depth">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Ring colour" Row="2" Col="2" Page="1" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ring2_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Ring opacity" Row="3" Col="2" Page="1" DisplayName="Opacity" Type="float" Name="ring2_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Per-ring speed multiplier. Negative values reverse rotation. Scaled by master Ring Speed." Row="4" Col="2" Page="1" DisplayName="Speed" Type="float" Name="ring2_speed">
+      </Uniform>
+
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Fourth ring layer" Row="0" Col="3" Page="1" Type="int" ChannelName="ring3_enable" DisplayName="Enable" Name="ring3_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Depth multiplier — scales relative to master Depth" Row="1" Col="3" Page="1" DisplayName="Depth" Type="float" Name="ring3_depth">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Ring colour" Row="2" Col="3" Page="1" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ring3_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Ring opacity" Row="3" Col="3" Page="1" DisplayName="Opacity" Type="float" Name="ring3_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Per-ring speed multiplier. Negative values reverse rotation. Scaled by master Ring Speed." Row="4" Col="3" Page="1" DisplayName="Speed" Type="float" Name="ring3_speed">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- RINGS B – Page 2, one col per ring (ring4–ring6)         -->
+      <!-- ======================================================== -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Fifth ring layer" Row="0" Col="0" Page="2" Type="int" ChannelName="ring4_enable" DisplayName="Enable" Name="ring4_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Depth multiplier — scales relative to master Depth" Row="1" Col="0" Page="2" DisplayName="Depth" Type="float" Name="ring4_depth">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Ring colour" Row="2" Col="0" Page="2" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ring4_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Ring opacity" Row="3" Col="0" Page="2" DisplayName="Opacity" Type="float" Name="ring4_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Per-ring speed multiplier. Negative values reverse rotation. Scaled by master Ring Speed." Row="4" Col="0" Page="2" DisplayName="Speed" Type="float" Name="ring4_speed">
+      </Uniform>
+
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Sixth ring layer" Row="0" Col="1" Page="2" Type="int" ChannelName="ring5_enable" DisplayName="Enable" Name="ring5_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Depth multiplier — scales relative to master Depth" Row="1" Col="1" Page="2" DisplayName="Depth" Type="float" Name="ring5_depth">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Ring colour" Row="2" Col="1" Page="2" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ring5_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Ring opacity" Row="3" Col="1" Page="2" DisplayName="Opacity" Type="float" Name="ring5_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Per-ring speed multiplier. Negative values reverse rotation. Scaled by master Ring Speed." Row="4" Col="1" Page="2" DisplayName="Speed" Type="float" Name="ring5_speed">
+      </Uniform>
+
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Outer ring layer" Row="0" Col="2" Page="2" Type="int" ChannelName="ring6_enable" DisplayName="Enable" Name="ring6_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Depth multiplier — scales relative to master Depth" Row="1" Col="2" Page="2" DisplayName="Depth" Type="float" Name="ring6_depth">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Ring colour" Row="2" Col="2" Page="2" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ring6_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Ring opacity" Row="3" Col="2" Page="2" DisplayName="Opacity" Type="float" Name="ring6_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Per-ring speed multiplier. Negative values reverse rotation. Scaled by master Ring Speed." Row="4" Col="2" Page="2" DisplayName="Speed" Type="float" Name="ring6_speed">
+      </Uniform>
+
+      <!-- Ring 7 (displayed as Ring 8) — Col 3, Page 2 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Outer bezel ring — 8 rotating ticks with counter-rotating dashed inner ring" Row="0" Col="3" Page="2" Type="int" ChannelName="ring7_enable" DisplayName="Enable" Name="ring7_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Depth multiplier — scales relative to master Depth" Row="1" Col="3" Page="2" DisplayName="Depth" Type="float" Name="ring7_depth">
+      </Uniform>
+      <Uniform Inc="0.01" Tooltip="Ring colour" Row="2" Col="3" Page="2" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ring7_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Ring opacity" Row="3" Col="3" Page="2" DisplayName="Opacity" Type="float" Name="ring7_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Per-ring speed multiplier. Negative values reverse rotation. Scaled by master Ring Speed." Row="4" Col="3" Page="2" DisplayName="Speed" Type="float" Name="ring7_speed">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CAMERA – Page 0 Col 1                                    -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="0.3" Inc="0.05" Tooltip="Speed of the Z-axis roll sine animation" Row="0" Col="1" Page="0" DisplayName="Orbit Speed" Type="float" Name="cam_orbit_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="89.0" Min="-89.0" Default="45.0" Inc="0.5" Tooltip="X-axis rotation — 0 = edge-on (flat rings), 45 = classic angled view, 90 = straight down" Row="1" Col="1" Page="0" DisplayName="Rotate X" Type="float" Name="cam_tilt">
+      </Uniform>
+      <Uniform ResDependent="None" Max="360.0" Min="-360.0" Default="50.0" Inc="1.0" Tooltip="Y-axis rotation — orbits the camera left/right around the rings" Row="2" Col="1" Page="0" DisplayName="Rotate Y" Type="float" Name="cam_orbit_base">
+      </Uniform>
+      <Uniform ResDependent="None" Max="90.0" Min="0.0" Default="20.0" Inc="0.5" Tooltip="Z-axis roll amplitude — rocks the camera around the view axis. Set to 0 to disable." Row="3" Col="1" Page="0" DisplayName="Rotate Z" Type="float" Name="cam_orbit_amount">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- STOPWATCH – Page 3                                        -->
+      <!-- ======================================================== -->
+      <!-- Col 0: Controls -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Rolling number readouts with orbital ring" Row="0" Col="0" Page="3" Type="int" ChannelName="ov_numbers_enable" DisplayName="Enable" Name="ov_numbers_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0" Inc="0.1" Tooltip="Counter speed — 1 = real-time, 10 = 10x speed, negative = count down." Row="1" Col="0" Page="3" DisplayName="Speed" Type="float" Name="ov_numbers_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the stopwatch start value in seconds — independent of the global Time Offset on the Global Time page" Row="2" Col="0" Page="3" DisplayName="Time Offset" Type="float" Name="ov_numbers_time_offset">
+      </Uniform>
+
+      <!-- Col 1: Translation -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="1" Page="3" DisplayName="Scale" Type="float" Name="ov_numbers_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.56" Inc="0.005" Tooltip="Horizontal position (screen coords — 0 = screen centre)" Row="1" Col="1" Page="3" DisplayName="Pos X" Type="float" Name="ov_numbers_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.34" Inc="0.005" Tooltip="Vertical position (screen coords — 0 = screen centre)" Row="2" Col="1" Page="3" DisplayName="Pos Y" Type="float" Name="ov_numbers_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees — rotates the element around its center" Row="3" Col="1" Page="3" DisplayName="Rotate Z" Type="float" Name="ov_numbers_rot">
+      </Uniform>
+
+      <!-- Col 2: Appearance -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="3" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_numbers_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="1" Col="2" Page="3" DisplayName="Opacity" Type="float" Name="ov_numbers_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="2" Col="2" Page="3" DisplayName="Glow" Type="float" Name="ov_numbers_glow">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- BLOCKS – Page 4                                          -->
+      <!-- ======================================================== -->
+      <!-- Blocks 0 — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Left block set — 3 rows x 20 cols" Row="0" Col="0" Page="4" Type="int" ChannelName="ov_blocks0_enable" DisplayName="Enable" Name="ov_blocks0_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Animation speed multiplier. Negative values reverse direction." Row="1" Col="0" Page="4" DisplayName="Speed" Type="float" Name="ov_blocks0_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="2" Col="0" Page="4" DisplayName="Time Offset" Type="float" Name="ov_blocks0_time_offset">
+      </Uniform>
+      <!-- Blocks 0 — Col 1 (Translation) -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="1" Page="4" DisplayName="Scale" Type="float" Name="ov_blocks0_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.56" Inc="0.005" Tooltip="Horizontal position (0 = screen centre)" Row="1" Col="1" Page="4" DisplayName="Pos X" Type="float" Name="ov_blocks0_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.45" Inc="0.005" Tooltip="Vertical position (0 = screen centre)" Row="2" Col="1" Page="4" DisplayName="Pos Y" Type="float" Name="ov_blocks0_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees" Row="3" Col="1" Page="4" DisplayName="Rotate Z" Type="float" Name="ov_blocks0_rot">
+      </Uniform>
+      <!-- Blocks 0 — Col 2 (Appearance) -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="4" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_blocks0_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather" Row="1" Col="2" Page="4" DisplayName="Glow" Type="float" Name="ov_blocks0_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="4" DisplayName="Opacity" Type="float" Name="ov_blocks0_opacity">
+      </Uniform>
+      <!-- Blocks 1 — Col 3 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Right block set — 3 rows x 20 cols" Row="0" Col="3" Page="4" Type="int" ChannelName="ov_blocks1_enable" DisplayName="Enable" Name="ov_blocks1_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Animation speed multiplier. Negative values reverse direction." Row="1" Col="3" Page="4" DisplayName="Speed" Type="float" Name="ov_blocks1_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="2" Col="3" Page="4" DisplayName="Time Offset" Type="float" Name="ov_blocks1_time_offset">
+      </Uniform>
+      <!-- Blocks 1 — Col 4 (Translation) -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="4" Page="4" DisplayName="Scale" Type="float" Name="ov_blocks1_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.56" Inc="0.005" Tooltip="Horizontal position (0 = screen centre)" Row="1" Col="4" Page="4" DisplayName="Pos X" Type="float" Name="ov_blocks1_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.45" Inc="0.005" Tooltip="Vertical position (0 = screen centre)" Row="2" Col="4" Page="4" DisplayName="Pos Y" Type="float" Name="ov_blocks1_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees" Row="3" Col="4" Page="4" DisplayName="Rotate Z" Type="float" Name="ov_blocks1_rot">
+      </Uniform>
+      <!-- Blocks 1 — Col 5 (Appearance) -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="5" Page="4" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_blocks1_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather" Row="1" Col="5" Page="4" DisplayName="Glow" Type="float" Name="ov_blocks1_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="5" Page="4" DisplayName="Opacity" Type="float" Name="ov_blocks1_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- ARROWS – Page 5                                          -->
+      <!-- ======================================================== -->
+      <!-- Arrows 0 — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Left arrow ticker" Row="0" Col="0" Page="5" Type="int" ChannelName="ov_arrows0_enable" DisplayName="Enable" Name="ov_arrows0_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Animation speed multiplier. Negative values reverse direction." Row="1" Col="0" Page="5" DisplayName="Speed" Type="float" Name="ov_arrows0_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="2" Col="0" Page="5" DisplayName="Time Offset" Type="float" Name="ov_arrows0_time_offset">
+      </Uniform>
+      <!-- Arrows 0 — Col 1 (Translation) -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="1" Page="5" DisplayName="Scale" Type="float" Name="ov_arrows0_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.51" Inc="0.005" Tooltip="Horizontal position (0 = screen centre)" Row="1" Col="1" Page="5" DisplayName="Pos X" Type="float" Name="ov_arrows0_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.35" Inc="0.005" Tooltip="Vertical position (0 = screen centre)" Row="2" Col="1" Page="5" DisplayName="Pos Y" Type="float" Name="ov_arrows0_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="180.0" Inc="1.0" Tooltip="Z rotation in degrees" Row="3" Col="1" Page="5" DisplayName="Rotate Z" Type="float" Name="ov_arrows0_rot">
+      </Uniform>
+      <!-- Arrows 0 — Col 2 (Appearance) -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="5" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_arrows0_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="2" Page="5" DisplayName="Glow" Type="float" Name="ov_arrows0_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="5" DisplayName="Opacity" Type="float" Name="ov_arrows0_opacity">
+      </Uniform>
+      <!-- Arrows 1 — Col 3 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Right arrow ticker" Row="0" Col="3" Page="5" Type="int" ChannelName="ov_arrows1_enable" DisplayName="Enable" Name="ov_arrows1_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Animation speed multiplier. Negative values reverse direction." Row="1" Col="3" Page="5" DisplayName="Speed" Type="float" Name="ov_arrows1_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="2" Col="3" Page="5" DisplayName="Time Offset" Type="float" Name="ov_arrows1_time_offset">
+      </Uniform>
+      <!-- Arrows 1 — Col 4 (Translation) -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="4" Page="5" DisplayName="Scale" Type="float" Name="ov_arrows1_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.51" Inc="0.005" Tooltip="Horizontal position (0 = screen centre)" Row="1" Col="4" Page="5" DisplayName="Pos X" Type="float" Name="ov_arrows1_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.35" Inc="0.005" Tooltip="Vertical position (0 = screen centre)" Row="2" Col="4" Page="5" DisplayName="Pos Y" Type="float" Name="ov_arrows1_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees" Row="3" Col="4" Page="5" DisplayName="Rotate Z" Type="float" Name="ov_arrows1_rot">
+      </Uniform>
+      <!-- Arrows 1 — Col 5 (Appearance) -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="5" Page="5" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_arrows1_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="5" Page="5" DisplayName="Glow" Type="float" Name="ov_arrows1_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="5" Page="5" DisplayName="Opacity" Type="float" Name="ov_arrows1_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- WAVEFORMS – Page 6                                       -->
+      <!-- ======================================================== -->
+      <!-- Wave 0 — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Left waveform graph" Row="0" Col="0" Page="6" Type="int" ChannelName="ov_graph0_enable" DisplayName="Enable" Name="ov_graph0_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Scroll speed — controls how fast bars move across the screen." Row="1" Col="0" Page="6" DisplayName="Scroll Speed" Type="float" Name="ov_graph0_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0" Inc="0.1" Tooltip="Bounce speed — controls how fast bar widths oscillate independently of scrolling." Row="2" Col="0" Page="6" DisplayName="Bounce Speed" Type="float" Name="ov_graph0_bounce_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="3" Col="0" Page="6" DisplayName="Time Offset" Type="float" Name="ov_graph0_time_offset">
+      </Uniform>
+      <!-- Wave 0 — Col 1 (Translation) -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="1" Page="6" DisplayName="Scale" Type="float" Name="ov_graph0_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.58" Inc="0.005" Tooltip="Horizontal position (0 = screen centre)" Row="1" Col="1" Page="6" DisplayName="Pos X" Type="float" Name="ov_graph0_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.1" Inc="0.005" Tooltip="Vertical position (0 = screen centre)" Row="2" Col="1" Page="6" DisplayName="Pos Y" Type="float" Name="ov_graph0_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees" Row="3" Col="1" Page="6" DisplayName="Rotate Z" Type="float" Name="ov_graph0_rot">
+      </Uniform>
+      <!-- Wave 0 — Col 2 (Appearance) -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="6" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_graph0_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="2" Page="6" DisplayName="Glow" Type="float" Name="ov_graph0_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="6" DisplayName="Opacity" Type="float" Name="ov_graph0_opacity">
+      </Uniform>
+      <!-- Wave 1 — Col 3 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Right waveform graph" Row="0" Col="3" Page="6" Type="int" ChannelName="ov_graph1_enable" DisplayName="Enable" Name="ov_graph1_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Scroll speed — controls how fast bars move across the screen." Row="1" Col="3" Page="6" DisplayName="Scroll Speed" Type="float" Name="ov_graph1_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="-10.0" Default="1.0" Inc="0.1" Tooltip="Bounce speed — controls how fast bar widths oscillate independently of scrolling." Row="2" Col="3" Page="6" DisplayName="Bounce Speed" Type="float" Name="ov_graph1_bounce_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="3" Col="3" Page="6" DisplayName="Time Offset" Type="float" Name="ov_graph1_time_offset">
+      </Uniform>
+      <!-- Wave 1 — Col 4 (Translation) -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="4" Page="6" DisplayName="Scale" Type="float" Name="ov_graph1_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.45" Inc="0.005" Tooltip="Horizontal position (0 = screen centre)" Row="1" Col="4" Page="6" DisplayName="Pos X" Type="float" Name="ov_graph1_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.1" Inc="0.005" Tooltip="Vertical position (0 = screen centre)" Row="2" Col="4" Page="6" DisplayName="Pos Y" Type="float" Name="ov_graph1_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees" Row="3" Col="4" Page="6" DisplayName="Rotate Z" Type="float" Name="ov_graph1_rot">
+      </Uniform>
+      <!-- Wave 1 — Col 5 (Appearance) -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="5" Page="6" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_graph1_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="5" Page="6" DisplayName="Glow" Type="float" Name="ov_graph1_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="5" Page="6" DisplayName="Opacity" Type="float" Name="ov_graph1_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CIRCLES – Page 7                                         -->
+      <!-- ======================================================== -->
+
+      <!-- Circles 1 — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Arc/wedge style circles — 3 instances" Row="0" Col="0" Page="7" Type="int" ChannelName="ov_circles0_enable" DisplayName="Enable" Name="ov_circles0_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Animation speed multiplier. Negative values reverse direction." Row="1" Col="0" Page="7" DisplayName="Speed" Type="float" Name="ov_circles0_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point" Row="2" Col="0" Page="7" DisplayName="Time Offset" Type="float" Name="ov_circles0_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="20" Min="1" Default="3" Inc="1" Tooltip="Number of instances placed at random screen positions" Row="3" Col="0" Page="7" DisplayName="Number" Type="int" Name="ov_circles0_number">
+      </Uniform>
+
+      <!-- Circles 1 Translation — Col 1 -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="1" Page="7" DisplayName="Scale" Type="float" Name="ov_circles0_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position offset" Row="1" Col="1" Page="7" DisplayName="Pos X" Type="float" Name="ov_circles0_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position offset" Row="2" Col="1" Page="7" DisplayName="Pos Y" Type="float" Name="ov_circles0_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees" Row="3" Col="1" Page="7" DisplayName="Rotate Z" Type="float" Name="ov_circles0_rot">
+      </Uniform>
+
+      <!-- Circles 1 Appearance — Col 2 -->
+      <Uniform Inc="0.01" Tooltip="Circles 1 colour" Row="0" Col="2" Page="7" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_circles0_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="2" Page="7" DisplayName="Glow" Type="float" Name="ov_circles0_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="7" DisplayName="Opacity" Type="float" Name="ov_circles0_opacity">
+      </Uniform>
+
+      <!-- Circles 2 — Col 3 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Multi-ring complex style circles — 2 instances" Row="0" Col="3" Page="7" Type="int" ChannelName="ov_circles1_enable" DisplayName="Enable" Name="ov_circles1_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Animation speed multiplier. Negative values reverse direction." Row="1" Col="3" Page="7" DisplayName="Speed" Type="float" Name="ov_circles1_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point" Row="2" Col="3" Page="7" DisplayName="Time Offset" Type="float" Name="ov_circles1_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="20" Min="1" Default="3" Inc="1" Tooltip="Number of instances placed at random screen positions" Row="3" Col="3" Page="7" DisplayName="Number" Type="int" Name="ov_circles1_number">
+      </Uniform>
+
+      <!-- Circles 2 Translation — Col 4 -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="4" Page="7" DisplayName="Scale" Type="float" Name="ov_circles1_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position offset" Row="1" Col="4" Page="7" DisplayName="Pos X" Type="float" Name="ov_circles1_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position offset" Row="2" Col="4" Page="7" DisplayName="Pos Y" Type="float" Name="ov_circles1_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees" Row="3" Col="4" Page="7" DisplayName="Rotate Z" Type="float" Name="ov_circles1_rot">
+      </Uniform>
+
+      <!-- Circles 2 Appearance — Col 5 -->
+      <Uniform Inc="0.01" Tooltip="Circles 2 colour" Row="0" Col="5" Page="7" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_circles1_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="5" Page="7" DisplayName="Glow" Type="float" Name="ov_circles1_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="5" Page="7" DisplayName="Opacity" Type="float" Name="ov_circles1_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- DIAMOND – Page 8                                         -->
+      <!-- ======================================================== -->
+
+      <!-- Diamond — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Diamond frame with rotating cutouts" Row="0" Col="0" Page="8" Type="int" ChannelName="ov_rect_enable" DisplayName="Enable" Name="ov_rect_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Animation speed multiplier — scales all internal rotation speeds together. Negative values reverse direction." Row="1" Col="0" Page="8" DisplayName="Speed" Type="float" Name="ov_rect_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point" Row="2" Col="0" Page="8" DisplayName="Time Offset" Type="float" Name="ov_rect_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="-2.0" Default="1.0" Inc="0.05" Tooltip="Speed multiplier for the inner frame cutout rotation only. Negative reverses it relative to the outer. 0 = frozen inner." Row="3" Col="0" Page="8" DisplayName="Inner Speed" Type="float" Name="ov_rect_inner_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="3.0" Inc="0.1" Tooltip="Frequency of the corner arrow pulse oscillation. 0 = static arrows." Row="4" Col="0" Page="8" DisplayName="Pulse Speed" Type="float" Name="ov_rect_pulse_speed">
+      </Uniform>
+
+      <!-- Diamond Translation — Col 1 -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Scale of the element" Row="0" Col="1" Page="8" DisplayName="Scale" Type="float" Name="ov_rect_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.58" Inc="0.005" Tooltip="Horizontal position (screen coords — 0 = screen centre)" Row="1" Col="1" Page="8" DisplayName="Pos X" Type="float" Name="ov_rect_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.3" Inc="0.005" Tooltip="Vertical position (screen coords — 0 = screen centre)" Row="2" Col="1" Page="8" DisplayName="Pos Y" Type="float" Name="ov_rect_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Z rotation in degrees — rotates the element around its center" Row="3" Col="1" Page="8" DisplayName="Rotate Z" Type="float" Name="ov_rect_rot">
+      </Uniform>
+
+      <!-- Diamond Appearance — Col 2 -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="8" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_rect_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="2" Page="8" DisplayName="Glow" Type="float" Name="ov_rect_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="8" DisplayName="Opacity" Type="float" Name="ov_rect_opacity">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.06" Min="0.005" Default="0.02" Inc="0.001" Tooltip="Size of the corner arrow triangles" Row="3" Col="2" Page="8" DisplayName="Arrow Size" Type="float" Name="ov_rect_arrow_size">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- STATIC – Page 9                                          -->
+      <!-- ======================================================== -->
+
+      <!-- Static — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Antenna static icon with cascade replication" Row="0" Col="0" Page="9" Type="int" ChannelName="ov_static_enable" DisplayName="Enable" Name="ov_static_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="20" Min="1" Default="1" Inc="1" Tooltip="Number of copies. Each copy N is placed at Pos*N, rotated by Rot*N, scaled by Scale^N." Row="1" Col="0" Page="9" DisplayName="Number" Type="int" Name="ov_static_number">
+      </Uniform>
+      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Add a mirrored copy of the full cascade, flipped on the X axis" Row="2" Col="0" Page="9" Type="int" ChannelName="ov_static_mirror" DisplayName="Mirror" Name="ov_static_mirror" ValueType="Popup">
+         <PopupEntry Title="Off" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="On" Value="1">
+         </PopupEntry>
+      </Uniform>
+
+      <!-- Static Translation — Col 1 -->
+      <Uniform ResDependent="None" Max="2.0" Min="0.1" Default="1.0" Inc="0.01" Tooltip="Scale step per copy — multiplicative. 1.0 = all copies same size. 1.2 = each copy 20% larger than the previous." Row="0" Col="1" Page="9" DisplayName="Scale" Type="float" Name="ov_static_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.72" Inc="0.005" Tooltip="X position step per copy. Copy N is placed at Pos X * N." Row="1" Col="1" Page="9" DisplayName="Pos X" Type="float" Name="ov_static_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.13" Inc="0.005" Tooltip="Y position step per copy. Copy N is placed at Pos Y * N." Row="2" Col="1" Page="9" DisplayName="Pos Y" Type="float" Name="ov_static_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Rotation step per copy in degrees. Copy N is rotated by Rotate Z * N." Row="3" Col="1" Page="9" DisplayName="Rotate Z" Type="float" Name="ov_static_rot">
+      </Uniform>
+
+      <!-- Static Appearance — Col 2 -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="9" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_static_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="2" Page="9" DisplayName="Glow" Type="float" Name="ov_static_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="9" DisplayName="Opacity" Type="float" Name="ov_static_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- SIDE PANEL – Page 10                                     -->
+      <!-- ======================================================== -->
+
+      <!-- Side Panel — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Side bracket decorations — 3-element group mirrored left and right, cascadable" Row="0" Col="0" Page="10" Type="int" ChannelName="ov_side_enable" DisplayName="Enable" Name="ov_side_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="20" Min="1" Default="1" Inc="1" Tooltip="Number of copies. Each copy N is placed at Pos*N, rotated by Rot*N, scaled by Scale^N. Each copy is a full mirrored group of 3 on both sides." Row="1" Col="0" Page="10" DisplayName="Number" Type="int" Name="ov_side_number">
+      </Uniform>
+
+      <!-- Side Panel Translation — Col 1 -->
+      <Uniform ResDependent="None" Max="2.0" Min="0.1" Default="1.0" Inc="0.01" Tooltip="Scale step per copy — multiplicative. 1.0 = all copies same size." Row="0" Col="1" Page="10" DisplayName="Scale" Type="float" Name="ov_side_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="X position step per copy — shifts the mirror axis. Copy N placed at Pos X * N." Row="1" Col="1" Page="10" DisplayName="Pos X" Type="float" Name="ov_side_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Y position step per copy. Copy N placed at Pos Y * N." Row="2" Col="1" Page="10" DisplayName="Pos Y" Type="float" Name="ov_side_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="1.0" Tooltip="Rotation step per copy in degrees. Copy N rotated by Rotate Z * N." Row="3" Col="1" Page="10" DisplayName="Rotate Z" Type="float" Name="ov_side_rot">
+      </Uniform>
+
+      <!-- Side Panel Appearance — Col 2 -->
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="10" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="ov_side_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.2" Inc="0.1" Tooltip="Glow feather — 0 = hard edge, higher values extend a soft halo outside the shape" Row="1" Col="2" Page="10" DisplayName="Glow" Type="float" Name="ov_side_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="10" DisplayName="Opacity" Type="float" Name="ov_side_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- DOT GRID – Page 11                                       -->
+      <!-- ======================================================== -->
+
+      <!-- Dot Grid — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Dense grid of tiny square dots, scrolling downward" Row="0" Col="0" Page="11" Type="int" ChannelName="bg_dots_enable" DisplayName="Enable" Name="bg_dots_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Scroll speed. Negative reverses direction." Row="1" Col="0" Page="11" DisplayName="Speed" Type="float" Name="bg_dots_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point" Row="2" Col="0" Page="11" DisplayName="Time Offset" Type="float" Name="bg_dots_time_offset">
+      </Uniform>
+
+      <!-- Dot Grid Translation — Col 1 -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Grid density — higher values pack dots closer together" Row="0" Col="1" Page="11" DisplayName="Scale" Type="float" Name="bg_dots_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal pan offset" Row="1" Col="1" Page="11" DisplayName="Pos X" Type="float" Name="bg_dots_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical pan offset" Row="2" Col="1" Page="11" DisplayName="Pos Y" Type="float" Name="bg_dots_pos_y">
+      </Uniform>
+
+      <!-- Dot Grid Appearance — Col 2 -->
+      <Uniform Inc="0.01" Tooltip="Dot colour" Row="0" Col="2" Page="11" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="bg_dots_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.0" Inc="0.1" Tooltip="Glow feather around each dot" Row="1" Col="2" Page="11" DisplayName="Glow" Type="float" Name="bg_dots_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Layer opacity" Row="2" Col="2" Page="11" DisplayName="Opacity" Type="float" Name="bg_dots_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CROSS GRID – Page 12                                     -->
+      <!-- ======================================================== -->
+
+      <!-- Cross Grid — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Grid of small crosses, scrolling downward" Row="0" Col="0" Page="12" Type="int" ChannelName="bg_crosses_enable" DisplayName="Enable" Name="bg_crosses_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Scroll speed. Negative reverses direction." Row="1" Col="0" Page="12" DisplayName="Speed" Type="float" Name="bg_crosses_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point" Row="2" Col="0" Page="12" DisplayName="Time Offset" Type="float" Name="bg_crosses_time_offset">
+      </Uniform>
+
+      <!-- Cross Grid Translation — Col 1 -->
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Grid density — higher values pack crosses closer together" Row="0" Col="1" Page="12" DisplayName="Scale" Type="float" Name="bg_crosses_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal pan offset" Row="1" Col="1" Page="12" DisplayName="Pos X" Type="float" Name="bg_crosses_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical pan offset" Row="2" Col="1" Page="12" DisplayName="Pos Y" Type="float" Name="bg_crosses_pos_y">
+      </Uniform>
+
+      <!-- Cross Grid Appearance — Col 2 -->
+      <Uniform Inc="0.01" Tooltip="Cross colour" Row="0" Col="2" Page="12" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="bg_crosses_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.0" Inc="0.1" Tooltip="Glow feather around each cross" Row="1" Col="2" Page="12" DisplayName="Glow" Type="float" Name="bg_crosses_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Layer opacity" Row="2" Col="2" Page="12" DisplayName="Opacity" Type="float" Name="bg_crosses_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- BOX GRID – Page 13                                       -->
+      <!-- ======================================================== -->
+
+      <!-- Box Grid — Col 0 -->
+      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Grid of rotating square frame outlines, random CW/CCW per cell" Row="0" Col="0" Page="13" Type="int" ChannelName="bg_boxes_enable" DisplayName="Enable" Name="bg_boxes_enable" ValueType="Popup">
+         <PopupEntry Title="Disable" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Enable" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="1.0" Inc="0.05" Tooltip="Rotation and scroll speed. Negative reverses direction." Row="1" Col="0" Page="13" DisplayName="Speed" Type="float" Name="bg_boxes_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point" Row="2" Col="0" Page="13" DisplayName="Time Offset" Type="float" Name="bg_boxes_time_offset">
+      </Uniform>
+
+      <!-- Box Grid Translation — Col 1 -->
+      <Uniform ResDependent="None" Max="20" Min="1" Default="5" Inc="1" Tooltip="Number of columns across the frame" Row="0" Col="1" Page="13" DisplayName="Columns" Type="int" Name="bg_boxes_cols">
+      </Uniform>
+      <Uniform ResDependent="None" Max="20" Min="1" Default="3" Inc="1" Tooltip="Number of rows across the frame" Row="1" Col="1" Page="13" DisplayName="Rows" Type="int" Name="bg_boxes_rows">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.48" Min="0.0" Default="0.06" Inc="0.01" Tooltip="Space between boxes — 0 = touching edges, higher = more gap" Row="2" Col="1" Page="13" DisplayName="Gap" Type="float" Name="bg_boxes_gap">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Zoom multiplier — values above 1 zoom in, below 1 zoom out" Row="3" Col="1" Page="13" DisplayName="Scale" Type="float" Name="bg_boxes_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal pan offset" Row="4" Col="1" Page="13" DisplayName="Pos X" Type="float" Name="bg_boxes_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical pan offset" Row="5" Col="1" Page="13" DisplayName="Pos Y" Type="float" Name="bg_boxes_pos_y">
+      </Uniform>
+
+      <!-- Box Grid Appearance — Col 2 -->
+      <Uniform Inc="0.01" Tooltip="Box frame colour" Row="0" Col="2" Page="13" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="bg_boxes_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="0.0" Inc="0.1" Tooltip="Glow feather around each box frame" Row="1" Col="2" Page="13" DisplayName="Glow" Type="float" Name="bg_boxes_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Layer opacity" Row="2" Col="2" Page="13" DisplayName="Opacity" Type="float" Name="bg_boxes_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- RENDER – Page 14                                         -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Overall animation speed multiplier (1.0 = original speed at 25 fps)" Row="0" Col="0" Page="14" DisplayName="Time Scale" Type="float" Name="time_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0" Inc="0.1" Tooltip="Offset the animation start point in seconds" Row="1" Col="0" Page="14" DisplayName="Time Offset" Type="float" Name="time_offset">
+      </Uniform>
+
+   </Shader>
+
+   <Page Name="Rings Master" Page="0">
+      <Col Name="Master" Col="0" Page="0">
+      </Col>
+      <Col Name="Camera" Col="1" Page="0">
+      </Col>
+   </Page>
+
+   <Page Name="Rings A" Page="1">
+      <Col Name="Ring 1" Col="0" Page="1">
+      </Col>
+      <Col Name="Ring 2" Col="1" Page="1">
+      </Col>
+      <Col Name="Ring 3" Col="2" Page="1">
+      </Col>
+      <Col Name="Ring 4" Col="3" Page="1">
+      </Col>
+   </Page>
+
+   <Page Name="Rings B" Page="2">
+      <Col Name="Ring 5" Col="0" Page="2">
+      </Col>
+      <Col Name="Ring 6" Col="1" Page="2">
+      </Col>
+      <Col Name="Ring 7" Col="2" Page="2">
+      </Col>
+      <Col Name="Ring 8" Col="3" Page="2">
+      </Col>
+   </Page>
+
+   <Page Name="Stopwatch" Page="3">
+      <Col Name="Controls" Col="0" Page="3">
+      </Col>
+      <Col Name="Translation" Col="1" Page="3">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="3">
+      </Col>
+   </Page>
+
+   <Page Name="Blocks" Page="4">
+      <Col Name="Blocks 0" Col="0" Page="4">
+      </Col>
+      <Col Name="Blocks 0 Translation" Col="1" Page="4">
+      </Col>
+      <Col Name="Blocks 0 Appearance" Col="2" Page="4">
+      </Col>
+      <Col Name="Blocks 1" Col="3" Page="4">
+      </Col>
+      <Col Name="Blocks 1 Translation" Col="4" Page="4">
+      </Col>
+      <Col Name="Blocks 1 Appearance" Col="5" Page="4">
+      </Col>
+   </Page>
+
+   <Page Name="Arrows" Page="5">
+      <Col Name="Arrows 0" Col="0" Page="5">
+      </Col>
+      <Col Name="Arrows 0 Translation" Col="1" Page="5">
+      </Col>
+      <Col Name="Arrows 0 Appearance" Col="2" Page="5">
+      </Col>
+      <Col Name="Arrows 1" Col="3" Page="5">
+      </Col>
+      <Col Name="Arrows 1 Translation" Col="4" Page="5">
+      </Col>
+      <Col Name="Arrows 1 Appearance" Col="5" Page="5">
+      </Col>
+   </Page>
+
+   <Page Name="Waveforms" Page="6">
+      <Col Name="Wave 1" Col="0" Page="6">
+      </Col>
+      <Col Name="Wave 1 Translation" Col="1" Page="6">
+      </Col>
+      <Col Name="Wave 1 Appearance" Col="2" Page="6">
+      </Col>
+      <Col Name="Wave 2" Col="3" Page="6">
+      </Col>
+      <Col Name="Wave 2 Translation" Col="4" Page="6">
+      </Col>
+      <Col Name="Wave 2 Appearance" Col="5" Page="6">
+      </Col>
+   </Page>
+
+   <Page Name="Circles" Page="7">
+      <Col Name="Circles 1" Col="0" Page="7">
+      </Col>
+      <Col Name="Circles 1 Translation" Col="1" Page="7">
+      </Col>
+      <Col Name="Circles 1 Appearance" Col="2" Page="7">
+      </Col>
+      <Col Name="Circles 2" Col="3" Page="7">
+      </Col>
+      <Col Name="Circles 2 Translation" Col="4" Page="7">
+      </Col>
+      <Col Name="Circles 2 Appearance" Col="5" Page="7">
+      </Col>
+   </Page>
+
+   <Page Name="Diamond" Page="8">
+      <Col Name="Diamond" Col="0" Page="8">
+      </Col>
+      <Col Name="Translation" Col="1" Page="8">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="8">
+      </Col>
+   </Page>
+
+   <Page Name="Static" Page="9">
+      <Col Name="Static" Col="0" Page="9">
+      </Col>
+      <Col Name="Translation" Col="1" Page="9">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="9">
+      </Col>
+   </Page>
+
+   <Page Name="Side Panel" Page="10">
+      <Col Name="Side Panel" Col="0" Page="10">
+      </Col>
+      <Col Name="Translation" Col="1" Page="10">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="10">
+      </Col>
+   </Page>
+
+   <Page Name="Dot Grid" Page="11">
+      <Col Name="Dot Grid" Col="0" Page="11">
+      </Col>
+      <Col Name="Translation" Col="1" Page="11">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="11">
+      </Col>
+   </Page>
+
+   <Page Name="Cross Grid" Page="12">
+      <Col Name="Cross Grid" Col="0" Page="12">
+      </Col>
+      <Col Name="Translation" Col="1" Page="12">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="12">
+      </Col>
+   </Page>
+
+   <Page Name="Box Grid" Page="13">
+      <Col Name="Box Grid" Col="0" Page="13">
+      </Col>
+      <Col Name="Translation" Col="1" Page="13">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="13">
+      </Col>
+   </Page>
+
+   <Page Name="Global Time" Page="14">
+      <Col Name="Animation" Col="0" Page="14">
+      </Col>
+   </Page>
+
+</ShaderNodePreset>
