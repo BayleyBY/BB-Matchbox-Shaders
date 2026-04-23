@@ -9,25 +9,13 @@
       <!-- ======================================================== -->
       <!-- FIRST VP SET – Col 0 Options                             -->
       <!-- ======================================================== -->
-      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Enable or disable the first VP line set" Row="0" Col="0" Page="0" Type="int" ChannelName="lines1_enable" DisplayName="Lines" Name="lines1_enable" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="0" Col="0" Page="0" Default="True" Tooltip="Enable or disable the first VP line set" DisplayName="Lines" Type="bool" Name="lines1_enable">
       </Uniform>
-      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Show or hide the vanishing point widget (only visible when VP is inside the frame)" Row="1" Col="0" Page="0" Type="int" ChannelName="show_vp" DisplayName="Vanishing Point" Name="show_vp" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="1" Col="0" Page="0" Default="True" Tooltip="Show or hide the vanishing point widget (only visible when VP is inside the frame)" DisplayName="Vanishing Point" Type="bool" Name="show_vp">
       </Uniform>
       <Uniform ResDependent="None" Max="200.0" Min="4.0" Default="15.0" Inc="1.0" Tooltip="Radius of the vanishing point widget ring in pixels" Row="2" Col="0" Page="0" DisplayName="VP Size" Type="float" Name="vp_size">
       </Uniform>
-      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Draw cross lines between the fan lines to form a perspective grid" Row="3" Col="0" Page="0" Type="int" ChannelName="crosshatch1_enable" DisplayName="Crosshatch" Name="crosshatch1_enable" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="3" Col="0" Page="0" Default="False" Tooltip="Draw cross lines between the fan lines to form a perspective grid" DisplayName="Crosshatch" Type="bool" Name="crosshatch1_enable">
       </Uniform>
       <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Draw lines as solid or dashed" Row="4" Col="0" Page="0" Type="int" ChannelName="dash1_enable" DisplayName="Line Style" Name="dash1_enable" ValueType="Popup">
          <PopupEntry Title="Solid" Value="0">
@@ -39,13 +27,13 @@
       <!-- ======================================================== -->
       <!-- LINE A                                                    -->
       <!-- ======================================================== -->
-      <Uniform UIConditionType="Hide" UIConditionValue="1" UIConditionSource="lines1_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line A start – drag handle on canvas" Row="0" Col="1" Page="0" DisplayName="Line A Start" Type="vec2" Name="la_start">
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="lines1_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line A start – drag handle on canvas" Row="0" Col="1" Page="0" DisplayName="Line A Start" Type="vec2" Name="la_start">
          <SubUniform Default="0.4" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
          <SubUniform Default="0.35" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
       </Uniform>
-      <Uniform UIConditionType="Hide" UIConditionValue="1" UIConditionSource="lines1_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line A end – drag handle on canvas" Row="2" Col="1" Page="0" DisplayName="Line A End" Type="vec2" Name="la_end">
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="lines1_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line A end – drag handle on canvas" Row="2" Col="1" Page="0" DisplayName="Line A End" Type="vec2" Name="la_end">
          <SubUniform Default="0.05" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
          <SubUniform Default="0.2" Min="-1.0" Max="2.0" ResDependent="None">
@@ -55,13 +43,13 @@
       <!-- ======================================================== -->
       <!-- LINE B                                                    -->
       <!-- ======================================================== -->
-      <Uniform UIConditionType="Hide" UIConditionValue="1" UIConditionSource="lines1_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line B start – drag handle on canvas" Row="0" Col="2" Page="0" DisplayName="Line B Start" Type="vec2" Name="lb_start">
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="lines1_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line B start – drag handle on canvas" Row="0" Col="2" Page="0" DisplayName="Line B Start" Type="vec2" Name="lb_start">
          <SubUniform Default="0.4" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
          <SubUniform Default="0.65" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
       </Uniform>
-      <Uniform UIConditionType="Hide" UIConditionValue="1" UIConditionSource="lines1_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line B end – drag handle on canvas" Row="2" Col="2" Page="0" DisplayName="Line B End" Type="vec2" Name="lb_end">
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="lines1_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line B end – drag handle on canvas" Row="2" Col="2" Page="0" DisplayName="Line B End" Type="vec2" Name="lb_end">
          <SubUniform Default="0.05" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
          <SubUniform Default="0.8" Min="-1.0" Max="2.0" ResDependent="None">
@@ -97,35 +85,19 @@
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Opacity falloff toward vanishing point (0=none, 1=full fade)" Row="2" Col="4" Page="0" DisplayName="VP Falloff" Type="float" Name="line_falloff">
       </Uniform>
-      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Extend each line from its nearest handle to the vanishing point" Row="3" Col="4" Page="0" Type="int" ChannelName="extend1_enable" DisplayName="Extend to VP" Name="extend1_enable" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="3" Col="4" Page="0" Default="False" Tooltip="Extend each line from its nearest handle to the vanishing point" DisplayName="Extend to VP" Type="bool" Name="extend1_enable">
       </Uniform>
 
       <!-- ======================================================== -->
       <!-- SECOND VP SET – Col 0 Options                            -->
       <!-- ======================================================== -->
-      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Enable or disable the second VP line set" Row="0" Col="0" Page="1" Type="int" ChannelName="lines2_enable" DisplayName="Lines" Name="lines2_enable" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="0" Col="0" Page="1" Default="True" Tooltip="Enable or disable the second VP line set" DisplayName="Lines" Type="bool" Name="lines2_enable">
       </Uniform>
-      <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Show or hide the second vanishing point widget" Row="1" Col="0" Page="1" Type="int" ChannelName="show_vp2" DisplayName="Vanishing Point" Name="show_vp2" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="1" Col="0" Page="1" Default="True" Tooltip="Show or hide the second vanishing point widget" DisplayName="Vanishing Point" Type="bool" Name="show_vp2">
       </Uniform>
       <Uniform ResDependent="None" Max="200.0" Min="4.0" Default="15.0" Inc="1.0" Tooltip="Radius of the second vanishing point widget ring in pixels" Row="2" Col="0" Page="1" DisplayName="VP Size" Type="float" Name="vp_size2">
       </Uniform>
-      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Draw cross lines between the fan lines to form a perspective grid" Row="3" Col="0" Page="1" Type="int" ChannelName="crosshatch2_enable" DisplayName="Crosshatch" Name="crosshatch2_enable" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="3" Col="0" Page="1" Default="False" Tooltip="Draw cross lines between the fan lines to form a perspective grid" DisplayName="Crosshatch" Type="bool" Name="crosshatch2_enable">
       </Uniform>
       <Uniform Max="1" Min="0" Default="1" Inc="1" Tooltip="Draw lines as solid or dashed" Row="4" Col="0" Page="1" Type="int" ChannelName="dash2_enable" DisplayName="Line Style" Name="dash2_enable" ValueType="Popup">
          <PopupEntry Title="Solid" Value="0">
@@ -137,13 +109,13 @@
       <!-- ======================================================== -->
       <!-- LINE C                                                    -->
       <!-- ======================================================== -->
-      <Uniform UIConditionType="Hide" UIConditionValue="1" UIConditionSource="lines2_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line C start – drag handle on canvas" Row="0" Col="1" Page="1" DisplayName="Line C Start" Type="vec2" Name="lc_start">
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="lines2_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line C start – drag handle on canvas" Row="0" Col="1" Page="1" DisplayName="Line C Start" Type="vec2" Name="lc_start">
          <SubUniform Default="0.6" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
          <SubUniform Default="0.35" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
       </Uniform>
-      <Uniform UIConditionType="Hide" UIConditionValue="1" UIConditionSource="lines2_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line C end – drag handle on canvas" Row="2" Col="1" Page="1" DisplayName="Line C End" Type="vec2" Name="lc_end">
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="lines2_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line C end – drag handle on canvas" Row="2" Col="1" Page="1" DisplayName="Line C End" Type="vec2" Name="lc_end">
          <SubUniform Default="0.95" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
          <SubUniform Default="0.2" Min="-1.0" Max="2.0" ResDependent="None">
@@ -153,13 +125,13 @@
       <!-- ======================================================== -->
       <!-- LINE D                                                    -->
       <!-- ======================================================== -->
-      <Uniform UIConditionType="Hide" UIConditionValue="1" UIConditionSource="lines2_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line D start – drag handle on canvas" Row="0" Col="2" Page="1" DisplayName="Line D Start" Type="vec2" Name="ld_start">
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="lines2_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line D start – drag handle on canvas" Row="0" Col="2" Page="1" DisplayName="Line D Start" Type="vec2" Name="ld_start">
          <SubUniform Default="0.6" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
          <SubUniform Default="0.65" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
       </Uniform>
-      <Uniform UIConditionType="Hide" UIConditionValue="1" UIConditionSource="lines2_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line D end – drag handle on canvas" Row="2" Col="2" Page="1" DisplayName="Line D End" Type="vec2" Name="ld_end">
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="lines2_enable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Tooltip="Line D end – drag handle on canvas" Row="2" Col="2" Page="1" DisplayName="Line D End" Type="vec2" Name="ld_end">
          <SubUniform Default="0.95" Min="-1.0" Max="2.0" ResDependent="None">
          </SubUniform>
          <SubUniform Default="0.8" Min="-1.0" Max="2.0" ResDependent="None">
@@ -195,29 +167,17 @@
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Opacity falloff toward vanishing point (0=none, 1=full fade)" Row="2" Col="4" Page="1" DisplayName="VP Falloff" Type="float" Name="line_falloff2">
       </Uniform>
-      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Extend each line from its nearest handle to the vanishing point" Row="3" Col="4" Page="1" Type="int" ChannelName="extend2_enable" DisplayName="Extend to VP" Name="extend2_enable" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="3" Col="4" Page="1" Default="False" Tooltip="Extend each line from its nearest handle to the vanishing point" DisplayName="Extend to VP" Type="bool" Name="extend2_enable">
       </Uniform>
 
       <!-- ======================================================== -->
       <!-- HORIZON LINE (Page 2)                                    -->
       <!-- ======================================================== -->
-      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Enable or disable the horizon line" Row="0" Col="0" Page="2" Type="int" ChannelName="horiz_enable" DisplayName="Horizon Line" Name="horiz_enable" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="0" Col="0" Page="2" Default="False" Tooltip="Enable or disable the horizon line" DisplayName="Horizon Line" Type="bool" Name="horiz_enable">
       </Uniform>
-      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Automatically place the horizon at the average Y of both vanishing points" Row="1" Col="0" Page="2" Type="int" ChannelName="horiz_auto_vp" DisplayName="Auto VP Average" Name="horiz_auto_vp" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="1" Col="0" Page="2" Default="False" Tooltip="Automatically place the horizon at the average Y of both vanishing points" DisplayName="Auto VP Average" Type="bool" Name="horiz_auto_vp">
       </Uniform>
-      <Uniform UIConditionType="Hide" UIConditionValue="0" UIConditionSource="horiz_auto_vp" ResDependent="None" Max="2.0" Min="-1.0" Default="0.5" Inc="0.001" Tooltip="Vertical position of the horizon line (0=bottom, 1=top)" Row="2" Col="0" Page="2" DisplayName="Y Position" Type="float" Name="horiz_y">
+      <Uniform UIConditionType="Hide" UIConditionValue="False" UIConditionSource="horiz_auto_vp" ResDependent="None" Max="2.0" Min="-1.0" Default="0.5" Inc="0.001" Tooltip="Vertical position of the horizon line (0=bottom, 1=top)" Row="2" Col="0" Page="2" DisplayName="Y Position" Type="float" Name="horiz_y">
       </Uniform>
       <Uniform ResDependent="None" Max="90.0" Min="-90.0" Default="0.0" Inc="0.1" Tooltip="Rotation in degrees around the horizontal centre of the frame" Row="3" Col="0" Page="2" DisplayName="Rotation" Type="float" Name="horiz_rot">
       </Uniform>
@@ -225,11 +185,7 @@
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Horizon line opacity" Row="1" Col="1" Page="2" DisplayName="Opacity" Type="float" Name="horiz_opacity">
       </Uniform>
-      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Output the combined drawing mask as the alpha channel" Row="0" Col="2" Page="2" Type="int" ChannelName="matte_enable" DisplayName="Matte Output" Name="matte_enable" ValueType="Popup">
-         <PopupEntry Title="Disable" Value="0">
-         </PopupEntry>
-         <PopupEntry Title="Enable" Value="1">
-         </PopupEntry>
+      <Uniform Row="0" Col="2" Page="2" Default="False" Tooltip="Output the combined drawing mask as the alpha channel" DisplayName="Matte Output" Type="bool" Name="matte_enable">
       </Uniform>
 
       <Uniform Inc="0.01" Tooltip="Horizon line colour" Row="2" Col="1" Page="2" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="horiz_color">

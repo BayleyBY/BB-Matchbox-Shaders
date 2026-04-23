@@ -11,7 +11,7 @@ uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
 
 // First VP line set
-uniform int  lines1_enable;   // 0 = hide, 1 = show
+uniform bool lines1_enable;
 
 // Outer line A  (normalized 0-1, Y=0 bottom)
 uniform vec2 la_start, la_end;
@@ -28,7 +28,7 @@ uniform float line_opacity;
 uniform float line_width;      // pixels (AA edge)
 
 // Vanishing point widget
-uniform int   show_vp;         // 0 = hide, 1 = show
+uniform bool  show_vp;
 uniform float vp_size;         // widget ring radius in pixels
 
 // Dash style – first VP set
@@ -37,18 +37,18 @@ uniform float dash1_length;    // dash length in pixels
 uniform float dash1_gap;       // gap length in pixels
 
 // Crosshatch – first VP set
-uniform int   crosshatch1_enable;
+uniform bool  crosshatch1_enable;
 uniform int   num_cross1;      // number of cross lines (1-10)
 
 // Second VP line set (two-point perspective)
-uniform int   lines2_enable;   // 0 = hide, 1 = show
+uniform bool  lines2_enable;
 uniform vec2  lc_start, lc_end;
 uniform vec2  ld_start, ld_end;
 uniform int   num_inter2;
 uniform vec3  line_color2;
 uniform float line_opacity2;
 uniform float line_width2;
-uniform int   show_vp2;
+uniform bool  show_vp2;
 uniform float vp_size2;
 
 // Dash style – second VP set
@@ -57,7 +57,7 @@ uniform float dash2_length;
 uniform float dash2_gap;
 
 // Crosshatch – second VP set
-uniform int   crosshatch2_enable;
+uniform bool  crosshatch2_enable;
 uniform int   num_cross2;
 
 // Opacity falloff toward VP
@@ -65,15 +65,15 @@ uniform float line_falloff;    // 0 = none, 1 = full fade at VP
 uniform float line_falloff2;
 
 // Extend lines to VP
-uniform int   extend1_enable;  // 0 = off, 1 = extend to VP
-uniform int   extend2_enable;
+uniform bool  extend1_enable;
+uniform bool  extend2_enable;
 
 // Matte output
-uniform int   matte_enable;    // 0 = pass bg alpha, 1 = output drawing matte
+uniform bool  matte_enable;
 
 // Horizon line
-uniform int   horiz_enable;    // 0 = hide, 1 = show
-uniform int   horiz_auto_vp;   // 0 = manual Y, 1 = average of VP1 and VP2
+uniform bool  horiz_enable;
+uniform bool  horiz_auto_vp;
 uniform float horiz_y;         // vertical position (0=bottom, 1=top)
 uniform float horiz_rot;       // rotation in degrees around horizontal centre
 uniform float horiz_width;     // pixels (hard edge)
@@ -133,7 +133,7 @@ void main() {
     float halfW = line_width * 0.5;
     float mask  = 0.0;
 
-    if (lines1_enable == 1) {
+    if (lines1_enable) {
         // total lines = 2 outer + num_inter intermediate
         int total = num_inter + 2;
 
@@ -163,7 +163,7 @@ void main() {
             }
 
             // Extension from nearest handle to VP
-            if (extend1_enable == 1 && vpValid) {
+            if (extend1_enable && vpValid) {
                 vec2 nearEnd;
                 if (length(segStart - vp) < length(segEnd - vp)) {
                     nearEnd = segStart;
@@ -190,7 +190,7 @@ void main() {
         }
 
         // Crosshatch: lines connecting corresponding points on Line A and Line B
-        if (crosshatch1_enable == 1) {
+        if (crosshatch1_enable) {
             for (int j = 0; j < 10; j++) {
                 if (j >= num_cross1) break;
                 float u      = float(j + 1) / float(num_cross1 + 1);
@@ -235,7 +235,7 @@ void main() {
                        && vp2.x >= 0.0 && vp2.x <= res.x
                        && vp2.y >= 0.0 && vp2.y <= res.y;
 
-    if (lines2_enable == 1) {
+    if (lines2_enable) {
         float halfW2 = line_width2 * 0.5;
         int   total2 = num_inter2 + 2;
 
@@ -263,7 +263,7 @@ void main() {
             }
 
             // Extension from nearest handle to VP2
-            if (extend2_enable == 1 && vp2Valid) {
+            if (extend2_enable && vp2Valid) {
                 vec2 nearEnd2;
                 if (length(seg2Start - vp2) < length(seg2End - vp2)) {
                     nearEnd2 = seg2Start;
@@ -290,7 +290,7 @@ void main() {
         }
 
         // Crosshatch: lines connecting corresponding points on Line C and Line D
-        if (crosshatch2_enable == 1) {
+        if (crosshatch2_enable) {
             for (int j = 0; j < 10; j++) {
                 if (j >= num_cross2) break;
                 float u       = float(j + 1) / float(num_cross2 + 1);
@@ -315,7 +315,7 @@ void main() {
             }
         }
 
-        if (show_vp2 == 1 && vp2InFrame) {
+        if (show_vp2 && vp2InFrame) {
             float dist2 = length(px - vp2);
             if (abs(dist2 - vp_size2) <= 1.0)                                       mask2 = 1.0;
             if (dist2 <= 2.5)                                                        mask2 = 1.0;
@@ -324,7 +324,7 @@ void main() {
         }
 
         // Off-screen VP2 arrow
-        if (show_vp2 == 1 && vp2Valid && !vp2InFrame) {
+        if (show_vp2 && vp2Valid && !vp2InFrame) {
             vec2  ctr2  = res * 0.5;
             vec2  dir2  = normalize(vp2 - ctr2);
             float tx2   = abs(dir2.x) > 1e-5 ? (res.x * 0.5) / abs(dir2.x) : 1e9;
@@ -345,9 +345,9 @@ void main() {
 
     // ---- Horizon line --------------------------------------------
     float horizMask = 0.0;
-    if (horiz_enable == 1) {
+    if (horiz_enable) {
         float centreY = horiz_y * res.y;
-        if (horiz_auto_vp == 1) {
+        if (horiz_auto_vp) {
             int   avpCount = 0;
             float avpYSum  = 0.0;
             if (vpValid)   { avpYSum += vp.y;  avpCount++; }
@@ -362,7 +362,7 @@ void main() {
     }
 
     // ---- Vanishing point widget -----------------------------------
-    if (lines1_enable == 1 && show_vp == 1 && vpInFrame) {
+    if (lines1_enable && show_vp && vpInFrame) {
         float dist = length(px - vp);
 
         // Hollow ring
@@ -383,7 +383,7 @@ void main() {
     }
 
     // Off-screen VP1 arrow
-    if (lines1_enable == 1 && show_vp == 1 && vpValid && !vpInFrame) {
+    if (lines1_enable && show_vp && vpValid && !vpInFrame) {
         vec2  ctr1  = res * 0.5;
         vec2  dir1  = normalize(vp - ctr1);
         float tx1   = abs(dir1.x) > 1e-5 ? (res.x * 0.5) / abs(dir1.x) : 1e9;
@@ -415,7 +415,7 @@ void main() {
     float mh = clamp(horizMask * horiz_opacity, 0.0, 1.0);
     float drawMatte = max(max(m1, m2), mh);
 
-    if (matte_enable == 1) {
+    if (matte_enable) {
         gl_FragColor = vec4(vec3(drawMatte), 1.0);
     } else {
         gl_FragColor = vec4(outColor, bg.a);
