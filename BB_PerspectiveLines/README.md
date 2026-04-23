@@ -134,13 +134,3 @@ outColor = mix(outColor, horiz_color, horizMask * horiz_opacity);
 
 **Conditional visibility:** `UIConditionType="Hide"` + `UIConditionValue="1"` + `UIConditionSource="uniformName"` → widget is **hidden** when source ≠ value, **shown** when source = value. Use `UIConditionValue="1"` to show when enabled, hide when disabled.
 
----
-
-## Known Issues / Future Ideas
-
-- **Matte alpha channel** doesn't work as expected in Flame — Flame composites output alpha over source alpha. Workaround: use Matte Output as a luma matte (read RGB, not alpha).
-- **Conditional hiding** of "Cross Lines" count when Crosshatch = Disable not implemented.
-- **Conditional hiding** of Dash Length / Gap Length when Line Style = Solid not implemented.
-- **Three-point perspective** (third VP set) not implemented.
-- **Per-line colour** (each fan line independently coloured) not implemented.
-- **Animated VP path** (VP moves over time using `adsk_time`) not implemented.
