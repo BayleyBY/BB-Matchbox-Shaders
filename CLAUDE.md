@@ -36,7 +36,7 @@ Copy a shader folder to:
 Flame provides these built-in uniforms — declare them but never define them:
 ```glsl
 uniform float adsk_result_w, adsk_result_h;  // output dimensions in pixels
-uniform float adsk_time;                      // current time in seconds at output FPS
+uniform float adsk_time;                      // current time in seconds at output FPS (omit if the shader has no animation)
 ```
 
 UV construction is always pixel-space, not 0–1:
@@ -56,8 +56,20 @@ The root element is `<ShaderNodePreset>`. Key attributes on the opening tag:
 - `SoftwareVersion="2026.0.0"` — minimum Flame version
 - `LimitInputsToTexture="True"` — prevents non-texture connections
 - `CommercialUsePermitted="True"` / `ShaderType="Matchbox"` — standard for BB shaders
+- `Description="..."` — tooltip shown in Flame's node browser
+- `Version="2"` — UI schema version; always 2
 
-Controls are `<Uniform>` elements. Layout is a grid: `Page`, `Col`, `Row` (all zero-indexed). Each page gets a `<Page>` element that names its columns with `<Col>` children.
+Each pass lives in a `<Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="N">` block (Index is 1-based).
+
+Controls are `<Uniform>` elements. Layout is a grid: `Page`, `Col`, `Row` (all zero-indexed). Add a `Tooltip="..."` attribute to any uniform to show a tooltip in Flame's UI.
+
+Page tabs and column headers are declared at the end of the XML (after all `<Shader>` blocks):
+```xml
+<Page Name="My Page" Page="0">
+   <Col Name="Controls" Col="0" Page="0"/>
+   <Col Name="Appearance" Col="1" Page="0"/>
+</Page>
+```
 
 **Uniform type patterns:**
 
@@ -87,7 +99,7 @@ Canvas drag handle (position icon):
 </Uniform>
 ```
 
-Popup (int with named entries):
+Popup (int with named entries — `ChannelName` must equal `Name`):
 ```xml
 <Uniform Max="1" Min="0" Default="0" Inc="1" Row="0" Col="0" Page="0"
          Type="int" ChannelName="my_popup" DisplayName="Mode" Name="my_popup" ValueType="Popup">
@@ -102,11 +114,11 @@ Bool toggle:
 </Uniform>
 ```
 
-**Conditional visibility:** Hide a control when another uniform equals a specific value:
+**Conditional visibility:** Show a control only when another uniform matches a specific value:
 ```xml
-<Uniform UIConditionType="Hide" UIConditionValue="False" UIConditionSource="my_bool" ...>
+<Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="my_bool" ...>
 ```
-`UIConditionValue="False"` → hidden when `my_bool` is false (shown when true). Swap values to invert.
+`UIConditionValue` is the value at which the control is **visible** (hidden otherwise). `"True"` → shown when `my_bool` is true. Use `"False"` to show only when disabled.
 
 **Multi-pass:** Each pass is a separate `<Shader Index="N">` block inside `<ShaderNodePreset>`. Pass 2 reads pass 1's output via:
 ```xml
@@ -127,4 +139,8 @@ Generator shaders (no input required) omit the texture uniform entirely, or use 
 
 ## Proxy icons
 
-Each shader should have a `ShaderName.glsl.png` (268×194, width divisible by 4) and its companion `ShaderName.glsl.p` binary. Both are tracked in git. To regenerate a `.p` after updating a PNG, run `make_proxy.py` on the new PNG.
+Each shader should have a proxy PNG (268×194, width divisible by 4) and its companion `.p` binary, both tracked in git. The PNG name must match the shader file Flame reads the icon from:
+- Single-pass: `ShaderName.glsl.png` → `ShaderName.glsl.p`
+- Multi-pass: `ShaderName.1.glsl.png` → `ShaderName.1.glsl.p` (first-pass file)
+
+To regenerate a `.p` after updating a PNG, run `make_proxy.py` on the new PNG.
