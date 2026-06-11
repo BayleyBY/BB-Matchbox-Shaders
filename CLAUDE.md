@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A collection of custom Matchbox shaders for Autodesk Flame. Each shader lives in its own directory and consists of two required files: a `.glsl` fragment shader and an `.xml` UI descriptor. There is no build system — these files are deployed directly to Flame's matchbox directory.
 
+`README.md` holds the per-shader catalog (what each `BB_*` shader does and its ported source, if any) — read it before modifying a shader to understand its intended behaviour. The `examples/` directory contains third-party reference shaders (`crok_*`, `KE_*`) kept for learning Matchbox conventions; it is gitignored and **not** part of this collection — never edit, ship, or treat those as BB shaders.
+
 ## Tools
 
 ### make_proxy — generate thumbnail icons
