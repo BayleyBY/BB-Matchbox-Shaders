@@ -103,6 +103,8 @@ uniform vec3  pgrid_color;
 uniform float pgrid_glow;
 uniform float pgrid_opacity;
 uniform float pgrid_horizon;
+uniform int   pgrid_cols;     // number of lateral cells (columns)
+uniform float pgrid_spacing;  // depth spacing between cross lines
 
 // ---------------------------------------------------------------------------
 // Circuit Trace
@@ -117,6 +119,9 @@ uniform float circuit_rot;
 uniform vec3  circuit_color;
 uniform float circuit_glow;
 uniform float circuit_opacity;
+uniform float circuit_pulse_density;  // spacing of flowing pulses
+uniform float circuit_pulse_size;     // length of each pulse along the trace
+uniform float circuit_pulse_bright;   // pulse glow intensity
 
 // ---------------------------------------------------------------------------
 // Corner Brackets
@@ -132,6 +137,8 @@ uniform vec3  brackets_color;
 uniform float brackets_glow;
 uniform float brackets_opacity;
 uniform float brackets_arm;
+uniform float brackets_pulse_size;    // scanner dot size
+uniform float brackets_pulse_bright;  // scanner dot glow intensity
 
 // ---------------------------------------------------------------------------
 // Compass Tape
@@ -191,6 +198,8 @@ uniform float lgrid_glow;
 uniform float lgrid_opacity;
 uniform int   lgrid_cols;
 uniform int   lgrid_rows;
+uniform float lgrid_pulse_size;    // node pulse size
+uniform float lgrid_pulse_bright;  // node pulse glow intensity
 
 // ---------------------------------------------------------------------------
 // Light Trail (TRON)
@@ -571,32 +580,37 @@ float pgridUI(vec2 p, float t) {
     float d = 1e9;
     float aspect = adsk_result_w / adsk_result_h;
     float horizon = pgrid_horizon; // 0=centre, 1=top, -1=bottom
-    float scrollZ = t * 0.18;
 
-    // Vanishing point
-    vec2 vp = vec2(0.0, horizon * 0.35);
+    // Vanishing point at the horizon, and the near (bottom) edge of the plane
+    vec2  vp          = vec2(0.0, horizon * 0.35);
+    float groundBottom = vp.y - 0.5;
+    float halfSpan     = 0.45 * aspect;   // half-width of the plane at the near edge
 
-    // Longitudinal lines (converging to VP)
-    int nLines = 9;
-    for (int i = 0; i < 9; i++) {
-        float fx = (float(i) / float(nLines - 1) - 0.5) * 0.9;
-        vec2 groundStart = vec2(fx * aspect, vp.y - 0.5);
-        d = min(d, Seg(p, vp, groundStart) - 0.003);
+    // Longitudinal lines (the rails) — static, converging on the VP.
+    // pgrid_cols sets the number of lateral cells (columns); rails = cols + 1.
+    int nCols = min(max(pgrid_cols, 1), 20);
+    for (int i = 0; i <= 20; i++) {
+        if (i > nCols) break;
+        float fx = (float(i) / float(nCols) - 0.5) * 2.0 * halfSpan;
+        d = min(d, Seg(p, vp, vec2(fx, groundBottom)) - 0.003);
     }
 
-    // Cross lines (scrolling toward viewer)
-    float crossSpacing = 0.07;
-    for (int j = 0; j < 12; j++) {
-        float fz = float(j) / 11.0;
-        // Perspective: further lines are narrower spacing
-        float perspFz = fz * fz;
-        float yLine = vp.y - perspFz * 0.5 - mod(scrollZ, crossSpacing) * perspFz;
-        if (yLine >= vp.y - 0.5 && yLine <= vp.y) {
-            float perspW = (1.0 - perspFz) * 0.45 * aspect;
-            vec2 la = vec2(-perspW, yLine);
-            vec2 lb = vec2(+perspW, yLine);
-            d = min(d, Seg(p, la, lb) - 0.002);
-        }
+    // Cross lines — continuous travel across the ground toward the viewer.
+    // Each line sits at world depth Z; perspective maps Z to screen Y as
+    // y = vp.y - 0.5/Z, so Z = 1 is the near edge and Z -> inf is the horizon.
+    // pgrid_spacing scales the world gap between lines (rows). Advancing
+    // 'scroll' pulls every line forward (Z shrinks); the fractional recycle
+    // spawns a new line at the horizon exactly as the nearest one passes
+    // under the viewer, giving a seamless endless loop.
+    float scroll = t * 2.5;
+    float fpart  = fract(scroll);
+    for (int j = 0; j < 18; j++) {
+        float zw   = (float(j) + 1.0 - fpart) * pgrid_spacing; // world depth, > 0
+        float yLine = vp.y - 0.5 / zw;          // perspective projection
+        if (yLine < groundBottom - 0.001) continue;  // has passed the viewer
+        float perspW = halfSpan / zw;           // width tracks the rails exactly
+        float th     = 0.0025 * (0.35 + 0.65 / zw); // thinner toward the horizon
+        d = min(d, Seg(p, vec2(-perspW, yLine), vec2(perspW, yLine)) - th);
     }
 
     // Horizon line
@@ -608,8 +622,11 @@ float pgridUI(vec2 p, float t) {
 // ===========================================================================
 // Element: Circuit Trace
 // ===========================================================================
-float circuitUI(vec2 p, float t) {
+// Returns vec2(trace SDF, additive energy glow). The glow channel carries the
+// bright flowing pulses so they can read brighter than the static traces.
+vec2 circuitUI(vec2 p, float t) {
     float d = 1e9;
+    float glow = 0.0;
     float cell = 0.12;
 
     // Tile the space
@@ -618,46 +635,55 @@ float circuitUI(vec2 p, float t) {
     vec2 lp = fract(tileP) - 0.5;
 
     // Each cell has a hash-determined trace pattern
-    float h = Hash21(id);
-    float h2 = Hash21(id + vec2(7.3, 2.1));
+    float h    = Hash21(id);
+    float h2   = Hash21(id + vec2(7.3, 2.1));
+    float hv   = Hash21(id + vec2(1.1, 3.7));
+    bool  hasH = h  > 0.3;   // horizontal trace through this cell
+    bool  hasV = h2 > 0.4;   // vertical trace
+    bool  hasVia = hv > 0.6; // via pad at centre
 
-    // Horizontal trace segment through cell
-    if (h > 0.3) {
-        d = min(d, abs(lp.y) - 0.03);
-        // Clip to cell length with slight gap
-        if (abs(lp.x) < 0.47) {
-            d = min(d, abs(lp.y) - 0.025);
-        } else {
-            d = min(d, 1e9);
-        }
+    // Static copper traces
+    if (hasH)   d = min(d, abs(lp.y) - 0.025);
+    if (hasV)   d = min(d, abs(lp.x) - 0.025);
+    if (hasVia) d = min(d, abs(length(lp) - 0.07) - 0.018);
+
+    // --- Flowing energy pulses ---
+    // A bright packet travels along each trace. The along-axis coordinate
+    // (p.x or p.y) is continuous across cell borders, so a pulse glides
+    // smoothly down a whole row/column. Each row and column picks its own
+    // direction, so the board reads as data routing every which way at once.
+    // 'flow' carries a constant travel speed; density only changes the spacing
+    // of packets, and the exponent sets each packet's length (size).
+    float density = circuit_pulse_density;
+    float expo    = 6.0 / max(circuit_pulse_size, 0.05); // smaller size -> sharper dot
+    if (hasH) {
+        float dir  = Hash21(vec2(0.0, id.y)) > 0.5 ? 1.0 : -1.0;
+        float flow = p.x / cell - t * dir * 1.5;
+        float bump = pow(0.5 + 0.5 * cos((flow * density + Hash11(id.y + 0.5)) * 2.0 * PI), expo);
+        glow += bump * smoothstep(0.06, 0.0, abs(lp.y));    // confine to trace
     }
-    // Vertical trace segment
-    if (h2 > 0.4) {
-        if (abs(lp.y) < 0.47) {
-            d = min(d, abs(lp.x) - 0.025);
-        }
+    if (hasV) {
+        float dir  = Hash21(vec2(id.x, 0.0)) > 0.5 ? 1.0 : -1.0;
+        float flow = p.y / cell - t * dir * 1.5;
+        float bump = pow(0.5 + 0.5 * cos((flow * density + Hash11(id.x + 1.5)) * 2.0 * PI), expo);
+        glow += bump * smoothstep(0.06, 0.0, abs(lp.x));
+    }
+    // Via pads blink independently
+    if (hasVia) {
+        float blink = 0.5 + 0.5 * sin(t * 3.0 + hv * 30.0);
+        glow += smoothstep(0.025, 0.0, abs(length(lp) - 0.07)) * blink * 0.9;
     }
 
-    // Via pad — circle at cell centre
-    if (Hash21(id + vec2(1.1, 3.7)) > 0.6) {
-        d = min(d, abs(length(lp) - 0.07) - 0.018);
-    }
-
-    // Pulse: animated highlight traveling along traces
-    float pulse = fract(Hash21(id + vec2(5.5, 8.8)) + t * 0.5);
-    if (h > 0.3 && pulse < 0.15) {
-        float px2 = lp.x - (pulse / 0.15 - 0.5);
-        d = min(d, abs(px2) + abs(lp.y) - 0.04);
-    }
-
-    return d * cell;
+    return vec2(d * cell, glow);
 }
 
 // ===========================================================================
 // Element: Corner Brackets
 // ===========================================================================
-float bracketsUI(vec2 p, float t) {
+// Returns vec2(bracket SDF, additive scanner glow).
+vec2 bracketsUI(vec2 p, float t) {
     float d = 1e9;
+    float glow = 0.0;
     float W = 0.50, H = 0.32;
     float arm = brackets_arm;
     float armX = W * arm;
@@ -683,13 +709,6 @@ float bracketsUI(vec2 p, float t) {
     d = min(d, Seg(p, cBR, cBR + vec2(-armX, 0.0)) - th);
     d = min(d, Seg(p, cBR, cBR + vec2(0.0,  armY)) - th);
 
-    // Animated pulse dot on TL bracket
-    float perimLen = 4.0 * (armX + armY);
-    float dotPos = mod(t * 0.4, perimLen);
-    float arm0 = min(dotPos, armX) / armX;
-    vec2 dotP = cTL + vec2(arm0 * armX, 0.0);
-    d = min(d, length(p - dotP) - 0.012);
-
     // Side data tick marks — small horizontal ticks on left and right edges
     for (int i = 0; i < 5; i++) {
         float yOff = (float(i) / 4.0 - 0.5) * H * 1.6;
@@ -699,7 +718,29 @@ float bracketsUI(vec2 p, float t) {
         d = min(d, Seg(p, vec2(W - 0.02, yOff), vec2(W + 0.02, yOff)) - 0.002);
     }
 
-    return d;
+    // --- Scanner pulse: a bright dot tracing the frame perimeter ---
+    // Travels clockwise TL -> TR -> BR -> BL -> TL on a continuous loop,
+    // passing over each corner bracket in turn. Rendered as additive glow.
+    float perim   = 4.0 * (W + H);
+    float topLen  = 2.0 * W;
+    float rightLen = 2.0 * H;
+    float botLen  = 2.0 * W;
+    float s = mod(t * 0.5, perim);
+    vec2 dotP;
+    if (s < topLen) {
+        dotP = vec2(-W + s, H);                                  // top: TL -> TR
+    } else if (s < topLen + rightLen) {
+        dotP = vec2(W, H - (s - topLen));                        // right: TR -> BR
+    } else if (s < topLen + rightLen + botLen) {
+        dotP = vec2(W - (s - topLen - rightLen), -H);            // bottom: BR -> BL
+    } else {
+        dotP = vec2(-W, -H + (s - topLen - rightLen - botLen));  // left: BL -> TL
+    }
+    float radius = 0.02 * brackets_pulse_size;
+    float gd = length(p - dotP);
+    glow += exp(-(gd * gd) / max(radius * radius, 1e-6));
+
+    return vec2(d, glow);
 }
 
 // ===========================================================================
@@ -789,6 +830,7 @@ float arcUI(vec2 p, float t) {
 // ===========================================================================
 float dialUI(vec2 p, float t) {
     float d = 1e9;
+    p.y = -p.y;   // flip across the horizontal axis: gauge opens downward, scale across the top
     float R = 0.30;
     float arcStart = PI * 0.75;   // 135 deg
     float arcEnd = PI * 2.25;     // 405 deg = 45 deg (sweeps 270 deg)
@@ -807,8 +849,8 @@ float dialUI(vec2 p, float t) {
         d = min(d, Seg(p, dir * (R - tlen), dir * R) - (major > 0.5 ? 0.003 : 0.002));
     }
 
-    // Animated needle value: slow sine oscillation
-    float value = 0.5 + 0.4 * sin(t * 0.7 * 2.0 * PI);
+    // Needle sweeps straight from 0 to 100, then repeats
+    float value = fract(t * 0.5);
     float needleAng = arcStart + (arcEnd - arcStart) * value;
     vec2 needleEnd = vec2(cos(needleAng), sin(needleAng)) * (R * 0.85);
     vec2 needleBack = vec2(cos(needleAng + PI), sin(needleAng + PI)) * (R * 0.12);
@@ -836,11 +878,14 @@ float dialUI(vec2 p, float t) {
 // ===========================================================================
 // Element: Light Grid (TRON)
 // ===========================================================================
-float lgridUI(vec2 p, float t) {
+// Returns vec2(grid SDF, additive node glow).
+vec2 lgridUI(vec2 p, float t) {
     float d = 1e9;
+    float glow = 0.0;
     int nc = min(max(lgrid_cols, 2), 12);
     int nr = min(max(lgrid_rows, 2), 10);
-    float W = 0.50, H = 0.32;
+    float aspect = adsk_result_w / adsk_result_h;
+    float W = aspect * 0.5, H = 0.5;   // half-extents fill the frame at scale 1
     float cellW = W * 2.0 / float(nc);
     float cellH = H * 2.0 / float(nr);
 
@@ -857,7 +902,8 @@ float lgridUI(vec2 p, float t) {
         d = min(d, abs(p.y - y) - 0.003);
     }
 
-    // Glowing nodes at intersections
+    // Glowing nodes at intersections — additive pulse glow (hot core)
+    float radius = 0.02 * lgrid_pulse_size;
     for (int c = 0; c <= 12; c++) {
         if (c > nc) break;
         for (int r = 0; r <= 10; r++) {
@@ -867,13 +913,12 @@ float lgridUI(vec2 p, float t) {
             // Pulse each node independently
             float ph = Hash21(vec2(float(c), float(r)));
             float pulse = 0.5 + 0.5 * sin(t * 2.0 * PI * (0.3 + ph * 0.4) + ph * 6.28);
-            if (pulse > 0.4) {
-                d = min(d, length(p - vec2(x, y)) - (0.010 + pulse * 0.008));
-            }
+            float gd = length(p - vec2(x, y));
+            glow += pulse * exp(-(gd * gd) / max(radius * radius, 1e-6));
         }
     }
 
-    return d;
+    return vec2(d, glow);
 }
 
 // ===========================================================================
@@ -1006,8 +1051,11 @@ void main() {
         p *= Rot(radians(circuit_rot));
         p /= circuit_scale;
         float lt = gTime * circuit_speed + circuit_time_offset;
-        float d = circuitUI(p, lt);
-        col = mix(col, circuit_color, ov_alpha(d, circuit_glow) * circuit_opacity);
+        vec2 cr = circuitUI(p, lt);
+        col = mix(col, circuit_color, ov_alpha(cr.x, circuit_glow) * circuit_opacity);
+        // Flowing energy pulses — additive, with a hot core so they pop
+        vec3 hot = mix(circuit_color, vec3(1.0), 0.5);
+        col += hot * cr.y * circuit_opacity * circuit_pulse_bright;
     }
 
     // --- Corner Brackets ---
@@ -1016,8 +1064,11 @@ void main() {
         p *= Rot(radians(brackets_rot));
         p /= brackets_scale;
         float lt = gTime * brackets_speed + brackets_time_offset;
-        float d = bracketsUI(p, lt);
-        col = mix(col, brackets_color, ov_alpha(d, brackets_glow) * brackets_opacity);
+        vec2 br = bracketsUI(p, lt);
+        col = mix(col, brackets_color, ov_alpha(br.x, brackets_glow) * brackets_opacity);
+        // Scanner pulse — additive, with a hot core so it pops
+        vec3 hotb = mix(brackets_color, vec3(1.0), 0.5);
+        col += hotb * br.y * brackets_opacity * brackets_pulse_bright;
     }
 
     // --- Compass Tape ---
@@ -1056,8 +1107,11 @@ void main() {
         p *= Rot(radians(lgrid_rot));
         p /= lgrid_scale;
         float lt = gTime * lgrid_speed + lgrid_time_offset;
-        float d = lgridUI(p, lt);
-        col = mix(col, lgrid_color, ov_alpha(d, lgrid_glow) * lgrid_opacity);
+        vec2 lg = lgridUI(p, lt);
+        col = mix(col, lgrid_color, ov_alpha(lg.x, lgrid_glow) * lgrid_opacity);
+        // Pulsing nodes — additive, with a hot core so they pop
+        vec3 hotg = mix(lgrid_color, vec3(1.0), 0.5);
+        col += hotg * lg.y * lgrid_opacity * lgrid_pulse_bright;
     }
 
     // --- Light Trail ---

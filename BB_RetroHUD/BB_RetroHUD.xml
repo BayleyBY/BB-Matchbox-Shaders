@@ -193,6 +193,10 @@
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.01" Tooltip="Horizon line vertical position. 0 = centre, 1 = top, -1 = bottom." Row="3" Col="0" Page="5" DisplayName="Horizon" Type="float" Name="pgrid_horizon">
       </Uniform>
+      <Uniform Max="20" Min="1" Default="8" Inc="1" Tooltip="Number of lateral cells (columns) across the grid" Row="4" Col="0" Page="5" DisplayName="Columns" Type="int" Name="pgrid_cols">
+      </Uniform>
+      <Uniform ResDependent="None" Max="3.0" Min="0.5" Default="1.0" Inc="0.05" Tooltip="Spacing between cross lines — larger values push the rows farther apart in depth" Row="5" Col="0" Page="5" DisplayName="Spacing" Type="float" Name="pgrid_spacing">
+      </Uniform>
 
       <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="5" DisplayName="Scale" Type="float" Name="pgrid_scale">
       </Uniform>
@@ -224,6 +228,12 @@
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Pulse highlight travel speed along traces" Row="1" Col="0" Page="6" DisplayName="Speed" Type="float" Name="circuit_speed">
       </Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="6" DisplayName="Time Offset" Type="float" Name="circuit_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.1" Default="0.6" Inc="0.05" Tooltip="Pulse density — how many flowing packets travel along the traces" Row="3" Col="0" Page="6" DisplayName="Pulse Density" Type="float" Name="circuit_pulse_density">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.5" Min="0.1" Default="0.5" Inc="0.01" Tooltip="Pulse size — length of each flowing packet along the trace" Row="4" Col="0" Page="6" DisplayName="Pulse Size" Type="float" Name="circuit_pulse_size">
+      </Uniform>
+      <Uniform ResDependent="None" Max="4.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Pulse brightness — glow intensity of the flowing packets" Row="5" Col="0" Page="6" DisplayName="Pulse Brightness" Type="float" Name="circuit_pulse_bright">
       </Uniform>
 
       <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element. Larger values zoom in on the trace tile." Row="0" Col="1" Page="6" DisplayName="Scale" Type="float" Name="circuit_scale">
@@ -258,6 +268,10 @@
       <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="7" DisplayName="Time Offset" Type="float" Name="brackets_time_offset">
       </Uniform>
       <Uniform ResDependent="None" Max="0.8" Min="0.05" Default="0.25" Inc="0.01" Tooltip="Length of each bracket arm as a fraction of the frame edge" Row="3" Col="0" Page="7" DisplayName="Arm Length" Type="float" Name="brackets_arm">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.5" Min="0.1" Default="0.5" Inc="0.01" Tooltip="Scanner dot size — radius of the pulse tracing the frame perimeter" Row="4" Col="0" Page="7" DisplayName="Pulse Size" Type="float" Name="brackets_pulse_size">
+      </Uniform>
+      <Uniform ResDependent="None" Max="4.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Scanner dot brightness — glow intensity of the pulse (0 = off)" Row="5" Col="0" Page="7" DisplayName="Pulse Brightness" Type="float" Name="brackets_pulse_bright">
       </Uniform>
 
       <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="7" DisplayName="Scale" Type="float" Name="brackets_scale">
@@ -389,9 +403,13 @@
       </Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="11" DisplayName="Time Offset" Type="float" Name="lgrid_time_offset">
       </Uniform>
-      <Uniform ResDependent="None" Max="12" Min="2" Default="6" Inc="1" Tooltip="Number of grid columns" Row="3" Col="0" Page="11" DisplayName="Columns" Type="int" Name="lgrid_cols">
+      <Uniform ResDependent="None" Max="12" Min="2" Default="12" Inc="1" Tooltip="Number of grid columns" Row="3" Col="0" Page="11" DisplayName="Columns" Type="int" Name="lgrid_cols">
       </Uniform>
-      <Uniform ResDependent="None" Max="10" Min="2" Default="4" Inc="1" Tooltip="Number of grid rows" Row="4" Col="0" Page="11" DisplayName="Rows" Type="int" Name="lgrid_rows">
+      <Uniform ResDependent="None" Max="10" Min="2" Default="8" Inc="1" Tooltip="Number of grid rows" Row="4" Col="0" Page="11" DisplayName="Rows" Type="int" Name="lgrid_rows">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="2.0" Inc="0.05" Tooltip="Pulse size — radius of the glowing intersection nodes" Row="5" Col="0" Page="11" DisplayName="Pulse Size" Type="float" Name="lgrid_pulse_size">
+      </Uniform>
+      <Uniform ResDependent="None" Max="4.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Pulse brightness — glow intensity of the nodes (0 = off)" Row="6" Col="0" Page="11" DisplayName="Pulse Brightness" Type="float" Name="lgrid_pulse_bright">
       </Uniform>
 
       <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="11" DisplayName="Scale" Type="float" Name="lgrid_scale">
