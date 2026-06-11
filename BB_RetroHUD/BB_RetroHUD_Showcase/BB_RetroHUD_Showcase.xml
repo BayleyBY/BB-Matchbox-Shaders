@@ -1,0 +1,769 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Showcase of BB_RetroHUD - all 13 HUD elements enabled, scaled, and tiled across the frame so every element is visible at once. Circuit Trace is a faint full-frame backdrop. Reference/overview of the element library." Name="BB_RetroHUD_Showcase">
+
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+
+      <!-- ======================================================== -->
+      <!-- RADAR – Page 0                                           -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="0" Default="True" Tooltip="Show or hide the radar element" DisplayName="Enable" Type="bool" Name="radar_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.5" Inc="0.05" Tooltip="Sweep arm rotation speed. Negative values reverse direction." Row="1" Col="0" Page="0" DisplayName="Speed" Type="float" Name="radar_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="0" DisplayName="Time Offset" Type="float" Name="radar_time_offset">
+      </Uniform>
+      <Uniform UIConditionType="Hide" UIConditionSource="radar_enable" UIConditionValue="True" ResDependent="None" Max="360.0" Min="-360.0" Default="0.0" Inc="1.0" Tooltip="Starting angle of the sweep arm in degrees. 0 = right (3 o'clock), 90 = top (12 o'clock)." Row="3" Col="0" Page="0" DisplayName="Sweep Start" Type="float" Name="radar_sweep_start">
+      </Uniform>
+      <Uniform ResDependent="None" Max="12" Min="0" Default="6" Inc="1" Tooltip="Number of random blip contacts shown on the radar screen. Blips glow brightly when the sweep arm passes over them and fade over the next 270 degrees." Row="4" Col="0" Page="0" DisplayName="Blips" Type="int" Name="radar_blips">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.3" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="0" DisplayName="Scale" Type="float" Name="radar_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.72" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="0" DisplayName="Pos X" Type="float" Name="radar_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="0" DisplayName="Pos Y" Type="float" Name="radar_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="0" DisplayName="Rotate Z" Type="float" Name="radar_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="0" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="radar_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.1">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.9">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="0" DisplayName="Glow" Type="float" Name="radar_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="0" DisplayName="Opacity" Type="float" Name="radar_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- RETICLE – Page 1                                         -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="1" Default="True" Tooltip="Show or hide the targeting reticle" DisplayName="Enable" Type="bool" Name="reticle_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.3" Inc="0.05" Tooltip="Inner ring rotation speed" Row="1" Col="0" Page="1" DisplayName="Speed" Type="float" Name="reticle_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="1" DisplayName="Time Offset" Type="float" Name="reticle_time_offset">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.34" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="1" DisplayName="Scale" Type="float" Name="reticle_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.36" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="1" DisplayName="Pos X" Type="float" Name="reticle_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="1" DisplayName="Pos Y" Type="float" Name="reticle_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="1" DisplayName="Rotate Z" Type="float" Name="reticle_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="1" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="reticle_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="1" DisplayName="Glow" Type="float" Name="reticle_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="1" DisplayName="Opacity" Type="float" Name="reticle_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- OSCILLOSCOPE – Page 2                                    -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="2" Default="True" Tooltip="Show or hide the oscilloscope display" DisplayName="Enable" Type="bool" Name="oscope_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Sine wave 1 scroll speed. Also controls speed in Lissajous and Pulse modes." Row="1" Col="0" Page="2" DisplayName="Wave 1 Speed" Type="float" Name="oscope_speed">
+      </Uniform>
+      <Uniform UIConditionType="Hide" UIConditionSource="oscope_enable" UIConditionValue="True" ResDependent="None" Max="5.0" Min="-5.0" Default="0.6" Inc="0.05" Tooltip="Sine wave 2 scroll speed. Only active in Sine mode." Row="2" Col="0" Page="2" DisplayName="Wave 2 Speed" Type="float" Name="oscope_speed2">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time for both waves" Row="3" Col="0" Page="2" DisplayName="Time Offset" Type="float" Name="oscope_time_offset">
+      </Uniform>
+      <Uniform Max="2" Min="0" Default="0" Inc="1" Tooltip="Trace waveform type: Sine = scrolling sine wave, Lissajous = XY phase figure, Pulse = square wave" Row="3" Col="0" Page="2" Type="int" ChannelName="oscope_mode" DisplayName="Mode" Name="oscope_mode" ValueType="Popup">
+         <PopupEntry Title="Sine" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Lissajous" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="Pulse" Value="2">
+         </PopupEntry>
+      </Uniform>
+      <Uniform UIConditionType="Hide" UIConditionSource="oscope_enable" UIConditionValue="True" ResDependent="None" Max="1.5" Min="0.1" Default="0.55" Inc="0.01" Tooltip="Width of the oscilloscope screen — extends the frame and adds more grid columns" Row="0" Col="1" Page="2" DisplayName="Width" Type="float" Name="oscope_width">
+      </Uniform>
+      <Uniform UIConditionType="Hide" UIConditionSource="oscope_enable" UIConditionValue="True" ResDependent="None" Max="0.8" Min="0.05" Default="0.28" Inc="0.01" Tooltip="Height of the oscilloscope screen — extends the frame and adds more grid rows" Row="1" Col="1" Page="2" DisplayName="Height" Type="float" Name="oscope_height">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.28" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="2" Page="2" DisplayName="Scale" Type="float" Name="oscope_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="2" Page="2" DisplayName="Pos X" Type="float" Name="oscope_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="2" Page="2" DisplayName="Pos Y" Type="float" Name="oscope_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="2" Page="2" DisplayName="Rotate Z" Type="float" Name="oscope_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="3" Page="2" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="oscope_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.3">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="3" Page="2" DisplayName="Glow" Type="float" Name="oscope_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="3" Page="2" DisplayName="Opacity" Type="float" Name="oscope_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- BAR METERS – Page 3                                      -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="3" Default="True" Tooltip="Show or hide the segmented bar meters" DisplayName="Enable" Type="bool" Name="bars_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Level bounce animation speed" Row="1" Col="0" Page="3" DisplayName="Speed" Type="float" Name="bars_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="3" DisplayName="Time Offset" Type="float" Name="bars_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="8" Min="2" Default="5" Inc="1" Tooltip="Number of bar meter columns (2–8)" Row="3" Col="0" Page="3" DisplayName="Bar Count" Type="int" Name="bars_count">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.4" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="3" DisplayName="Scale" Type="float" Name="bars_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.36" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="3" DisplayName="Pos X" Type="float" Name="bars_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="3" DisplayName="Pos Y" Type="float" Name="bars_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="3" DisplayName="Rotate Z" Type="float" Name="bars_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="3" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="bars_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.6">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="3" DisplayName="Glow" Type="float" Name="bars_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="3" DisplayName="Opacity" Type="float" Name="bars_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- DATA TERMINAL – Page 4                                   -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="4" Default="True" Tooltip="Show or hide the scrolling data terminal readout" DisplayName="Enable" Type="bool" Name="terminal_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Text scroll speed. Negative values scroll downward." Row="1" Col="0" Page="4" DisplayName="Speed" Type="float" Name="terminal_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="4" DisplayName="Time Offset" Type="float" Name="terminal_time_offset">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.3" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="4" DisplayName="Scale" Type="float" Name="terminal_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.72" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="4" DisplayName="Pos X" Type="float" Name="terminal_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="4" DisplayName="Pos Y" Type="float" Name="terminal_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="4" DisplayName="Rotate Z" Type="float" Name="terminal_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="4" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="terminal_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="4" DisplayName="Glow" Type="float" Name="terminal_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="4" DisplayName="Opacity" Type="float" Name="terminal_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- PERSPECTIVE GRID – Page 5                                -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="5" Default="True" Tooltip="Show or hide the receding wireframe perspective grid" DisplayName="Enable" Type="bool" Name="pgrid_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Grid scroll speed — how fast cross lines advance toward the viewer" Row="1" Col="0" Page="5" DisplayName="Speed" Type="float" Name="pgrid_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="5" DisplayName="Time Offset" Type="float" Name="pgrid_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.01" Tooltip="Horizon line vertical position. 0 = centre, 1 = top, -1 = bottom." Row="3" Col="0" Page="5" DisplayName="Horizon" Type="float" Name="pgrid_horizon">
+      </Uniform>
+      <Uniform Max="20" Min="1" Default="8" Inc="1" Tooltip="Number of lateral cells (columns) across the grid" Row="4" Col="0" Page="5" DisplayName="Columns" Type="int" Name="pgrid_cols">
+      </Uniform>
+      <Uniform ResDependent="None" Max="3.0" Min="0.5" Default="1.0" Inc="0.05" Tooltip="Spacing between cross lines — larger values push the rows farther apart in depth" Row="5" Col="0" Page="5" DisplayName="Spacing" Type="float" Name="pgrid_spacing">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.22" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="5" DisplayName="Scale" Type="float" Name="pgrid_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.54" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="5" DisplayName="Pos X" Type="float" Name="pgrid_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="5" DisplayName="Pos Y" Type="float" Name="pgrid_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="5" DisplayName="Rotate Z" Type="float" Name="pgrid_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="5" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="pgrid_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.5">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="5" DisplayName="Glow" Type="float" Name="pgrid_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="5" DisplayName="Opacity" Type="float" Name="pgrid_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CIRCUIT TRACE – Page 6                                   -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="6" Default="True" Tooltip="Show or hide the tiling PCB circuit trace pattern" DisplayName="Enable" Type="bool" Name="circuit_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Pulse highlight travel speed along traces" Row="1" Col="0" Page="6" DisplayName="Speed" Type="float" Name="circuit_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="6" DisplayName="Time Offset" Type="float" Name="circuit_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.1" Default="0.6" Inc="0.05" Tooltip="Pulse density — how many flowing packets travel along the traces" Row="3" Col="0" Page="6" DisplayName="Pulse Density" Type="float" Name="circuit_pulse_density">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.5" Min="0.1" Default="0.5" Inc="0.01" Tooltip="Pulse size — length of each flowing packet along the trace" Row="4" Col="0" Page="6" DisplayName="Pulse Size" Type="float" Name="circuit_pulse_size">
+      </Uniform>
+      <Uniform ResDependent="None" Max="4.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Pulse brightness — glow intensity of the flowing packets" Row="5" Col="0" Page="6" DisplayName="Pulse Brightness" Type="float" Name="circuit_pulse_bright">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element. Larger values zoom in on the trace tile." Row="0" Col="1" Page="6" DisplayName="Scale" Type="float" Name="circuit_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="6" DisplayName="Pos X" Type="float" Name="circuit_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="6" DisplayName="Pos Y" Type="float" Name="circuit_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="6" DisplayName="Rotate Z" Type="float" Name="circuit_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="6" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="circuit_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="6" DisplayName="Glow" Type="float" Name="circuit_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.18" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="6" DisplayName="Opacity" Type="float" Name="circuit_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- CORNER BRACKETS – Page 7                                 -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="7" Default="True" Tooltip="Show or hide the corner bracket HUD frame" DisplayName="Enable" Type="bool" Name="brackets_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Pulse dot travel speed around the bracket perimeter" Row="1" Col="0" Page="7" DisplayName="Speed" Type="float" Name="brackets_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="7" DisplayName="Time Offset" Type="float" Name="brackets_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.8" Min="0.05" Default="0.25" Inc="0.01" Tooltip="Length of each bracket arm as a fraction of the frame edge" Row="3" Col="0" Page="7" DisplayName="Arm Length" Type="float" Name="brackets_arm">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.5" Min="0.1" Default="0.5" Inc="0.01" Tooltip="Scanner dot size — radius of the pulse tracing the frame perimeter" Row="4" Col="0" Page="7" DisplayName="Pulse Size" Type="float" Name="brackets_pulse_size">
+      </Uniform>
+      <Uniform ResDependent="None" Max="4.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Scanner dot brightness — glow intensity of the pulse (0 = off)" Row="5" Col="0" Page="7" DisplayName="Pulse Brightness" Type="float" Name="brackets_pulse_bright">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.28" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="7" DisplayName="Scale" Type="float" Name="brackets_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.18" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="7" DisplayName="Pos X" Type="float" Name="brackets_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="7" DisplayName="Pos Y" Type="float" Name="brackets_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="7" DisplayName="Rotate Z" Type="float" Name="brackets_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="7" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="brackets_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.9">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="7" DisplayName="Glow" Type="float" Name="brackets_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="7" DisplayName="Opacity" Type="float" Name="brackets_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- COMPASS TAPE – Page 8                                    -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="8" Default="True" Tooltip="Show or hide the horizontal compass heading tape" DisplayName="Enable" Type="bool" Name="compass_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Heading scroll speed" Row="1" Col="0" Page="8" DisplayName="Speed" Type="float" Name="compass_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="8" DisplayName="Time Offset" Type="float" Name="compass_time_offset">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.3" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="8" DisplayName="Scale" Type="float" Name="compass_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.18" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="8" DisplayName="Pos X" Type="float" Name="compass_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space — default near the top of frame" Row="2" Col="1" Page="8" DisplayName="Pos Y" Type="float" Name="compass_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="8" DisplayName="Rotate Z" Type="float" Name="compass_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="8" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="compass_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.9">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.9">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="8" DisplayName="Glow" Type="float" Name="compass_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="8" DisplayName="Opacity" Type="float" Name="compass_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- TRAJECTORY ARC – Page 9                                  -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="9" Default="True" Tooltip="Show or hide the trajectory arc with node markers" DisplayName="Enable" Type="bool" Name="arc_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Travelling dot speed along the arc" Row="1" Col="0" Page="9" DisplayName="Speed" Type="float" Name="arc_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="9" DisplayName="Time Offset" Type="float" Name="arc_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="8" Min="2" Default="4" Inc="1" Tooltip="Number of node markers placed evenly along the arc" Row="3" Col="0" Page="9" DisplayName="Nodes" Type="int" Name="arc_nodes">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.34" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="9" DisplayName="Scale" Type="float" Name="arc_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.54" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="9" DisplayName="Pos X" Type="float" Name="arc_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="9" DisplayName="Pos Y" Type="float" Name="arc_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="9" DisplayName="Rotate Z" Type="float" Name="arc_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="9" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="arc_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.1">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="9" DisplayName="Glow" Type="float" Name="arc_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="9" DisplayName="Opacity" Type="float" Name="arc_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- DIAL GAUGE – Page 10                                     -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="10" Default="True" Tooltip="Show or hide the circular analog dial gauge" DisplayName="Enable" Type="bool" Name="dial_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Needle oscillation speed" Row="1" Col="0" Page="10" DisplayName="Speed" Type="float" Name="dial_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="10" DisplayName="Time Offset" Type="float" Name="dial_time_offset">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.34" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="10" DisplayName="Scale" Type="float" Name="dial_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.36" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="10" DisplayName="Pos X" Type="float" Name="dial_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="10" DisplayName="Pos Y" Type="float" Name="dial_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="10" DisplayName="Rotate Z" Type="float" Name="dial_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="10" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="dial_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.9">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.7">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="10" DisplayName="Glow" Type="float" Name="dial_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="10" DisplayName="Opacity" Type="float" Name="dial_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- LIGHT GRID (TRON) – Page 11                              -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="11" Default="True" Tooltip="Show or hide the TRON-style light grid with pulsing nodes" DisplayName="Enable" Type="bool" Name="lgrid_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Node pulse animation speed" Row="1" Col="0" Page="11" DisplayName="Speed" Type="float" Name="lgrid_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="11" DisplayName="Time Offset" Type="float" Name="lgrid_time_offset">
+      </Uniform>
+      <Uniform ResDependent="None" Max="12" Min="2" Default="12" Inc="1" Tooltip="Number of grid columns" Row="3" Col="0" Page="11" DisplayName="Columns" Type="int" Name="lgrid_cols">
+      </Uniform>
+      <Uniform ResDependent="None" Max="10" Min="2" Default="8" Inc="1" Tooltip="Number of grid rows" Row="4" Col="0" Page="11" DisplayName="Rows" Type="int" Name="lgrid_rows">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="2.0" Inc="0.05" Tooltip="Pulse size — radius of the glowing intersection nodes" Row="5" Col="0" Page="11" DisplayName="Pulse Size" Type="float" Name="lgrid_pulse_size">
+      </Uniform>
+      <Uniform ResDependent="None" Max="4.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Pulse brightness — glow intensity of the nodes (0 = off)" Row="6" Col="0" Page="11" DisplayName="Pulse Brightness" Type="float" Name="lgrid_pulse_bright">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.19" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="11" DisplayName="Scale" Type="float" Name="lgrid_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="11" DisplayName="Pos X" Type="float" Name="lgrid_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="11" DisplayName="Pos Y" Type="float" Name="lgrid_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="11" DisplayName="Rotate Z" Type="float" Name="lgrid_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="11" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="lgrid_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.7">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="11" DisplayName="Glow" Type="float" Name="lgrid_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="11" DisplayName="Opacity" Type="float" Name="lgrid_opacity">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- LIGHT TRAIL (TRON) – Page 12                             -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="12" Default="True" Tooltip="Show or hide the TRON-style right-angle light trails" DisplayName="Enable" Type="bool" Name="trail_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Trail travel speed" Row="1" Col="0" Page="12" DisplayName="Speed" Type="float" Name="trail_speed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="12" DisplayName="Time Offset" Type="float" Name="trail_time_offset">
+      </Uniform>
+      <Uniform Max="5" Min="1" Default="3" Inc="1" Tooltip="Number of lightcycles on screen" Row="3" Col="0" Page="12" DisplayName="Lightcycles" Type="int" Name="trail_count">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.05" Default="0.6" Inc="0.01" Tooltip="Trail length before it fades out (how far the trail extends behind the head)" Row="4" Col="0" Page="12" DisplayName="Trail Length" Type="float" Name="trail_length">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="0.6" Inc="0.01" Tooltip="Fade-off length at the tail. Short = abrupt cutoff; long (>= Trail Length) = fades over the whole trail" Row="5" Col="0" Page="12" DisplayName="Fade Length" Type="float" Name="trail_fade">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.26" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="12" DisplayName="Scale" Type="float" Name="trail_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.36" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="12" DisplayName="Pos X" Type="float" Name="trail_pos_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="12" DisplayName="Pos Y" Type="float" Name="trail_pos_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="12" DisplayName="Rotate Z" Type="float" Name="trail_rot">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Element colour" Row="0" Col="2" Page="12" DisplayName="Colour" ValueType="Colour" Type="vec3" Name="trail_color">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="12" DisplayName="Glow" Type="float" Name="trail_glow">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="12" DisplayName="Opacity" Type="float" Name="trail_opacity">
+      </Uniform>
+      <Uniform Row="3" Col="2" Page="12" Default="True" Tooltip="Give each lightcycle its own colour from the Cycle Colours column (off = all use Colour)" DisplayName="Multi Colour" Type="bool" Name="trail_multicolor">
+      </Uniform>
+
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 1" Row="0" Col="3" Page="12" DisplayName="Cycle 1 Colour" ValueType="Colour" Type="vec3" Name="trail_col1">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 2" Row="1" Col="3" Page="12" DisplayName="Cycle 2 Colour" ValueType="Colour" Type="vec3" Name="trail_col2">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.45">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 3" Row="2" Col="3" Page="12" DisplayName="Cycle 3 Colour" ValueType="Colour" Type="vec3" Name="trail_col3">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.85">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.1">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 4" Row="3" Col="3" Page="12" DisplayName="Cycle 4 Colour" ValueType="Colour" Type="vec3" Name="trail_col4">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.3">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 5" Row="4" Col="3" Page="12" DisplayName="Cycle 5 Colour" ValueType="Colour" Type="vec3" Name="trail_col5">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.7">
+         </SubUniform>
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- GLOBAL TIME – Page 13                                    -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="10.0" Min="0.01" Default="1.0" Inc="0.05" Tooltip="Global animation speed multiplier. 1.0 = real time at 25 fps." Row="0" Col="0" Page="13" DisplayName="Time Scale" Type="float" Name="time_scale">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1000.0" Min="-1000.0" Default="0.0" Inc="0.1" Tooltip="Shifts the global animation start point. Use to randomise or synchronise elements." Row="1" Col="0" Page="13" DisplayName="Time Offset" Type="float" Name="time_offset">
+      </Uniform>
+
+   </Shader>
+
+   <!-- ===== PASS 2: CRT FILTER ===== -->
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="2">
+
+      <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- SCREEN GEOMETRY – Page 14                                -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="1" Page="14" Default="False" Tooltip="Enable or disable all screen geometry distortions" DisplayName="Enable" Type="bool" Name="geo_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.01" Tooltip="CRT tube lens distortion. Positive = barrel (bulging), negative = pincushion (pinching)." Row="1" Col="1" Page="14" DisplayName="Barrel / Pin" Type="float" Name="geo_barrel">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.005" Tooltip="Sinusoidal edge warp — simulates physical screen wobble or damaged CRT geometry" Row="2" Col="1" Page="14" DisplayName="Edge Warp" Type="float" Name="geo_edge_warp">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="0.2" Min="-0.2" Default="0.0" Inc="0.002" Tooltip="Top-left corner X offset for perspective pinning" Row="0" Col="2" Page="14" DisplayName="TL Corner X" Type="float" Name="geo_corner_tl_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.2" Min="-0.2" Default="0.0" Inc="0.002" Tooltip="Top-left corner Y offset for perspective pinning" Row="1" Col="2" Page="14" DisplayName="TL Corner Y" Type="float" Name="geo_corner_tl_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.2" Min="-0.2" Default="0.0" Inc="0.002" Tooltip="Top-right corner X offset" Row="2" Col="2" Page="14" DisplayName="TR Corner X" Type="float" Name="geo_corner_tr_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.2" Min="-0.2" Default="0.0" Inc="0.002" Tooltip="Top-right corner Y offset" Row="3" Col="2" Page="14" DisplayName="TR Corner Y" Type="float" Name="geo_corner_tr_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.2" Min="-0.2" Default="0.0" Inc="0.002" Tooltip="Bottom-left corner X offset" Row="4" Col="2" Page="14" DisplayName="BL Corner X" Type="float" Name="geo_corner_bl_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.2" Min="-0.2" Default="0.0" Inc="0.002" Tooltip="Bottom-left corner Y offset" Row="5" Col="2" Page="14" DisplayName="BL Corner Y" Type="float" Name="geo_corner_bl_y">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.2" Min="-0.2" Default="0.0" Inc="0.002" Tooltip="Bottom-right corner X offset" Row="6" Col="2" Page="14" DisplayName="BR Corner X" Type="float" Name="geo_corner_br_x">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.2" Min="-0.2" Default="0.0" Inc="0.002" Tooltip="Bottom-right corner Y offset" Row="7" Col="2" Page="14" DisplayName="BR Corner Y" Type="float" Name="geo_corner_br_y">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- SCAN LINES – Page 15                                     -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="15" Default="False" Tooltip="Enable or disable the CRT scan line overlay" DisplayName="Enable" Type="bool" Name="scanline_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="800.0" Min="10.0" Default="200.0" Inc="1.0" Tooltip="Number of scan lines per screen height. Higher values give finer lines (higher resolution CRT look)." Row="1" Col="0" Page="15" DisplayName="Density" Type="float" Name="scanline_density">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="How dark the scan line gaps are. 0 = invisible, 1 = fully black gaps." Row="2" Col="0" Page="15" DisplayName="Intensity" Type="float" Name="scanline_intensity">
+      </Uniform>
+      <Uniform Max="1" Min="0" Default="0" Inc="1" Tooltip="Interlaced mode alternates odd/even scan line fields each frame, simulating an interlaced CRT signal" Row="3" Col="0" Page="15" Type="int" ChannelName="scanline_interlace" DisplayName="Interlace" Name="scanline_interlace" ValueType="Popup">
+         <PopupEntry Title="Off" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="On" Value="1">
+         </PopupEntry>
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- COLOUR AND GLOW – Page 16                                -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="16" Default="False" Tooltip="Enable or disable colour and glow effects" DisplayName="Enable" Type="bool" Name="color_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.02" Min="0.0" Default="0.003" Inc="0.0005" Tooltip="Radial RGB fringing that mimics a poorly-focused CRT electron gun" Row="1" Col="0" Page="16" DisplayName="Chroma Aber." Type="float" Name="color_chroma_ab">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.3" Inc="0.01" Tooltip="Phosphor bloom radius — soft glow from bright elements spreading onto neighbouring pixels" Row="2" Col="0" Page="16" DisplayName="Phosphor Bloom" Type="float" Name="color_bloom">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="Vignette darkening toward the screen edges, simulating CRT tube curvature" Row="3" Col="0" Page="16" DisplayName="Vignette" Type="float" Name="color_vignette">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Phosphor colour tint. 0 = neutral white, 1 = green P1 phosphor, 2 = amber P3 phosphor." Row="0" Col="1" Page="16" DisplayName="Phosphor Tint" Type="float" Name="color_phosphor">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Overall brightness multiplier" Row="1" Col="1" Page="16" DisplayName="Brightness" Type="float" Name="color_brightness">
+      </Uniform>
+      <Uniform ResDependent="None" Max="3.0" Min="0.0" Default="1.1" Inc="0.01" Tooltip="Contrast boost — lifts highlights and crushes shadows" Row="2" Col="1" Page="16" DisplayName="Contrast" Type="float" Name="color_contrast">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- ARTEFACTS – Page 17                                      -->
+      <!-- ======================================================== -->
+      <Uniform Row="0" Col="0" Page="17" Default="False" Tooltip="Enable or disable VHS and signal artefact effects" DisplayName="Enable" Type="bool" Name="artifact_enable">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="VHS tape dropout tears — random horizontal bands of shifted image" Row="1" Col="0" Page="17" DisplayName="VHS Tears" Type="float" Name="artifact_vhs_tears">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.3" Inc="0.01" Tooltip="Chroma bleed — colour channels smear horizontally to the left, like a poorly-calibrated VHS deck" Row="2" Col="0" Page="17" DisplayName="Color Bleed" Type="float" Name="artifact_color_bleed">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.2" Inc="0.01" Tooltip="Moire interference pattern from two slightly-offset sine grids beating against each other" Row="0" Col="1" Page="17" DisplayName="Moire" Type="float" Name="artifact_moire">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.1" Inc="0.01" Tooltip="Random static noise added to each pixel" Row="1" Col="1" Page="17" DisplayName="Static Noise" Type="float" Name="artifact_static">
+      </Uniform>
+      <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.0" Inc="0.05" Tooltip="Vertical sync roll — the image scrolls vertically as if the V-sync lock has drifted. 0 = off." Row="2" Col="1" Page="17" DisplayName="Sync Roll" Type="float" Name="artifact_sync_roll">
+      </Uniform>
+
+   </Shader>
+
+   <!-- ======================================================== -->
+   <!-- PAGE AND COLUMN DEFINITIONS                              -->
+   <!-- ======================================================== -->
+
+   <Page Name="Radar" Page="0">
+      <Col Name="Controls" Col="0" Page="0">
+      </Col>
+      <Col Name="Translation" Col="1" Page="0">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="0">
+      </Col>
+   </Page>
+
+   <Page Name="Reticle" Page="1">
+      <Col Name="Controls" Col="0" Page="1">
+      </Col>
+      <Col Name="Translation" Col="1" Page="1">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="1">
+      </Col>
+   </Page>
+
+   <Page Name="Oscilloscope" Page="2">
+      <Col Name="Controls" Col="0" Page="2">
+      </Col>
+      <Col Name="Grid" Col="1" Page="2">
+      </Col>
+      <Col Name="Translation" Col="2" Page="2">
+      </Col>
+      <Col Name="Appearance" Col="3" Page="2">
+      </Col>
+   </Page>
+
+   <Page Name="Bar Meters" Page="3">
+      <Col Name="Controls" Col="0" Page="3">
+      </Col>
+      <Col Name="Translation" Col="1" Page="3">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="3">
+      </Col>
+   </Page>
+
+   <Page Name="Data Terminal" Page="4">
+      <Col Name="Controls" Col="0" Page="4">
+      </Col>
+      <Col Name="Translation" Col="1" Page="4">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="4">
+      </Col>
+   </Page>
+
+   <Page Name="Perspective Grid" Page="5">
+      <Col Name="Controls" Col="0" Page="5">
+      </Col>
+      <Col Name="Translation" Col="1" Page="5">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="5">
+      </Col>
+   </Page>
+
+   <Page Name="Circuit Trace" Page="6">
+      <Col Name="Controls" Col="0" Page="6">
+      </Col>
+      <Col Name="Translation" Col="1" Page="6">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="6">
+      </Col>
+   </Page>
+
+   <Page Name="Corner Brackets" Page="7">
+      <Col Name="Controls" Col="0" Page="7">
+      </Col>
+      <Col Name="Translation" Col="1" Page="7">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="7">
+      </Col>
+   </Page>
+
+   <Page Name="Compass Tape" Page="8">
+      <Col Name="Controls" Col="0" Page="8">
+      </Col>
+      <Col Name="Translation" Col="1" Page="8">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="8">
+      </Col>
+   </Page>
+
+   <Page Name="Trajectory Arc" Page="9">
+      <Col Name="Controls" Col="0" Page="9">
+      </Col>
+      <Col Name="Translation" Col="1" Page="9">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="9">
+      </Col>
+   </Page>
+
+   <Page Name="Dial Gauge" Page="10">
+      <Col Name="Controls" Col="0" Page="10">
+      </Col>
+      <Col Name="Translation" Col="1" Page="10">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="10">
+      </Col>
+   </Page>
+
+   <Page Name="Light Grid" Page="11">
+      <Col Name="Controls" Col="0" Page="11">
+      </Col>
+      <Col Name="Translation" Col="1" Page="11">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="11">
+      </Col>
+   </Page>
+
+   <Page Name="Light Trail" Page="12">
+      <Col Name="Controls" Col="0" Page="12">
+      </Col>
+      <Col Name="Translation" Col="1" Page="12">
+      </Col>
+      <Col Name="Appearance" Col="2" Page="12">
+      </Col>
+      <Col Name="Cycle Colours" Col="3" Page="12">
+      </Col>
+   </Page>
+
+   <Page Name="Global Time" Page="13">
+      <Col Name="Time" Col="0" Page="13">
+      </Col>
+   </Page>
+
+   <Page Name="Screen Geometry" Page="14">
+      <Col Name="Distortion" Col="1" Page="14">
+      </Col>
+      <Col Name="Corner Pinning" Col="2" Page="14">
+      </Col>
+   </Page>
+
+   <Page Name="Scan Lines" Page="15">
+      <Col Name="Controls" Col="0" Page="15">
+      </Col>
+   </Page>
+
+   <Page Name="Colour and Glow" Page="16">
+      <Col Name="CRT Effects" Col="0" Page="16">
+      </Col>
+      <Col Name="Colour" Col="1" Page="16">
+      </Col>
+   </Page>
+
+   <Page Name="Artefacts" Page="17">
+      <Col Name="Damage" Col="0" Page="17">
+      </Col>
+      <Col Name="Noise" Col="1" Page="17">
+      </Col>
+   </Page>
+
+</ShaderNodePreset>
