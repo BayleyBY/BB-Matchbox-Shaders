@@ -214,6 +214,15 @@ uniform float trail_rot;
 uniform vec3  trail_color;
 uniform float trail_glow;
 uniform float trail_opacity;
+uniform int   trail_count;    // number of lightcycles on screen
+uniform float trail_length;   // total trail length (arc-length along the path)
+uniform float trail_fade;     // length of the fade-out at the tail
+uniform bool  trail_multicolor; // give each lightcycle its own colour
+uniform vec3  trail_col1;       // per-cycle colours (used when multicolor on)
+uniform vec3  trail_col2;
+uniform vec3  trail_col3;
+uniform vec3  trail_col4;
+uniform vec3  trail_col5;
 
 // ===========================================================================
 // Helpers
@@ -924,52 +933,112 @@ vec2 lgridUI(vec2 p, float t) {
 // ===========================================================================
 // Element: Light Trail (TRON)
 // ===========================================================================
-float trailUI(vec2 p, float t) {
-    float d = 1e9;
+// One trail segment: along-path fade + head detection. Screens this segment's
+// alpha into the per-cycle accumulator so a trail's own corners stay smooth.
+void trailSeg(vec2 ql, vec2 A, vec2 B, float distA, float segLen,
+              float headDist, float total, float tdir, float trailLen, float fadeLen, float th,
+              inout float cycA, inout vec2 headPos, inout float headFound) {
+    vec2 AB = B - A;
+    float denom = max(dot(AB, AB), 1e-9);
+    float h = clamp(dot(ql - A, AB) / denom, 0.0, 1.0);
+    float dist = length(ql - (A + AB * h));
+    float aPos = distA + h * segLen;
+    // How far this point sits behind the head, measured against travel direction
+    // (tdir) so the trail always follows the head whichever way it goes.
+    float behind = mod((headDist - aPos) * tdir, total);
+    if (behind <= trailLen) {
+        // Full brightness up to the head, fading over the last 'fadeLen'
+        float fade = clamp((trailLen - behind) / max(fadeLen, 1e-4), 0.0, 1.0);
+        float a = ov_alpha(dist - th, trail_glow) * fade;
+        cycA = 1.0 - (1.0 - cycA) * (1.0 - a);           // screen within the cycle
+    }
+    // Head position, if the head currently lies on this segment
+    if (headFound < 0.5 && headDist >= distA && headDist < distA + segLen) {
+        headPos = A + AB * ((headDist - distA) / max(segLen, 1e-9));
+        headFound = 1.0;
+    }
+}
+
+// Returns vec2(trail alpha, head glow). Each lightcycle endlessly laps a fixed
+// closed rectilinear circuit; the head advances along it, leaving a trail that
+// stays put and fades out after 'trail_length'. Path geometry depends only on
+// the cycle index, so the trail is laid down in place — only the head moves.
+// Each cycle's alpha is screened internally; cycles are summed so crossing
+// trails add/brighten instead of cutting each other out.
+vec3 trailUI(vec2 p, float t) {
+    vec3 emissive = vec3(0.0);
     float th = 0.006;
+    int   nCyc = min(max(trail_count, 1), 5);
+    float trailLen = max(trail_length, 0.02);
+    float fadeLen = min(max(trail_fade, 0.0), trailLen);   // fade region <= trail
 
-    // Multiple right-angle trail segments
-    // Trail 1 — horizontal then vertical
-    float t1 = fract(t * 0.22 + 0.0);
-    float t2 = fract(t * 0.17 + 0.4);
-    float t3 = fract(t * 0.19 + 0.7);
+    for (int ci = 0; ci < 5; ci++) {
+        if (ci >= nCyc) break;
+        float cf = float(ci);
 
-    // Three independent light trails, each a series of right-angle segments
-    // Trail A
-    {
-        float phase = t1;
-        vec2 a0 = vec2(-0.40,  0.10);
-        vec2 a1 = vec2(-0.40 + phase * 0.60,  0.10);
-        vec2 a2 = vec2(a1.x, 0.10 - phase * 0.25);
-        d = min(d, Seg(p, a0, a1) - th);
-        d = min(d, Seg(p, a1, a2) - th);
-        // Head glow
-        d = min(d, length(p - a2) - 0.014);
-    }
-    // Trail B
-    {
-        float phase = t2;
-        vec2 b0 = vec2( 0.40, -0.10);
-        vec2 b1 = vec2( 0.40 - phase * 0.55, -0.10);
-        vec2 b2 = vec2(b1.x, -0.10 + phase * 0.22);
-        d = min(d, Seg(p, b0, b1) - th);
-        d = min(d, Seg(p, b1, b2) - th);
-        d = min(d, length(p - b2) - 0.014);
-    }
-    // Trail C — diagonal-ish (two seg right angle)
-    {
-        float phase = t3;
-        vec2 c0 = vec2(-0.20, -0.30);
-        vec2 c1 = vec2(-0.20 + phase * 0.45, -0.30);
-        vec2 c2 = vec2(c1.x, -0.30 + phase * 0.40);
-        vec2 c3 = vec2(c1.x + phase * 0.15, c2.y);
-        d = min(d, Seg(p, c0, c1) - th);
-        d = min(d, Seg(p, c1, c2) - th);
-        d = min(d, Seg(p, c2, c3) - th);
-        d = min(d, length(p - c3) - 0.014);
+        // Hashed circuit dimensions — a notched-rectangle loop, all 90° turns
+        vec2 hA = Hash22(vec2(cf * 2.13 + 1.7, cf * 3.71 + 0.9));
+        vec2 hB = Hash22(vec2(cf * 1.31 + 4.2, cf * 2.07 + 2.3));
+        float W1 = 0.25 + hA.x * 0.25;
+        float H1 = 0.15 + hA.y * 0.15;
+        float H2 = 0.10 + hB.x * 0.15;
+        float W2 = 0.10 + hB.y * (W1 - 0.10) * 0.8;   // always < W1
+
+        // Closed-loop vertices, centred on the origin
+        vec2 ctr = vec2(W1 * 0.5, (H1 + H2) * 0.5);
+        vec2 V0 = vec2(0.0,     0.0)     - ctr;
+        vec2 V1 = vec2(W1,      0.0)     - ctr;
+        vec2 V2 = vec2(W1,      H1)      - ctr;
+        vec2 V3 = vec2(W1 - W2, H1)      - ctr;
+        vec2 V4 = vec2(W1 - W2, H1 + H2) - ctr;
+        vec2 V5 = vec2(0.0,     H1 + H2) - ctr;
+
+        // Segment lengths and cumulative arc-length at each vertex
+        float L0 = W1, L1 = H1, L2 = W2, L3 = H2, L4 = W1 - W2, L5 = H1 + H2;
+        float c0 = 0.0;
+        float c1 = c0 + L0;
+        float c2 = c1 + L1;
+        float c3 = c2 + L2;
+        float c4 = c3 + L3;
+        float c5 = c4 + L4;
+        float total = c5 + L5;
+
+        // Per-cycle placement, orientation, and travel direction
+        float ang = floor(Hash11(cf * 7.0 + 0.5) * 4.0) * (PI * 0.5);
+        vec2  cyclePos = (Hash22(vec2(cf * 5.5 + 3.3, cf * 4.4 + 6.6)) - 0.5) * vec2(0.6, 0.4);
+        float tdir = Hash11(cf * 9.0 + 1.1) > 0.5 ? 1.0 : -1.0;
+        vec2  ql = Rot(-ang) * (p - cyclePos);
+
+        // Head advances at constant linear speed and loops; cycles desynced
+        float headDist = mod(t * 0.4 * tdir + cf * 13.0, total);
+
+        float cycA = 0.0;
+        vec2  headPos = vec2(0.0);
+        float headFound = 0.0;
+        trailSeg(ql, V0, V1, c0, L0, headDist, total, tdir, trailLen, fadeLen, th, cycA, headPos, headFound);
+        trailSeg(ql, V1, V2, c1, L1, headDist, total, tdir, trailLen, fadeLen, th, cycA, headPos, headFound);
+        trailSeg(ql, V2, V3, c2, L2, headDist, total, tdir, trailLen, fadeLen, th, cycA, headPos, headFound);
+        trailSeg(ql, V3, V4, c3, L3, headDist, total, tdir, trailLen, fadeLen, th, cycA, headPos, headFound);
+        trailSeg(ql, V4, V5, c4, L4, headDist, total, tdir, trailLen, fadeLen, th, cycA, headPos, headFound);
+        trailSeg(ql, V5, V0, c5, L5, headDist, total, tdir, trailLen, fadeLen, th, cycA, headPos, headFound);
+
+        // Per-cycle colour from individual pickers (base Colour if disabled)
+        vec3 picked = trail_col1;
+        if      (ci == 1) picked = trail_col2;
+        else if (ci == 2) picked = trail_col3;
+        else if (ci == 3) picked = trail_col4;
+        else if (ci == 4) picked = trail_col5;
+        vec3 cycleColor = trail_multicolor ? picked : trail_color;
+        emissive += cycleColor * cycA;   // add across cycles so crossings brighten
+
+        if (headFound > 0.5) {
+            float hd = length(ql - headPos);
+            float hg = exp(-(hd * hd) / (0.022 * 0.022));
+            emissive += mix(cycleColor, vec3(1.0), 0.6) * hg;   // hot head core
+        }
     }
 
-    return d;
+    return emissive;
 }
 
 // ===========================================================================
@@ -1120,8 +1189,8 @@ void main() {
         p *= Rot(radians(trail_rot));
         p /= trail_scale;
         float lt = gTime * trail_speed + trail_time_offset;
-        float d = trailUI(p, lt);
-        col = mix(col, trail_color, ov_alpha(d, trail_glow) * trail_opacity);
+        // Per-cycle coloured trails, additive so crossings add/brighten
+        col += trailUI(p, lt) * trail_opacity;
     }
 
     gl_FragColor = vec4(col, 1.0);

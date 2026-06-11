@@ -443,6 +443,12 @@
       </Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="12" DisplayName="Time Offset" Type="float" Name="trail_time_offset">
       </Uniform>
+      <Uniform Max="5" Min="1" Default="3" Inc="1" Tooltip="Number of lightcycles on screen" Row="3" Col="0" Page="12" DisplayName="Lightcycles" Type="int" Name="trail_count">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.05" Default="0.6" Inc="0.01" Tooltip="Trail length before it fades out (how far the trail extends behind the head)" Row="4" Col="0" Page="12" DisplayName="Trail Length" Type="float" Name="trail_length">
+      </Uniform>
+      <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="0.6" Inc="0.01" Tooltip="Fade-off length at the tail. Short = abrupt cutoff; long (>= Trail Length) = fades over the whole trail" Row="5" Col="0" Page="12" DisplayName="Fade Length" Type="float" Name="trail_fade">
+      </Uniform>
 
       <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="12" DisplayName="Scale" Type="float" Name="trail_scale">
       </Uniform>
@@ -464,6 +470,49 @@
       <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="12" DisplayName="Glow" Type="float" Name="trail_glow">
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="12" DisplayName="Opacity" Type="float" Name="trail_opacity">
+      </Uniform>
+      <Uniform Row="3" Col="2" Page="12" Default="True" Tooltip="Give each lightcycle its own colour from the Cycle Colours column (off = all use Colour)" DisplayName="Multi Colour" Type="bool" Name="trail_multicolor">
+      </Uniform>
+
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 1" Row="0" Col="3" Page="12" DisplayName="Cycle 1 Colour" ValueType="Colour" Type="vec3" Name="trail_col1">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.8">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 2" Row="1" Col="3" Page="12" DisplayName="Cycle 2 Colour" ValueType="Colour" Type="vec3" Name="trail_col2">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.45">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.0">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 3" Row="2" Col="3" Page="12" DisplayName="Cycle 3 Colour" ValueType="Colour" Type="vec3" Name="trail_col3">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.85">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.1">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 4" Row="3" Col="3" Page="12" DisplayName="Cycle 4 Colour" ValueType="Colour" Type="vec3" Name="trail_col4">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.3">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.4">
+         </SubUniform>
+      </Uniform>
+      <Uniform Inc="0.01" UIConditionType="Hide" UIConditionValue="True" UIConditionSource="trail_multicolor" Tooltip="Colour of lightcycle 5" Row="4" Col="3" Page="12" DisplayName="Cycle 5 Colour" ValueType="Colour" Type="vec3" Name="trail_col5">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.2">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="0.7">
+         </SubUniform>
       </Uniform>
 
       <!-- ======================================================== -->
@@ -681,6 +730,8 @@
       <Col Name="Translation" Col="1" Page="12">
       </Col>
       <Col Name="Appearance" Col="2" Page="12">
+      </Col>
+      <Col Name="Cycle Colours" Col="3" Page="12">
       </Col>
    </Page>
 
