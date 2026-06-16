@@ -61,3 +61,16 @@ Copy the shader folder to Flame's matchbox directory:
 /opt/Autodesk/shared/matchbox/shaders/
 ```
 Each shader folder must be kept intact — the `.glsl` and `.xml` files need to be in the same directory.
+
+---
+
+## License
+
+Copyright © Bayley (BB).
+
+Except where noted below, this collection is licensed under the
+**[Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/)** license — see [`LICENSE`](LICENSE). You are free to use, modify, and redistribute these shaders, including commercially, provided you give appropriate credit and license any derivatives under the same terms.
+
+**Exception** — `BB_Seascape` is a direct port of "Seascape" by Alexander Alekseev (TDM) and retains its upstream license, **[CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)** (non-commercial, share-alike). It is **not** covered by the CC BY-SA 4.0 grant above, and its `.xml` `CommercialUsePermitted` flag is `False`.
+
+`BB_Clouds` and `BB_FutureHUD` began from Shadertoy references but were substantially rewritten as original works; they are licensed CC BY-SA 4.0, with attribution to their inspiration retained in the `.glsl` headers. `BB_RetroHUD` is an original work merely *inspired by* films and is likewise CC BY-SA 4.0.
