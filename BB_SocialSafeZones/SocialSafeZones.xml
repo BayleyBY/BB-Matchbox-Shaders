@@ -1,0 +1,85 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="0" Description="Overlays safe zone guides for social media delivery formats. Select a Delivery format, adjust overlay colour and opacity, toggle the border and UI cutouts, and use the Adjustments controls to reposition or scale the source image." Name="SocialSafeZones" LimitInputsToTexture="True" TimelineUseBack="False">
+
+   <Shader OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="Background image" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front">
+      </Uniform>
+
+      <Uniform Default="4" Inc="1" Tooltip="Social media platform and format" Row="0" Col="0" Page="0" DisplayName="Delivery" Type="int" ValueType="Popup" Name="channel">
+         <PopupEntry Title="Instagram Reels (9:16)" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Meta Feed (1:1)" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="Meta Feed (4:5)" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="Meta Stories (9:16)" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="TikTok (9:16)" Value="4">
+         </PopupEntry>
+         <PopupEntry Title="YouTube DemandGen (16:9)" Value="5">
+         </PopupEntry>
+         <PopupEntry Title="YouTube Shorts (9:16)" Value="6">
+         </PopupEntry>
+      </Uniform>
+
+      <Uniform Row="0" Col="1" Page="0" Default="True" Tooltip="Show the safe zone border outline" DisplayName="Show Border" Type="bool" Name="showBorder">
+      </Uniform>
+
+      <Uniform Row="1" Col="1" Page="0" Default="True" Tooltip="Show engagement button cutout area" DisplayName="Show Cutouts" Type="bool" Name="showButtons">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.35" Inc="0.01" Tooltip="Opacity of the unsafe zone overlay" Row="2" Col="1" Page="0" DisplayName="Overlay Opacity" Type="float" Name="overlayOpacity">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="4.0" Min="0.5" Default="2.0" Inc="0.5" Tooltip="Width of the safe zone border line" Row="3" Col="1" Page="0" DisplayName="Border Width" Type="float" Name="borderWidth">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="100.0" Min="0.0" Default="20.0" Inc="1.0" Tooltip="Radius of the rounded corners on the safe zone border in pixels. Set to 0 for sharp corners." Row="4" Col="1" Page="0" DisplayName="Corner Radius" Type="float" Name="cornerRadius">
+      </Uniform>
+
+
+      <Uniform ResDependent="None" Max="2.0" Min="0.1" Default="1.0" Inc="0.01" Tooltip="Scale the background image from center" Row="0" Col="2" Page="0" DisplayName="Scale" Type="float" Name="imgScale">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="0.5" Min="-0.5" Default="0.0" Inc="0.005" Tooltip="Shift the background image horizontally" Row="1" Col="2" Page="0" DisplayName="Offset X" Type="float" Name="imgOffsetX">
+      </Uniform>
+
+      <Uniform ResDependent="None" Max="0.5" Min="-0.5" Default="0.0" Inc="0.005" Tooltip="Shift the background image vertically" Row="2" Col="2" Page="0" DisplayName="Offset Y" Type="float" Name="imgOffsetY">
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Color of the unsafe zone overlay" Row="0" Col="0" Page="1" IconType="None" ValueType="ColourWheel" Type="vec3" DisplayName="Overlay Colour" Name="overlayColor" HueShift="False" AngleName="Hue" IntensityName1="Gain" IntensityName2="Sat">
+         <SubUniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1.0" Min="0.0" Default="0.2">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1.0" Min="0.0" Default="0.2">
+         </SubUniform>
+      </Uniform>
+
+      <Uniform Inc="0.01" Tooltip="Color of the safe zone border" Row="0" Col="1" Page="1" IconType="None" ValueType="ColourWheel" Type="vec3" DisplayName="Border Colour" Name="borderColor" HueShift="False" AngleName="Hue" IntensityName1="Gain" IntensityName2="Sat">
+         <SubUniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1.0" Min="0.0" Default="0.9">
+         </SubUniform>
+         <SubUniform ResDependent="None" Max="1.0" Min="0.0" Default="0.4">
+         </SubUniform>
+      </Uniform>
+
+   </Shader>
+
+   <Page Name="Setup" Page="0">
+      <Col Name="Destination" Col="0" Page="0">
+      </Col>
+      <Col Name="Overlays" Col="1" Page="0">
+      </Col>
+      <Col Name="Adjustments" Col="2" Page="0">
+      </Col>
+   </Page>
+
+   <Page Name="Colours" Page="1">
+      <Col Name="Overlay" Col="0" Page="1">
+      </Col>
+      <Col Name="Border" Col="1" Page="1">
+      </Col>
+   </Page>
+
+</ShaderNodePreset>

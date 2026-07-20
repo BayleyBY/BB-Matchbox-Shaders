@@ -1,0 +1,131 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2017.0.0" LimitInputsToTexture="True" Version="2" Description="Procedural bokeh generator by Bayley (BB). No input required — connect a background for compositing. Generates cinematic lens bokeh with full shape control (polygon sides, rotation, aspect, edge softness, hollow, rim brightness), color and brightness variation, optical effects (chromatic aberration, diffraction spikes with blur and length control, lens blur), depth layering (near/far with parallax drift), spatial distribution, and time-driven animation (drift, flicker, fade). Blend Mode controls how bokeh composites over the background (Add, Screen, Normal, Multiply, Overlay). Animate Time Offset to drive all motion. GLSL 120 compatible. Multipass: Pass 1 renders bokeh, Pass 2 applies lens blur." Name="BB_BokehGenerator">
+
+ <!-- ===== PASS 1: Bokeh rendering ===== -->
+ <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+
+  <Uniform Index="0" NoInput="BlackImage" Tooltip="Background image. Leave unconnected for black." DisplayName="Background" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="bg_input">
+  </Uniform>
+
+  <Uniform ResDependent="None" Max="200.0" Min="1.0" Default="40.0" Inc="1.0" Tooltip="Total number of bokeh discs. Split evenly between near and far layers." Row="0" Col="0" Page="0" Type="float" ChannelName="bokeh_count" DisplayName="Bokeh Count" Name="bokeh_count">
+  </Uniform>
+  <Uniform ResDependent="None" Max="999.0" Min="0.0" Default="0.0" Inc="1.0" Tooltip="Random seed. Change to get a different arrangement." Row="1" Col="0" Page="0" Type="float" ChannelName="rand_seed" DisplayName="Seed" Name="rand_seed">
+  </Uniform>
+  <Uniform ResDependent="None" Max="500.0" Min="1.0" Default="120.0" Inc="1.0" Tooltip="Base size of bokeh discs in pixels." Row="2" Col="0" Page="0" Type="float" ChannelName="bokeh_size" DisplayName="Size" Name="bokeh_size">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.4" Inc="0.01" Tooltip="How much size varies between bokeh." Row="3" Col="0" Page="0" Type="float" ChannelName="bokeh_size_var" DisplayName="Size Variation" Name="bokeh_size_var">
+  </Uniform>
+
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Red channel of bokeh color." Row="0" Col="1" Page="0" Type="float" ChannelName="bokeh_r" DisplayName="R" Name="bokeh_r">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.95" Inc="0.01" Tooltip="Green channel of bokeh color." Row="1" Col="1" Page="0" Type="float" ChannelName="bokeh_g" DisplayName="G" Name="bokeh_g">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.8" Inc="0.01" Tooltip="Blue channel of bokeh color." Row="2" Col="1" Page="0" Type="float" ChannelName="bokeh_b" DisplayName="B" Name="bokeh_b">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.15" Inc="0.01" Tooltip="Hue and saturation variation per bokeh." Row="3" Col="1" Page="0" Type="float" ChannelName="color_var" DisplayName="Color Variation" Name="color_var">
+  </Uniform>
+
+  <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="1.2" Inc="0.01" Tooltip="Base brightness multiplier." Row="0" Col="2" Page="0" Type="float" ChannelName="brightness" DisplayName="Brightness" Name="brightness">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.3" Inc="0.01" Tooltip="Per-bokeh brightness randomness." Row="1" Col="2" Page="0" Type="float" ChannelName="brightness_var" DisplayName="Brightness Variation" Name="brightness_var">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Master opacity for the entire effect." Row="2" Col="2" Page="0" Type="float" ChannelName="global_opacity" DisplayName="Global Opacity" Name="global_opacity">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Mix between background and full bokeh render." Row="3" Col="2" Page="0" Type="float" ChannelName="mix_amount" DisplayName="Background Mix" Name="mix_amount">
+  </Uniform>
+  <Uniform Default="1" Tooltip="How bokeh is blended over the background." Row="4" Col="2" Page="0" Type="int" ValueType="Popup" DisplayName="Blend Mode" Name="blend_mode">
+   <PopupEntry Title="Add" Value="0"></PopupEntry>
+   <PopupEntry Title="Screen" Value="1"></PopupEntry>
+   <PopupEntry Title="Normal" Value="2"></PopupEntry>
+   <PopupEntry Title="Multiply" Value="3"></PopupEntry>
+   <PopupEntry Title="Overlay" Value="4"></PopupEntry>
+  </Uniform>
+
+  <Uniform ResDependent="None" Max="12.0" Min="0.0" Default="0.0" Inc="1.0" Tooltip="Number of polygon sides. 0=circle, 3=triangle, 6=hexagon, etc." Row="0" Col="0" Page="1" Type="float" ChannelName="bokeh_sides" DisplayName="Sides (0=round)" Name="bokeh_sides">
+  </Uniform>
+  <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Base rotation angle in degrees." Row="1" Col="0" Page="1" Type="float" ChannelName="bokeh_rotation" DisplayName="Rotation" Name="bokeh_rotation">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="Per-bokeh rotation randomness. 0=all same angle, 1=fully random." Row="2" Col="0" Page="1" Type="float" ChannelName="bokeh_rotation_var" DisplayName="Rotation Variation" Name="bokeh_rotation_var">
+  </Uniform>
+  <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.01" Tooltip="Aspect ratio of each bokeh shape." Row="3" Col="0" Page="1" Type="float" ChannelName="bokeh_aspect" DisplayName="Aspect Ratio" Name="bokeh_aspect">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.15" Inc="0.01" Tooltip="0=hard aperture edge, 1=very soft glowing falloff." Row="4" Col="0" Page="1" Type="float" ChannelName="edge_softness" DisplayName="Edge Softness" Name="edge_softness">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="0=filled disc, 1=outline ring only." Row="0" Col="1" Page="1" Type="float" ChannelName="hollow_amount" DisplayName="Hollow" Name="hollow_amount">
+  </Uniform>
+  <Uniform ResDependent="None" Max="3.0" Min="0.0" Default="0.4" Inc="0.01" Tooltip="Extra brightness on the outer ring." Row="1" Col="1" Page="1" Type="float" ChannelName="rim_brightness" DisplayName="Rim Brightness" Name="rim_brightness">
+  </Uniform>
+
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="RGB fringing on bokeh edges." Row="0" Col="0" Page="2" Type="float" ChannelName="chroma_amount" DisplayName="Chromatic Aberration" Name="chroma_amount">
+  </Uniform>
+  <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Intensity of diffraction spikes." Row="1" Col="0" Page="2" Type="float" ChannelName="diff_spikes" DisplayName="Diffraction Spikes" Name="diff_spikes">
+  </Uniform>
+  <Uniform ResDependent="None" Max="16.0" Min="2.0" Default="6.0" Inc="1.0" Tooltip="Number of diffraction spikes. Usually matches Sides." Row="2" Col="0" Page="2" Type="float" ChannelName="spike_count" DisplayName="Spike Count" Name="spike_count">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Softness of spike edges. 0=razor sharp, 1=wide feathered glow." Row="3" Col="0" Page="2" Type="float" ChannelName="spike_blur" DisplayName="Spike Blur" Name="spike_blur">
+  </Uniform>
+  <Uniform ResDependent="None" Max="10.0" Min="0.1" Default="2.0" Inc="0.1" Tooltip="Length of diffraction spikes as a multiplier of bokeh size." Row="4" Col="0" Page="2" Type="float" ChannelName="spike_length" DisplayName="Spike Length" Name="spike_length">
+  </Uniform>
+
+  <Uniform ResDependent="None" Max="5.0" Min="0.1" Default="1.8" Inc="0.01" Tooltip="Size multiplier for the near bokeh layer." Row="0" Col="0" Page="3" Type="float" ChannelName="near_scale" DisplayName="Near Layer Scale" Name="near_scale">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.7" Inc="0.01" Tooltip="Opacity of the near bokeh layer." Row="1" Col="0" Page="3" Type="float" ChannelName="near_opacity" DisplayName="Near Opacity" Name="near_opacity">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Opacity of the far bokeh layer." Row="2" Col="0" Page="3" Type="float" ChannelName="far_opacity" DisplayName="Far Opacity" Name="far_opacity">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.01" Tooltip="0=uniform. Positive=more toward edges. Negative=more toward center." Row="3" Col="0" Page="3" Type="float" ChannelName="density_falloff" DisplayName="Density Falloff" Name="density_falloff">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="X center point for Density Falloff distribution. Only active when Density Falloff is non-zero." Row="0" Col="1" Page="3" Type="float" ChannelName="dist_cx" DisplayName="Distribution X" Name="dist_cx">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="Y center point for Density Falloff distribution. Only active when Density Falloff is non-zero." Row="1" Col="1" Page="3" Type="float" ChannelName="dist_cy" DisplayName="Distribution Y" Name="dist_cy">
+  </Uniform>
+
+  <Uniform ResDependent="None" Max="1000.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Drives all time-based effects. Keyframe or connect to frame number." Row="0" Col="0" Page="4" Type="float" ChannelName="time_offset" DisplayName="Time Offset" Name="time_offset">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.01" Tooltip="Horizontal drift speed. Near layer drifts faster than far." Row="1" Col="0" Page="4" Type="float" ChannelName="drift_x" DisplayName="Drift X" Name="drift_x">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.01" Tooltip="Vertical drift speed. Near layer drifts faster than far." Row="2" Col="0" Page="4" Type="float" ChannelName="drift_y" DisplayName="Drift Y" Name="drift_y">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Brightness flicker intensity. Animate Time Offset to activate." Row="3" Col="0" Page="4" Type="float" ChannelName="flicker_amount" DisplayName="Flicker Amount" Name="flicker_amount">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="How much bokeh fade in and out over time. Animate Time Offset to activate." Row="4" Col="0" Page="4" Type="float" ChannelName="fade_amount" DisplayName="Fade Amount" Name="fade_amount">
+  </Uniform>
+  <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.5" Inc="0.01" Tooltip="How much each bokeh varies in its fade speed." Row="0" Col="1" Page="4" Type="float" ChannelName="fade_variation" DisplayName="Fade Variation" Name="fade_variation">
+  </Uniform>
+
+ </Shader>
+
+ <!-- ===== PASS 2: Lens blur ===== -->
+ <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="2">
+
+  <!-- Read pass 1 output — no Index/NoInput, just texture settings -->
+  <Uniform Mipmaps="False" GL_TEXTURE_WRAP_T="GL_REPEAT" GL_TEXTURE_WRAP_S="GL_REPEAT" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="adsk_results_pass1">
+  </Uniform>
+
+  <Uniform ResDependent="None" Max="5.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Final lens blur applied to the entire output. 0=off, higher=more blur." Row="0" Col="1" Page="2" Type="float" ChannelName="lens_blur" DisplayName="Lens Blur" Name="lens_blur">
+  </Uniform>
+
+ </Shader>
+
+ <Page Name="Main" Page="0">
+  <Col Name="Count / Size" Col="0" Page="0"></Col>
+  <Col Name="Color" Col="1" Page="0"></Col>
+  <Col Name="Brightness / Blend" Col="2" Page="0"></Col>
+ </Page>
+ <Page Name="Shape" Page="1">
+  <Col Name="Shape" Col="0" Page="1"></Col>
+  <Col Name="Shape" Col="1" Page="1"></Col>
+ </Page>
+ <Page Name="Optical" Page="2">
+  <Col Name="Optical" Col="0" Page="2"></Col>
+  <Col Name="Blur" Col="1" Page="2"></Col>
+ </Page>
+ <Page Name="Distribution" Page="3">
+  <Col Name="Layers" Col="0" Page="3"></Col>
+  <Col Name="Distribution" Col="1" Page="3"></Col>
+ </Page>
+ <Page Name="Animation" Page="4">
+  <Col Name="Animation" Col="0" Page="4"></Col>
+  <Col Name="Animation" Col="1" Page="4"></Col>
+ </Page>
+
+</ShaderNodePreset>

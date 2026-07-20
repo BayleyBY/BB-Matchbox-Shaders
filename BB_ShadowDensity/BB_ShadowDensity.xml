@@ -1,0 +1,44 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Shadow density and saturation control. Uses a smooth luminance mask to isolate the shadow zone (full effect at black, fading to zero at the pivot). Shadow Lift pulls down luminance; Shadow Desat reduces saturation toward neutral grey. Both effects share the same mask so lift and desat are always spatially consistent. Supports Rec.709, Scene-Linear, ACEScg, ACEScct, and ARRI LogC4." Name="BB_ShadowDensity">
+
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+
+      <!-- Input -->
+      <Uniform Index="0" NoInput="Error" Tooltip="Source image" DisplayName="Front" InputType="Front" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="inputTexture">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- SHADOW DENSITY – Col 0                                   -->
+      <!-- ======================================================== -->
+      <Uniform Default="0" Tooltip="Input color space. Sets luminance coefficients and whether a perceptual working space conversion is applied before operations. Match to your Flame project's color science." Row="0" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Color Space" Name="colorSpace">
+         <PopupEntry Title="Rec.709" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Scene-Linear" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="ACEScg" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="ACEScct" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="ARRI LogC4" Value="4">
+         </PopupEntry>
+      </Uniform>
+      <Uniform ResDependent="None" Max="0.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Pull down shadow luminance. 0 = off, -1 = maximum density." Row="1" Col="0" Page="0" DisplayName="Shadow Lift" Type="float" Name="shadowLift">
+      </Uniform>
+      <Uniform ResDependent="None" Max="1.0" Min="0.01" Default="0.35" Inc="0.005" Tooltip="Luminance level above which the effect has no influence. Pixels at or above this threshold are completely unaffected." Row="2" Col="0" Page="0" DisplayName="Shadow Pivot" Type="float" Name="shadowPivot">
+      </Uniform>
+
+      <!-- ======================================================== -->
+      <!-- SHADOW SATURATION – Col 1                                -->
+      <!-- ======================================================== -->
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.0" Inc="0.01" Tooltip="Desaturation strength within the shadow zone. 0 = no desat, 1 = fully neutral grey in shadows. Uses the same luminance mask as Shadow Lift." Row="0" Col="1" Page="0" DisplayName="Extra Desat" Type="float" Name="shadowDesatAmount">
+      </Uniform>
+
+   </Shader>
+
+   <Page Name="Shadow" Page="0">
+      <Col Name="Density" Col="0" Page="0">
+      </Col>
+      <Col Name="Saturation" Col="1" Page="0">
+      </Col>
+   </Page>
+
+</ShaderNodePreset>
