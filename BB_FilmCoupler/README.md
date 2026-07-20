@@ -6,6 +6,12 @@ Files: `BB_FilmCoupler.glsl` + `BB_FilmCoupler.xml`
 
 ---
 
+## Why use this?
+
+Get the cross-channel colour 'life' of real film that LUTs and curves fundamentally can't reproduce — the inter-layer colour separation and edge acutance that come from film's inhibitor chemistry. Drop it into a digital or LUT-based pipeline when a film look feels flat and you want colour that actually behaves like film.
+
+---
+
 ## What It Does
 
 Colour negative film has three dye layers, and they don't develop independently. Each layer

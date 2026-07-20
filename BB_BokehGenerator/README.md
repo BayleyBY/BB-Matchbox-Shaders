@@ -7,6 +7,12 @@
 
 ---
 
+## Why use this?
+
+Add realistic, art-directable lens bokeh and defocus highlights to a shot — or build bokeh overlays from scratch — without shooting real out-of-focus elements or hunting for stock. You get direct control over aperture shape, chromatic aberration, diffraction spikes, and depth layering that captured or stock bokeh can never give you after the fact.
+
+---
+
 ## Overview
 
 Procedural bokeh generator for Autodesk Flame. Generates cinematic lens bokeh entirely from scratch — no input image required, though a background can be connected for compositing. Features shape control, optical lens character, depth layering, distribution, and time-driven animation.

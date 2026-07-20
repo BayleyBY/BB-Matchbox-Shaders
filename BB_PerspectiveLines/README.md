@@ -5,6 +5,12 @@ Files: `BB_PerspectiveLines.glsl` + `BB_PerspectiveLines.xml`
 
 ---
 
+## Why use this?
+
+Get accurate on-screen perspective, vanishing-point, and horizon guides for layout, matte painting, set extension, and alignment work — as a live, adjustable overlay you can also output as a matte. It replaces eyeballing perspective or building guide layers by hand, and keeps everything lined up to the plate.
+
+---
+
 ## What It Does
 
 Draws perspective guide lines over a source image. Two independent VP line sets support two-point perspective. A horizon line and VP widget (ring + crosshair, or off-screen arrow) round out the toolkit.

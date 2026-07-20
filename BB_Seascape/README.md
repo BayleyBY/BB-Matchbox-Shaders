@@ -9,6 +9,12 @@ Original: https://www.shadertoy.com/view/Ms2SD1
 
 ---
 
+## Why use this?
+
+Generate a fully CG animated ocean with no plates or fluid sims — art-directable waves, choppiness, lighting, and a hand-controllable camera. Reach for it when you need a seascape background, set extension, or establishing shot and can't (or don't want to) shoot or simulate the real thing.
+
+---
+
 ## What It Does
 
 Raymarches a procedural ocean surface with a physically-based lighting model. Generates sky, water, fresnel reflection, specular highlights, and animated waves entirely in GLSL — no source footage needed. Camera position and angle are fully manual, making it easy to lock off a frame or animate a camera move by keyframing sliders in Flame.

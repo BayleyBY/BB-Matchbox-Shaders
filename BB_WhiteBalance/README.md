@@ -6,6 +6,12 @@ Files: `BB_WhiteBalance.glsl` + `BB_WhiteBalance.xml`
 
 ---
 
+## Why use this?
+
+Fix colour casts — and especially mixed lighting, like warm practicals against a cool window — in a single node, using proper chromatic adaptation that keeps skin and saturated colours natural. A single global white balance or a channel-gain temperature slider can't neutralise two light sources at once; the dual-illuminant shadow/highlight balance can.
+
+---
+
 ## What It Does
 
 Corrects colour casts and mixed lighting the *right* way. Instead of naive per-channel gains,

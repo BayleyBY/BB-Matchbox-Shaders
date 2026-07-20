@@ -6,6 +6,12 @@ Files: `BB_PathToWhite.glsl` + `BB_PathToWhite.xml`
 
 ---
 
+## Why use this?
+
+Fix the ugly way saturated colours shear as they blow out — blue LEDs and skies going cyan, skin and fire going lemon-yellow. It's a highlight-only hue control that neither Flame nor Resolve exposes, so you can hold a colour true right into the clip instead of masking and hand-fixing every hot highlight.
+
+---
+
 ## What It Does
 
 When a saturated color climbs toward white it *has* to lose saturation — but the hue

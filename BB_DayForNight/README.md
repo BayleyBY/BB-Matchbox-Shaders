@@ -6,6 +6,12 @@ Files: `BB_DayForNight.glsl` + `BB_DayForNight.xml`
 
 ---
 
+## Why use this?
+
+Turn daytime footage into believable night in a single node. Its physically-based rod-vision response — reds go dark, blues brighten, detail softens — looks like real night vision rather than the flat 'crush the blacks and tint blue' that instantly reads as fake, so the day-for-night holds up on screen.
+
+---
+
 ## What It Does
 
 Turns daytime footage into convincing night by modelling how human vision actually behaves in
