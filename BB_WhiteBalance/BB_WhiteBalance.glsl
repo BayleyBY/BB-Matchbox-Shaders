@@ -11,7 +11,8 @@
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
 
-// 0 = Rec.709 (sRGB gamma), 1 = Scene-Linear (Rec.709 primaries), 2 = ACEScg (AP1)
+// 0 = Rec.709 (sRGB gamma), 1 = Scene-Linear (Rec.709 primaries),
+// 2 = ACEScg (AP1 linear), 3 = ACEScct (AP1 log)
 uniform int colorSpace;
 
 uniform float temp;        // global temperature: + warms, - cools
@@ -38,6 +39,19 @@ vec3 srgb2lin(vec3 c) {
 vec3 lin2srgb(vec3 c) {
     c = clamp(c, 0.0, 1.0);
     return mix(c * 12.92, 1.055 * pow(c, vec3(1.0 / 2.4)) - 0.055, step(0.0031308, c));
+}
+
+// ACEScct log encoding (AP1 primaries) <-> linear. max() guards log2 against NaN
+// (mix evaluates both branches, and NaN*0 would poison the linear-segment result).
+vec3 acescct2lin(vec3 c) {
+    return mix((c - 0.0729055341958355) / 10.5402377416545,
+               exp2(c * 17.52 - 9.72),
+               step(0.155251141552511, c));
+}
+vec3 lin2acescct(vec3 c) {
+    return mix(10.5402377416545 * c + 0.0729055341958355,
+               (log2(max(c, 1e-10)) + 9.72) / 17.52,
+               step(0.0078125, c));
 }
 
 // Planckian locus: correlated colour temperature -> CIE xy (Kim et al. approximation)
@@ -67,11 +81,13 @@ void main() {
     vec4 tex = texture2D(front, uv);
     vec3 c = tex.rgb;
 
-    vec3 lin = (colorSpace == 0) ? srgb2lin(c) : c;
+    vec3 lin = (colorSpace == 0) ? srgb2lin(c)
+             : (colorSpace == 3) ? acescct2lin(c)
+             : c;
 
     mat3 A, B; vec3 lumaCoeff;
-    if (colorSpace == 2) { A = A_AP1;  B = B_AP1;  lumaCoeff = vec3(0.2722, 0.6741, 0.0537); }
-    else                 { A = A_SRGB; B = B_SRGB; lumaCoeff = vec3(0.2126, 0.7152, 0.0722); }
+    if (colorSpace == 2 || colorSpace == 3) { A = A_AP1;  B = B_AP1;  lumaCoeff = vec3(0.2722, 0.6741, 0.0537); }
+    else                                    { A = A_SRGB; B = B_SRGB; lumaCoeff = vec3(0.2126, 0.7152, 0.0722); }
 
     // Destination = working neutral (temp=0, tint=0) -> guarantees identity at default
     vec3 coneDst = Ma * whiteXYZ(0.0, 0.0);
@@ -92,6 +108,8 @@ void main() {
 
     outLin = mix(lin, outLin, strength);
 
-    vec3 outc = (colorSpace == 0) ? lin2srgb(outLin) : outLin;
+    vec3 outc = (colorSpace == 0) ? lin2srgb(outLin)
+              : (colorSpace == 3) ? lin2acescct(outLin)
+              : outLin;
     gl_FragColor = vec4(outc, tex.a);
 }

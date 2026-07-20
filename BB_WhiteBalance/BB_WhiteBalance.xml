@@ -13,6 +13,8 @@
          </PopupEntry>
          <PopupEntry Title="ACEScg" Value="2">
          </PopupEntry>
+         <PopupEntry Title="ACEScct" Value="3">
+         </PopupEntry>
       </Uniform>
       <Uniform Max="100.0" Min="-100.0" Default="0.0" Inc="0.5" Tooltip="Temperature: positive warms the image (counters a blue cast), negative cools it" Row="1" Col="0" Page="0" Type="float" ChannelName="temp" DisplayName="Temperature" Name="temp">
       </Uniform>

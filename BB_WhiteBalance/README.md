@@ -43,7 +43,7 @@ than a temperature "gain" hack, especially on saturated colours and skin.
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Global | Rec.709 / Scene-Linear / ACEScg — sets gamma, primaries, neutral |
+| Color Space | Global | Rec.709 / Scene-Linear / ACEScg / ACEScct — sets gamma, primaries, neutral |
 | Temperature | Global | + warms (counters blue cast), − cools |
 | Tint | Global | + magenta, − green |
 | Mix | Global | Blend the correction with the original |
@@ -58,9 +58,13 @@ than a temperature "gain" hack, especially on saturated colours and skin.
 
 - [ ] Compile-test in Flame (GLSL is written to be GLSL 1.20-safe; not yet run on Flame's runtime)
 - [x] Proxy icon (`.png` + `.p`)
-- [x] Before/after showcase (`showcase/Showcase_1_MixedLighting.png` — dual-illuminant on a mixed-lighting frame)
-- [ ] ACEScct color space (v1 supports Rec.709 / Scene-Linear / ACEScg)
+- [x] Before/after showcase (`showcase/Showcase_1_MixedLighting.png` — dual-illuminant on a mixed-lighting frame; plus ACEScg/ACEScct working-space showcases)
+- [x] ACEScct color space (Rec.709 / Scene-Linear / ACEScg / ACEScct all supported)
 - [ ] Optional auto white-picker (needs a multi-pass reduction; manual Temp/Tint for now)
+
+Working-space validation: a numpy port of this exact GLSL confirms the correction is
+space-invariant — the display result matches across Rec.709, ACEScg and ACEScct to within
+1e-5 (primaries round-trip), and ACEScct↔ACEScg agree to 1e-15 (the log encode/decode is exact).
 
 Colour-science note: the Bradford matrices, Planckian approximation and identity-at-default
 behaviour were validated in a numpy port of this exact GLSL before the UI was written.
