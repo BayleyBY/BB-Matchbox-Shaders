@@ -53,8 +53,8 @@ than a temperature "gain" hack, especially on saturated colours and skin.
 | Temperature | Global | + warms (counters blue cast), − cools |
 | Tint | Global | + magenta, − green |
 | Mix | Global | Blend the correction with the original |
-| Use Sampler | Global | Enable the neutral sampler (colour eyedropper) |
-| Sample Neutral | Global (colour swatch) | Sample a colour that should be neutral grey/white with the swatch eyedropper (or set it manually); the image is balanced so that colour reads neutral. Temperature/Tint still trim on top |
+| Use Sampler | Sampler page | Enable the neutral sampler (colour eyedropper) |
+| Sample Neutral | Sampler page (colour swatch) | Sample a colour that should be neutral grey/white with the swatch eyedropper (or set it manually); the image is balanced so that colour reads neutral. Temperature/Tint still trim on top |
 | Dual-Illuminant | Global | Enable independent shadow / highlight balance |
 | Split Pivot / Softness | Global | Luminance split point and transition width (dual mode) |
 | Temperature / Tint | Zones → Shadows | Offset added to the global balance in the shadows |
