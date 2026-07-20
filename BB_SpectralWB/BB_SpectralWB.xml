@@ -1,0 +1,57 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2020.0.0" LimitInputsToTexture="True" Version="2" Description="Spectral white balance - reconstructs a plausible reflectance spectrum per pixel and re-lights it under a target illuminant, instead of a tristimulus tint. Captures spectral behaviour a matrix cannot: recovering colour under spiky/low-CRI sources (sodium, fluorescent, cheap LED) and their metameric colour-collapse. Source = Target is an exact identity. Heaviest shader in the set." Name="BB_SpectralWB">
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="Input image" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front" InputType="Front">
+      </Uniform>
+
+      <!-- Col 0: Source (the light the footage was shot under) -->
+      <Uniform Default="0" Tooltip="Input color space - sets the gamma decode" Row="0" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Color Space" Name="colorSpace">
+         <PopupEntry Title="Rec.709" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Scene-Linear" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform Default="1" Tooltip="The illuminant the footage was actually shot under" Row="1" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Source Light" Name="srcIllum">
+         <PopupEntry Title="Tungsten (3200K)" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Daylight (D65)" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="Custom Kelvin" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="Sodium Vapor" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="White LED" Value="4">
+         </PopupEntry>
+         <PopupEntry Title="Fluorescent" Value="5">
+         </PopupEntry>
+      </Uniform>
+      <Uniform Max="12000.0" Min="2000.0" Default="6500.0" Inc="50.0" Tooltip="Colour temperature when Source Light = Custom Kelvin" Row="2" Col="0" Page="0" Type="float" ChannelName="srcKelvin" DisplayName="Source Kelvin" Name="srcKelvin">
+      </Uniform>
+
+      <!-- Col 1: Target (re-render under this light) -->
+      <Uniform Default="1" Tooltip="The illuminant to re-render the scene under (usually neutral daylight)" Row="0" Col="1" Page="0" Type="int" ValueType="Popup" DisplayName="Target Light" Name="tgtIllum">
+         <PopupEntry Title="Tungsten (3200K)" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Daylight (D65)" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="Custom Kelvin" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="Sodium Vapor" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="White LED" Value="4">
+         </PopupEntry>
+         <PopupEntry Title="Fluorescent" Value="5">
+         </PopupEntry>
+      </Uniform>
+      <Uniform Max="12000.0" Min="2000.0" Default="6500.0" Inc="50.0" Tooltip="Colour temperature when Target Light = Custom Kelvin" Row="1" Col="1" Page="0" Type="float" ChannelName="tgtKelvin" DisplayName="Target Kelvin" Name="tgtKelvin">
+      </Uniform>
+      <Uniform Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Blend the spectral correction with the original" Row="2" Col="1" Page="0" Type="float" ChannelName="mixAmount" DisplayName="Amount" Name="mixAmount">
+      </Uniform>
+   </Shader>
+
+   <Page Name="Spectral White Balance" Page="0">
+      <Col Name="Source" Col="0" Page="0">
+      </Col>
+      <Col Name="Target" Col="1" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
