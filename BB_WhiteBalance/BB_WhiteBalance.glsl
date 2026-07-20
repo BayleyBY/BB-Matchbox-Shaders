@@ -25,8 +25,8 @@ uniform float splitSoftness;
 uniform float shadowTemp, shadowTint;   // offsets added to global in shadows
 uniform float highTemp,   highTint;     // offsets added to global in highlights
 
-uniform bool  pickerEnable;   // sample a neutral point and balance so it reads neutral
-uniform vec2  pickerPos;      // normalized 0-1 pick location on the image
+uniform bool  pickerEnable;   // balance so a sampled colour reads neutral
+uniform vec3  pickerColor;    // sampled colour that should be neutral (swatch eyedropper)
 
 // --- Bradford cone-response matrix and per-space primaries transforms ---
 // A: working RGB -> Bradford cone.  B: cone -> working RGB.  (B*A == identity)
@@ -95,21 +95,16 @@ void main() {
     // Destination = working neutral (temp=0, tint=0) -> guarantees identity at default
     vec3 coneDst = Ma * whiteXYZ(0.0, 0.0);
 
-    // Neutral picker: sample the image at the handle and build a chromatic adaptation
-    // that maps the picked colour to neutral. Composes with Temperature/Tint (both are
-    // diagonal in the same Bradford cone space, so they multiply).
+    // Neutral sampler: take the sampled colour and build a chromatic adaptation that maps
+    // it to neutral RGB. Composes with Temperature/Tint (both are diagonal in the same
+    // Bradford cone space, so they multiply). Sampling white (default) is an exact identity.
     vec3 Rpick = vec3(1.0);
     if (pickerEnable) {
-        vec2 texel = 1.0 / vec2(adsk_result_w, adsk_result_h);
-        vec3 s = texture2D(front, pickerPos).rgb
-               + texture2D(front, pickerPos + vec2(texel.x, 0.0)).rgb
-               + texture2D(front, pickerPos - vec2(texel.x, 0.0)).rgb
-               + texture2D(front, pickerPos + vec2(0.0, texel.y)).rgb
-               + texture2D(front, pickerPos - vec2(0.0, texel.y)).rgb;
-        s /= 5.0;
-        vec3 sl = (colorSpace == 0) ? srgb2lin(s) : (colorSpace == 3) ? acescct2lin(s) : s;
+        vec3 sl = (colorSpace == 0) ? srgb2lin(pickerColor)
+                : (colorSpace == 3) ? acescct2lin(pickerColor)
+                : pickerColor;
         sl /= max(dot(sl, lumaCoeff), 1e-5);   // unit luma => chroma-only (no exposure shift)
-        Rpick = coneDst / (A * sl);            // A*sl == picked white in Bradford cone space
+        Rpick = (A * vec3(1.0)) / (A * sl);    // map the sampled colour to neutral (R=G=B)
     }
 
     vec3 D;

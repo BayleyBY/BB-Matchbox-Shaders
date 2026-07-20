@@ -22,11 +22,12 @@
       </Uniform>
       <Uniform Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Mix the corrected result with the original" Row="3" Col="0" Page="0" Type="float" ChannelName="strength" DisplayName="Mix" Name="strength">
       </Uniform>
-      <Uniform Default="False" Tooltip="Neutral picker: drag the on-screen handle onto something that should be neutral grey/white; the image is balanced so it reads neutral. Temperature/Tint still trim on top." Row="4" Col="0" Page="0" Type="bool" DisplayName="Use Picker" Name="pickerEnable">
+      <Uniform Default="False" Tooltip="Neutral sampler: sample a colour that should be neutral grey/white (use the swatch eyedropper on the image); the image is balanced so that colour reads neutral. Temperature/Tint still trim on top." Row="4" Col="0" Page="0" Type="bool" DisplayName="Use Sampler" Name="pickerEnable">
       </Uniform>
-      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="pickerEnable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Row="5" Col="0" Page="0" DisplayName="Pick Neutral" Type="vec2" Name="pickerPos">
-         <SubUniform Default="0.5" Min="-1.0" Max="2.0" ResDependent="None"/>
-         <SubUniform Default="0.5" Min="-1.0" Max="2.0" ResDependent="None"/>
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="pickerEnable" Inc="0.01" Row="5" Col="0" Page="0" DisplayName="Sample Neutral" Tooltip="Sample a colour that should be neutral (swatch eyedropper), or set it manually" ValueType="Colour" Type="vec3" Name="pickerColor">
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"/>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"/>
+         <SubUniform ResDependent="None" Max="1000000.0" Min="-1000000.0" Default="1.0"/>
       </Uniform>
 
       <!-- Col 1: Dual-Illuminant -->
