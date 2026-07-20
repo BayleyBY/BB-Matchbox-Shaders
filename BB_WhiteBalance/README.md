@@ -34,6 +34,11 @@ highlight-only [BB_PathToWhite] shader deliberately can't address.
    (global Temperature/Tint plus per-zone offsets) and blended by a luminance mask
    (Split Pivot + Softness).
 
+The **neutral picker** samples the image under the on-screen handle, normalises it to unit
+luminance (so it's a chroma-only correction, no exposure shift), and builds an adaptation that
+maps that colour to neutral. Because it's also diagonal in Bradford cone space, it composes with
+Temperature/Tint by multiplication — pick a rough neutral, then trim to taste.
+
 Because it works through a proper cone-space adaptation, it holds hue relationships far better
 than a temperature "gain" hack, especially on saturated colours and skin.
 
@@ -47,6 +52,8 @@ than a temperature "gain" hack, especially on saturated colours and skin.
 | Temperature | Global | + warms (counters blue cast), − cools |
 | Tint | Global | + magenta, − green |
 | Mix | Global | Blend the correction with the original |
+| Use Picker | Global | Enable the neutral picker (eyedropper) |
+| Pick Neutral | Global (canvas handle) | Drag onto something that should be neutral grey/white; the image is balanced so it reads neutral. Temperature/Tint still trim on top |
 | Dual-Illuminant | Global | Enable independent shadow / highlight balance |
 | Split Pivot / Softness | Global | Luminance split point and transition width (dual mode) |
 | Temperature / Tint | Zones → Shadows | Offset added to the global balance in the shadows |
@@ -58,9 +65,10 @@ than a temperature "gain" hack, especially on saturated colours and skin.
 
 - [ ] Compile-test in Flame (GLSL is written to be GLSL 1.20-safe; not yet run on Flame's runtime)
 - [x] Proxy icon (`.png` + `.p`)
-- [x] Before/after showcase (`showcase/Showcase_1_MixedLighting.png` — dual-illuminant on a mixed-lighting frame; plus ACEScg/ACEScct working-space showcases)
+- [x] Before/after showcase (`showcase/Showcase_1_MixedLighting.png` — dual-illuminant; plus ACEScg/ACEScct working-space and neutral-picker showcases)
 - [x] ACEScct color space (Rec.709 / Scene-Linear / ACEScg / ACEScct all supported)
-- [ ] Optional auto white-picker (needs a multi-pass reduction; manual Temp/Tint for now)
+- [x] Neutral picker (single-pass eyedropper — drop the handle on a neutral; Temperature/Tint trim on top)
+- [ ] Fully-automatic gray-world / white-patch (needs a multi-pass reduction; the manual picker covers most cases)
 
 Working-space validation: a numpy port of this exact GLSL confirms the correction is
 space-invariant — the display result matches across Rec.709, ACEScg and ACEScct to within

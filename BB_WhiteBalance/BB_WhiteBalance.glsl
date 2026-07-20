@@ -25,6 +25,9 @@ uniform float splitSoftness;
 uniform float shadowTemp, shadowTint;   // offsets added to global in shadows
 uniform float highTemp,   highTint;     // offsets added to global in highlights
 
+uniform bool  pickerEnable;   // sample a neutral point and balance so it reads neutral
+uniform vec2  pickerPos;      // normalized 0-1 pick location on the image
+
 // --- Bradford cone-response matrix and per-space primaries transforms ---
 // A: working RGB -> Bradford cone.  B: cone -> working RGB.  (B*A == identity)
 const mat3 Ma     = mat3(0.8951000, -0.7502000, 0.0389000, 0.2664000, 1.7135000, -0.0685000, -0.1614000, 0.0367000, 1.0296000);
@@ -92,15 +95,32 @@ void main() {
     // Destination = working neutral (temp=0, tint=0) -> guarantees identity at default
     vec3 coneDst = Ma * whiteXYZ(0.0, 0.0);
 
+    // Neutral picker: sample the image at the handle and build a chromatic adaptation
+    // that maps the picked colour to neutral. Composes with Temperature/Tint (both are
+    // diagonal in the same Bradford cone space, so they multiply).
+    vec3 Rpick = vec3(1.0);
+    if (pickerEnable) {
+        vec2 texel = 1.0 / vec2(adsk_result_w, adsk_result_h);
+        vec3 s = texture2D(front, pickerPos).rgb
+               + texture2D(front, pickerPos + vec2(texel.x, 0.0)).rgb
+               + texture2D(front, pickerPos - vec2(texel.x, 0.0)).rgb
+               + texture2D(front, pickerPos + vec2(0.0, texel.y)).rgb
+               + texture2D(front, pickerPos - vec2(0.0, texel.y)).rgb;
+        s /= 5.0;
+        vec3 sl = (colorSpace == 0) ? srgb2lin(s) : (colorSpace == 3) ? acescct2lin(s) : s;
+        sl /= max(dot(sl, lumaCoeff), 1e-5);   // unit luma => chroma-only (no exposure shift)
+        Rpick = coneDst / (A * sl);            // A*sl == picked white in Bradford cone space
+    }
+
     vec3 D;
     if (dualEnable) {
-        vec3 Dsh = coneDst / (Ma * whiteXYZ(temp + shadowTemp, tint + shadowTint));
-        vec3 Dhi = coneDst / (Ma * whiteXYZ(temp + highTemp,   tint + highTint));
+        vec3 Dsh = Rpick * coneDst / (Ma * whiteXYZ(temp + shadowTemp, tint + shadowTint));
+        vec3 Dhi = Rpick * coneDst / (Ma * whiteXYZ(temp + highTemp,   tint + highTint));
         float l = dot(clamp(lin, 0.0, 1.0), lumaCoeff);
         float m = smoothstep(splitPivot - splitSoftness, splitPivot + splitSoftness, l);
         D = mix(Dsh, Dhi, m);
     } else {
-        D = coneDst / (Ma * whiteXYZ(temp, tint));
+        D = Rpick * coneDst / (Ma * whiteXYZ(temp, tint));
     }
 
     vec3 cone = A * lin;

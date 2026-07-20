@@ -22,6 +22,12 @@
       </Uniform>
       <Uniform Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Mix the corrected result with the original" Row="3" Col="0" Page="0" Type="float" ChannelName="strength" DisplayName="Mix" Name="strength">
       </Uniform>
+      <Uniform Default="False" Tooltip="Neutral picker: drag the on-screen handle onto something that should be neutral grey/white; the image is balanced so it reads neutral. Temperature/Tint still trim on top." Row="4" Col="0" Page="0" Type="bool" DisplayName="Use Picker" Name="pickerEnable">
+      </Uniform>
+      <Uniform UIConditionType="Hide" UIConditionValue="True" UIConditionSource="pickerEnable" IconDefaultState="True" IconType="Axis" ValueType="Position" Inc="0.001" Row="5" Col="0" Page="0" DisplayName="Pick Neutral" Type="vec2" Name="pickerPos">
+         <SubUniform Default="0.5" Min="-1.0" Max="2.0" ResDependent="None"/>
+         <SubUniform Default="0.5" Min="-1.0" Max="2.0" ResDependent="None"/>
+      </Uniform>
 
       <!-- Col 1: Dual-Illuminant -->
       <Uniform Default="False" Tooltip="Enable independent white balance for shadows and highlights (mixed-lighting fix)" Row="0" Col="1" Page="0" Type="bool" DisplayName="Dual-Illuminant" Name="dualEnable">
