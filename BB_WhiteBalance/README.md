@@ -68,6 +68,25 @@ than a temperature "gain" hack, especially on saturated colours and skin.
 
 ---
 
+## Recommended Pipeline Order
+
+This is a **corrective** tool — a white balance — so it belongs *early*, at the front of the chain,
+not at the finishing end:
+
+1. **BB_WhiteBalance** — neutralise the cast first, on a clean scene-referred / linear signal before
+   heavy contrast or saturation moves. The Bradford adaptation is most predictable on raw scene
+   colour; if you're also using [BB_SpectralWB] for a spiky source, that spectral pass comes first
+   and this trims on top.
+2. **Primary grade** — exposure, contrast, creative colour, now that the scene reads neutral.
+3. **Look / finishing** — print emulation, [BB_FilmCoupler], halation, grain. Film-colour "life"
+   effects come *after* the image is correct.
+
+Set **Color Space** to match the image *at this point in the chain* (Rec.709 / Scene-Linear /
+ACEScg / ACEScct) so the gamma decode, primaries and neutral are correct — the correction itself is
+space-invariant, but it has to know what it's being fed.
+
+---
+
 ## Status / TODO
 
 - [ ] Compile-test in Flame (GLSL is written to be GLSL 1.20-safe; not yet run on Flame's runtime)
