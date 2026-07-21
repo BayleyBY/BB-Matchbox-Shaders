@@ -12,6 +12,10 @@ The root `README.md` holds the per-shader catalog (what each `BB_*` shader does 
 
 The collection is **CC BY-SA 4.0** (see `LICENSE`). The one exception is `BB_Seascape`, a direct port that keeps its upstream **CC BY-NC-SA 3.0** (non-commercial) license — never relicense it as CC BY-SA, and its XML `CommercialUsePermitted` must stay `False`. When porting a new shader from third-party work, keep the upstream attribution header in the `.glsl`; if the port stays a derivative under a non-commercial/share-alike license, add it to the README License-section exception and set `CommercialUsePermitted="False"`.
 
+## Distribution
+
+The collection is shared with the Flame community at **logik-matchbook.org/sharing** by **manually uploading** shaders there. Publishing is not automated — pushing to GitHub does not publish anything, and after changing a shader the matchbook copy must be re-uploaded by hand. Matchbook sorts by filename, so every shader's files and XML `Name=` must carry the `BB_` prefix.
+
 ## Tools
 
 ### make_proxy — generate thumbnail icons
@@ -168,6 +172,16 @@ Newer shaders carry a `showcase/` subdirectory of before/after and scene PNGs (r
 The conventions above are the intended standard, but existing shaders are not fully consistent — match a shader's *own* existing pattern when editing it rather than assuming the standard:
 - `BB_SocialSafeZones` is single-pass yet uses the multi-pass `.1.glsl` naming (its XML has only one `<Shader Index="1">` block) — the `.N` suffix does not guarantee multiple passes.
 - `BB_Clouds` is multi-pass yet its icon is `BB_Clouds.glsl.png` (not `.1.glsl.png`). Whichever `.glsl` filename the PNG stem matches is the one Flame reads the icon from.
+
+## Colour-managed shaders (the colour-science set)
+
+All eleven colour-science shaders (BB_WhiteBalance, BB_SpectralWB, BB_ColorDensity, BB_ShadowDensity, BB_MelaninHemoglobin, BB_PathToWhite, BB_FilmCoupler, BB_SpectralFilter, BB_DayForNight, BB_ViewingCondition, BB_ColorDiagnostics) share a colour-management convention:
+
+- A `colorSpace` int popup selects the input encoding. The enum range varies per shader (some support only `0=Rec.709, 1=Scene-Linear`; others add `2=ACEScg, 3=ACEScct`; BB_ShadowDensity adds `4=ARRI LogC4`) — the XML `PopupEntry Value`s must stay in sync with the `if (colorSpace == N)` chains in that shader's GLSL.
+- In the density shaders, operations run in a perceptual working space: linear inputs (Scene-Linear, ACEScg) are encoded to γ2.4 first and decoded back at the end; already-perceptual inputs (Rec.709, ACEScct, LogC4) operate in place.
+- Output clamping applies to Rec.709 only — never clamp linear or log spaces.
+- Luminance coefficients must match the input's primaries: Rec.709 vs. AP1 (ACEScg/ACEScct) vs. AWG4 (LogC4). The AWG4 blue coefficient is negative — that follows the ARRI spec (eq. 5a), not a bug.
+- The ARRI LogC4 maths come from the official spec PDF kept (untracked) at the repo root: `2022-05-arri-logc4-specification-data.pdf`.
 
 ## Multi-element HUD shaders (BB_RetroHUD, BB_FutureHUD)
 
