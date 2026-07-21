@@ -5,12 +5,6 @@ Files: `BB_ShadowDensity.glsl` + `BB_ShadowDensity.xml`
 
 ---
 
-## Why use this?
-
-Add spatially-consistent depth and density to shadows — a coordinated luminance pull-down and desaturation on a smooth shadow mask — without dragging down your midtones. It's a cleaner, more filmic way to weight shadows than a lift wheel or a keyed qualifier, and the lift and desaturation always stay in register.
-
----
-
 ## What It Does
 
 Applies density (luminance pull-down) and desaturation independently within the shadow zone of an image. A smooth luminance mask isolates the affected region — full strength at black, fading smoothly to zero at a user-defined pivot — so midtones and highlights above the pivot are completely untouched. Both effects are driven by the same derived mask, ensuring lift and desat always track the same spatial region. Supports Rec.709, Scene-Linear, ACEScg, ACEScct, and ARRI LogC4 (AWG4) color spaces.

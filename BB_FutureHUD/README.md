@@ -6,12 +6,6 @@ Ported and extended from "Future HUD" on Shadertoy.
 
 ---
 
-## Why use this?
-
-Build animated sci-fi and tech HUD graphics right inside Flame — no round-trip to a motion-graphics app and no generic stock HUD packs. Dozens of individually controllable, keyframable elements let you tailor the readout to your shot, screen, or hero prop instead of compositing someone else's template.
-
----
-
 ## Pages Overview
 
 | Page | Name | Contents |

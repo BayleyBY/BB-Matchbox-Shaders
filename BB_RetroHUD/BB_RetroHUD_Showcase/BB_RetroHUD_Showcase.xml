@@ -1,11 +1,11 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Use to overlay a retro sci-fi HUD of animated elements with a CRT/old-TV finish." Name="BB_RetroHUD">
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Showcase of BB_RetroHUD - all 13 HUD elements enabled, scaled, and tiled across the frame so every element is visible at once. Circuit Trace is a faint full-frame backdrop. Reference/overview of the element library." Name="BB_RetroHUD_Showcase">
 
    <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
 
       <!-- ======================================================== -->
       <!-- RADAR – Page 0                                           -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="0" Default="False" Tooltip="Show or hide the radar element" DisplayName="Enable" Type="bool" Name="radar_enable">
+      <Uniform Row="0" Col="0" Page="0" Default="True" Tooltip="Show or hide the radar element" DisplayName="Enable" Type="bool" Name="radar_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.5" Inc="0.05" Tooltip="Sweep arm rotation speed. Negative values reverse direction." Row="1" Col="0" Page="0" DisplayName="Speed" Type="float" Name="radar_speed">
       </Uniform>
@@ -16,11 +16,11 @@
       <Uniform ResDependent="None" Max="12" Min="0" Default="6" Inc="1" Tooltip="Number of random blip contacts shown on the radar screen. Blips glow brightly when the sweep arm passes over them and fade over the next 270 degrees." Row="4" Col="0" Page="0" DisplayName="Blips" Type="int" Name="radar_blips">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="0" DisplayName="Scale" Type="float" Name="radar_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.3" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="0" DisplayName="Scale" Type="float" Name="radar_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="0" DisplayName="Pos X" Type="float" Name="radar_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.72" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="0" DisplayName="Pos X" Type="float" Name="radar_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="0" DisplayName="Pos Y" Type="float" Name="radar_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="0" DisplayName="Pos Y" Type="float" Name="radar_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="0" DisplayName="Rotate Z" Type="float" Name="radar_rot">
       </Uniform>
@@ -41,18 +41,18 @@
       <!-- ======================================================== -->
       <!-- RETICLE – Page 1                                         -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="1" Default="False" Tooltip="Show or hide the targeting reticle" DisplayName="Enable" Type="bool" Name="reticle_enable">
+      <Uniform Row="0" Col="0" Page="1" Default="True" Tooltip="Show or hide the targeting reticle" DisplayName="Enable" Type="bool" Name="reticle_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="0.3" Inc="0.05" Tooltip="Inner ring rotation speed" Row="1" Col="0" Page="1" DisplayName="Speed" Type="float" Name="reticle_speed">
       </Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="1" DisplayName="Time Offset" Type="float" Name="reticle_time_offset">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="1" DisplayName="Scale" Type="float" Name="reticle_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.34" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="1" DisplayName="Scale" Type="float" Name="reticle_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="1" DisplayName="Pos X" Type="float" Name="reticle_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.36" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="1" DisplayName="Pos X" Type="float" Name="reticle_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="1" DisplayName="Pos Y" Type="float" Name="reticle_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="1" DisplayName="Pos Y" Type="float" Name="reticle_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="1" DisplayName="Rotate Z" Type="float" Name="reticle_rot">
       </Uniform>
@@ -73,7 +73,7 @@
       <!-- ======================================================== -->
       <!-- OSCILLOSCOPE – Page 2                                    -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="2" Default="False" Tooltip="Show or hide the oscilloscope display" DisplayName="Enable" Type="bool" Name="oscope_enable">
+      <Uniform Row="0" Col="0" Page="2" Default="True" Tooltip="Show or hide the oscilloscope display" DisplayName="Enable" Type="bool" Name="oscope_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Sine wave 1 scroll speed. Also controls speed in Lissajous and Pulse modes." Row="1" Col="0" Page="2" DisplayName="Wave 1 Speed" Type="float" Name="oscope_speed">
       </Uniform>
@@ -94,11 +94,11 @@
       <Uniform UIConditionType="Hide" UIConditionSource="oscope_enable" UIConditionValue="True" ResDependent="None" Max="0.8" Min="0.05" Default="0.28" Inc="0.01" Tooltip="Height of the oscilloscope screen — extends the frame and adds more grid rows" Row="1" Col="1" Page="2" DisplayName="Height" Type="float" Name="oscope_height">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="2" Page="2" DisplayName="Scale" Type="float" Name="oscope_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.28" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="2" Page="2" DisplayName="Scale" Type="float" Name="oscope_scale">
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="2" Page="2" DisplayName="Pos X" Type="float" Name="oscope_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="2" Page="2" DisplayName="Pos Y" Type="float" Name="oscope_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="2" Page="2" DisplayName="Pos Y" Type="float" Name="oscope_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="2" Page="2" DisplayName="Rotate Z" Type="float" Name="oscope_rot">
       </Uniform>
@@ -119,7 +119,7 @@
       <!-- ======================================================== -->
       <!-- BAR METERS – Page 3                                      -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="3" Default="False" Tooltip="Show or hide the segmented bar meters" DisplayName="Enable" Type="bool" Name="bars_enable">
+      <Uniform Row="0" Col="0" Page="3" Default="True" Tooltip="Show or hide the segmented bar meters" DisplayName="Enable" Type="bool" Name="bars_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Level bounce animation speed" Row="1" Col="0" Page="3" DisplayName="Speed" Type="float" Name="bars_speed">
       </Uniform>
@@ -128,11 +128,11 @@
       <Uniform ResDependent="None" Max="8" Min="2" Default="5" Inc="1" Tooltip="Number of bar meter columns (2–8)" Row="3" Col="0" Page="3" DisplayName="Bar Count" Type="int" Name="bars_count">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="3" DisplayName="Scale" Type="float" Name="bars_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.4" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="3" DisplayName="Scale" Type="float" Name="bars_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="3" DisplayName="Pos X" Type="float" Name="bars_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.36" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="3" DisplayName="Pos X" Type="float" Name="bars_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="3" DisplayName="Pos Y" Type="float" Name="bars_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="3" DisplayName="Pos Y" Type="float" Name="bars_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="3" DisplayName="Rotate Z" Type="float" Name="bars_rot">
       </Uniform>
@@ -153,18 +153,18 @@
       <!-- ======================================================== -->
       <!-- DATA TERMINAL – Page 4                                   -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="4" Default="False" Tooltip="Show or hide the scrolling data terminal readout" DisplayName="Enable" Type="bool" Name="terminal_enable">
+      <Uniform Row="0" Col="0" Page="4" Default="True" Tooltip="Show or hide the scrolling data terminal readout" DisplayName="Enable" Type="bool" Name="terminal_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Text scroll speed. Negative values scroll downward." Row="1" Col="0" Page="4" DisplayName="Speed" Type="float" Name="terminal_speed">
       </Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="4" DisplayName="Time Offset" Type="float" Name="terminal_time_offset">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="4" DisplayName="Scale" Type="float" Name="terminal_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.3" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="4" DisplayName="Scale" Type="float" Name="terminal_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="4" DisplayName="Pos X" Type="float" Name="terminal_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.72" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="4" DisplayName="Pos X" Type="float" Name="terminal_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="4" DisplayName="Pos Y" Type="float" Name="terminal_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="4" DisplayName="Pos Y" Type="float" Name="terminal_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="4" DisplayName="Rotate Z" Type="float" Name="terminal_rot">
       </Uniform>
@@ -185,7 +185,7 @@
       <!-- ======================================================== -->
       <!-- PERSPECTIVE GRID – Page 5                                -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="5" Default="False" Tooltip="Show or hide the receding wireframe perspective grid" DisplayName="Enable" Type="bool" Name="pgrid_enable">
+      <Uniform Row="0" Col="0" Page="5" Default="True" Tooltip="Show or hide the receding wireframe perspective grid" DisplayName="Enable" Type="bool" Name="pgrid_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Grid scroll speed — how fast cross lines advance toward the viewer" Row="1" Col="0" Page="5" DisplayName="Speed" Type="float" Name="pgrid_speed">
       </Uniform>
@@ -198,9 +198,9 @@
       <Uniform ResDependent="None" Max="3.0" Min="0.5" Default="1.0" Inc="0.05" Tooltip="Spacing between cross lines — larger values push the rows farther apart in depth" Row="5" Col="0" Page="5" DisplayName="Spacing" Type="float" Name="pgrid_spacing">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="5" DisplayName="Scale" Type="float" Name="pgrid_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.22" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="5" DisplayName="Scale" Type="float" Name="pgrid_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="5" DisplayName="Pos X" Type="float" Name="pgrid_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.54" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="5" DisplayName="Pos X" Type="float" Name="pgrid_pos_x">
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="5" DisplayName="Pos Y" Type="float" Name="pgrid_pos_y">
       </Uniform>
@@ -223,7 +223,7 @@
       <!-- ======================================================== -->
       <!-- CIRCUIT TRACE – Page 6                                   -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="6" Default="False" Tooltip="Show or hide the tiling PCB circuit trace pattern" DisplayName="Enable" Type="bool" Name="circuit_enable">
+      <Uniform Row="0" Col="0" Page="6" Default="True" Tooltip="Show or hide the tiling PCB circuit trace pattern" DisplayName="Enable" Type="bool" Name="circuit_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Pulse highlight travel speed along traces" Row="1" Col="0" Page="6" DisplayName="Speed" Type="float" Name="circuit_speed">
       </Uniform>
@@ -255,13 +255,13 @@
       </Uniform>
       <Uniform ResDependent="None" Max="10.0" Min="0.0" Default="1.0" Inc="0.1" Tooltip="Glow width — larger values give a softer, broader phosphor glow" Row="1" Col="2" Page="6" DisplayName="Glow" Type="float" Name="circuit_glow">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="6" DisplayName="Opacity" Type="float" Name="circuit_opacity">
+      <Uniform ResDependent="None" Max="1.0" Min="0.0" Default="0.18" Inc="0.01" Tooltip="Element opacity" Row="2" Col="2" Page="6" DisplayName="Opacity" Type="float" Name="circuit_opacity">
       </Uniform>
 
       <!-- ======================================================== -->
       <!-- CORNER BRACKETS – Page 7                                 -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="7" Default="False" Tooltip="Show or hide the corner bracket HUD frame" DisplayName="Enable" Type="bool" Name="brackets_enable">
+      <Uniform Row="0" Col="0" Page="7" Default="True" Tooltip="Show or hide the corner bracket HUD frame" DisplayName="Enable" Type="bool" Name="brackets_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Pulse dot travel speed around the bracket perimeter" Row="1" Col="0" Page="7" DisplayName="Speed" Type="float" Name="brackets_speed">
       </Uniform>
@@ -274,9 +274,9 @@
       <Uniform ResDependent="None" Max="4.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Scanner dot brightness — glow intensity of the pulse (0 = off)" Row="5" Col="0" Page="7" DisplayName="Pulse Brightness" Type="float" Name="brackets_pulse_bright">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="7" DisplayName="Scale" Type="float" Name="brackets_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.28" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="7" DisplayName="Scale" Type="float" Name="brackets_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="7" DisplayName="Pos X" Type="float" Name="brackets_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.18" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="7" DisplayName="Pos X" Type="float" Name="brackets_pos_x">
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="7" DisplayName="Pos Y" Type="float" Name="brackets_pos_y">
       </Uniform>
@@ -299,18 +299,18 @@
       <!-- ======================================================== -->
       <!-- COMPASS TAPE – Page 8                                    -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="8" Default="False" Tooltip="Show or hide the horizontal compass heading tape" DisplayName="Enable" Type="bool" Name="compass_enable">
+      <Uniform Row="0" Col="0" Page="8" Default="True" Tooltip="Show or hide the horizontal compass heading tape" DisplayName="Enable" Type="bool" Name="compass_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Heading scroll speed" Row="1" Col="0" Page="8" DisplayName="Speed" Type="float" Name="compass_speed">
       </Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="8" DisplayName="Time Offset" Type="float" Name="compass_time_offset">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="8" DisplayName="Scale" Type="float" Name="compass_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.3" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="8" DisplayName="Scale" Type="float" Name="compass_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="8" DisplayName="Pos X" Type="float" Name="compass_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.18" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="8" DisplayName="Pos X" Type="float" Name="compass_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.35" Inc="0.005" Tooltip="Vertical position in screen space — default near the top of frame" Row="2" Col="1" Page="8" DisplayName="Pos Y" Type="float" Name="compass_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space — default near the top of frame" Row="2" Col="1" Page="8" DisplayName="Pos Y" Type="float" Name="compass_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="8" DisplayName="Rotate Z" Type="float" Name="compass_rot">
       </Uniform>
@@ -331,7 +331,7 @@
       <!-- ======================================================== -->
       <!-- TRAJECTORY ARC – Page 9                                  -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="9" Default="False" Tooltip="Show or hide the trajectory arc with node markers" DisplayName="Enable" Type="bool" Name="arc_enable">
+      <Uniform Row="0" Col="0" Page="9" Default="True" Tooltip="Show or hide the trajectory arc with node markers" DisplayName="Enable" Type="bool" Name="arc_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Travelling dot speed along the arc" Row="1" Col="0" Page="9" DisplayName="Speed" Type="float" Name="arc_speed">
       </Uniform>
@@ -340,9 +340,9 @@
       <Uniform ResDependent="None" Max="8" Min="2" Default="4" Inc="1" Tooltip="Number of node markers placed evenly along the arc" Row="3" Col="0" Page="9" DisplayName="Nodes" Type="int" Name="arc_nodes">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="9" DisplayName="Scale" Type="float" Name="arc_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.34" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="9" DisplayName="Scale" Type="float" Name="arc_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="9" DisplayName="Pos X" Type="float" Name="arc_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.54" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="9" DisplayName="Pos X" Type="float" Name="arc_pos_x">
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="9" DisplayName="Pos Y" Type="float" Name="arc_pos_y">
       </Uniform>
@@ -365,18 +365,18 @@
       <!-- ======================================================== -->
       <!-- DIAL GAUGE – Page 10                                     -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="10" Default="False" Tooltip="Show or hide the circular analog dial gauge" DisplayName="Enable" Type="bool" Name="dial_enable">
+      <Uniform Row="0" Col="0" Page="10" Default="True" Tooltip="Show or hide the circular analog dial gauge" DisplayName="Enable" Type="bool" Name="dial_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Needle oscillation speed" Row="1" Col="0" Page="10" DisplayName="Speed" Type="float" Name="dial_speed">
       </Uniform>
       <Uniform ResDependent="None" Max="100.0" Min="-100.0" Default="0.0" Inc="0.1" Tooltip="Shifts the animation start time" Row="2" Col="0" Page="10" DisplayName="Time Offset" Type="float" Name="dial_time_offset">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="10" DisplayName="Scale" Type="float" Name="dial_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.34" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="10" DisplayName="Scale" Type="float" Name="dial_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="10" DisplayName="Pos X" Type="float" Name="dial_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.36" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="10" DisplayName="Pos X" Type="float" Name="dial_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="10" DisplayName="Pos Y" Type="float" Name="dial_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="10" DisplayName="Pos Y" Type="float" Name="dial_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="10" DisplayName="Rotate Z" Type="float" Name="dial_rot">
       </Uniform>
@@ -397,7 +397,7 @@
       <!-- ======================================================== -->
       <!-- LIGHT GRID (TRON) – Page 11                              -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="11" Default="False" Tooltip="Show or hide the TRON-style light grid with pulsing nodes" DisplayName="Enable" Type="bool" Name="lgrid_enable">
+      <Uniform Row="0" Col="0" Page="11" Default="True" Tooltip="Show or hide the TRON-style light grid with pulsing nodes" DisplayName="Enable" Type="bool" Name="lgrid_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Node pulse animation speed" Row="1" Col="0" Page="11" DisplayName="Speed" Type="float" Name="lgrid_speed">
       </Uniform>
@@ -412,11 +412,11 @@
       <Uniform ResDependent="None" Max="4.0" Min="0.0" Default="1.0" Inc="0.05" Tooltip="Pulse brightness — glow intensity of the nodes (0 = off)" Row="6" Col="0" Page="11" DisplayName="Pulse Brightness" Type="float" Name="lgrid_pulse_bright">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="11" DisplayName="Scale" Type="float" Name="lgrid_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.19" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="11" DisplayName="Scale" Type="float" Name="lgrid_scale">
       </Uniform>
       <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="11" DisplayName="Pos X" Type="float" Name="lgrid_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="11" DisplayName="Pos Y" Type="float" Name="lgrid_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="11" DisplayName="Pos Y" Type="float" Name="lgrid_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="11" DisplayName="Rotate Z" Type="float" Name="lgrid_rot">
       </Uniform>
@@ -437,7 +437,7 @@
       <!-- ======================================================== -->
       <!-- LIGHT TRAIL (TRON) – Page 12                             -->
       <!-- ======================================================== -->
-      <Uniform Row="0" Col="0" Page="12" Default="False" Tooltip="Show or hide the TRON-style right-angle light trails" DisplayName="Enable" Type="bool" Name="trail_enable">
+      <Uniform Row="0" Col="0" Page="12" Default="True" Tooltip="Show or hide the TRON-style right-angle light trails" DisplayName="Enable" Type="bool" Name="trail_enable">
       </Uniform>
       <Uniform ResDependent="None" Max="5.0" Min="-5.0" Default="1.0" Inc="0.05" Tooltip="Trail travel speed" Row="1" Col="0" Page="12" DisplayName="Speed" Type="float" Name="trail_speed">
       </Uniform>
@@ -450,11 +450,11 @@
       <Uniform ResDependent="None" Max="2.0" Min="0.0" Default="0.6" Inc="0.01" Tooltip="Fade-off length at the tail. Short = abrupt cutoff; long (>= Trail Length) = fades over the whole trail" Row="5" Col="0" Page="12" DisplayName="Fade Length" Type="float" Name="trail_fade">
       </Uniform>
 
-      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="1.0" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="12" DisplayName="Scale" Type="float" Name="trail_scale">
+      <Uniform ResDependent="None" Max="4.0" Min="0.1" Default="0.26" Inc="0.05" Tooltip="Overall scale of the element" Row="0" Col="1" Page="12" DisplayName="Scale" Type="float" Name="trail_scale">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="12" DisplayName="Pos X" Type="float" Name="trail_pos_x">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.36" Inc="0.005" Tooltip="Horizontal position in screen space" Row="1" Col="1" Page="12" DisplayName="Pos X" Type="float" Name="trail_pos_x">
       </Uniform>
-      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="0.0" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="12" DisplayName="Pos Y" Type="float" Name="trail_pos_y">
+      <Uniform ResDependent="None" Max="1.0" Min="-1.0" Default="-0.33" Inc="0.005" Tooltip="Vertical position in screen space" Row="2" Col="1" Page="12" DisplayName="Pos Y" Type="float" Name="trail_pos_y">
       </Uniform>
       <Uniform ResDependent="None" Max="180.0" Min="-180.0" Default="0.0" Inc="0.5" Tooltip="Rotation in degrees" Row="3" Col="1" Page="12" DisplayName="Rotate Z" Type="float" Name="trail_rot">
       </Uniform>

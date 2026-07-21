@@ -6,7 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A collection of custom Matchbox shaders for Autodesk Flame. Each shader lives in its own directory and consists of two required files: a `.glsl` fragment shader and an `.xml` UI descriptor. There is no build system — these files are deployed directly to Flame's matchbox directory.
 
-Most shader directories also carry a per-shader `README.md` (feature list keyed to control locations, licensing, and version notes) — read it before modifying that shader; it is the fastest way to learn what each control does and where it lives in the UI. The repo-level `README.md` has one-paragraph descriptions of every shader.
+The root `README.md` holds the per-shader catalog (what each `BB_*` shader does and its ported source, if any), and most shader folders also carry their own `README.md` with deeper per-shader docs (file roles, control breakdowns) — read both before modifying a shader to understand its intended behaviour. The `examples/` directory contains third-party reference shaders (`crok_*`, `KE_*`) kept for learning Matchbox conventions; it is gitignored and **not** part of this collection — never edit, ship, or treat those as BB shaders.
+
+## Licensing
+
+The collection is **CC BY-SA 4.0** (see `LICENSE`). The one exception is `BB_Seascape`, a direct port that keeps its upstream **CC BY-NC-SA 3.0** (non-commercial) license — never relicense it as CC BY-SA, and its XML `CommercialUsePermitted` must stay `False`. When porting a new shader from third-party work, keep the upstream attribution header in the `.glsl`; if the port stays a derivative under a non-commercial/share-alike license, add it to the README License-section exception and set `CommercialUsePermitted="False"`.
 
 ## Tools
 
@@ -151,14 +155,28 @@ To regenerate a `.p` after updating a PNG, run `make_proxy.py` on the new PNG.
 
 Newer shaders carry a `showcase/` subdirectory of before/after and scene PNGs (referenced from the shader's `README.md` to document look and use cases). These are documentation only — they are not deployed to Flame and are unrelated to the proxy icon.
 
-`.gitignore` excludes `.DS_Store` and an `examples/` directory (reference shaders that are not part of the collection). The `.glsl.p` proxy binaries are intentionally **not** ignored — they are tracked in git.
+`.gitignore` excludes `.DS_Store`, an `examples/` directory (third-party reference shaders), and `BB_FutureHUD/Additional ShaderToy HUDS/`. The `.glsl.p` proxy binaries are intentionally **not** ignored — they are tracked in git.
 
 ## Naming conventions in practice
 
 The conventions above are the intended standard, but existing shaders are not fully consistent — match a shader's *own* existing pattern when editing it rather than assuming the standard:
-- Files are normally prefixed `BB_`, but `BB_SocialSafeZones/` contains files named `SocialSafeZones.*` (no `BB_` prefix). The folder name and the file stem do not have to match. It is also single-pass yet uses the multi-pass `.1.glsl` naming (its XML has only one `<Shader Index="1">` block) — the `.N` suffix does not guarantee multiple passes.
+- `BB_SocialSafeZones` is single-pass yet uses the multi-pass `.1.glsl` naming (its XML has only one `<Shader Index="1">` block) — the `.N` suffix does not guarantee multiple passes.
 - `BB_Clouds` is multi-pass yet its icon is `BB_Clouds.glsl.png` (not `.1.glsl.png`). Whichever `.glsl` filename the PNG stem matches is the one Flame reads the icon from.
 
-## Licensing
+## Multi-element HUD shaders (BB_RetroHUD, BB_FutureHUD)
 
-`CommercialUsePermitted="True"` in the XML is not universal. Some shaders are ports of Shadertoy work under restrictive licenses (e.g. BB_Seascape is CC BY-NC-SA 3.0, non-commercial only; BB_FutureHUD is also ported). Check the shader's own `README.md` for attribution and license before changing the commercial-use flag or reusing its code.
+These overlay shaders compose many independent animated elements and share conventions worth knowing before editing them:
+
+- **Coordinate space is centred and aspect-correct**, not the 0–1 pixel UV described under GLSL conventions above: `uv = (gl_FragCoord.xy - 0.5*res) / res.y` → `y ∈ [-0.5, 0.5]`, `x ∈ [±aspect/2]`. Element position uniforms live in this space.
+- **Each element is a uniform-name prefix** with a consistent control set: `{elem}_enable / _speed / _time_offset / _scale / _pos_x / _pos_y / _rot / _color / _glow / _opacity` (plus element-specific extras), and its own XML page. To add a control to one element, follow that prefix and add a matching `<Uniform>` on the element's page. (Note: a few elements are fixed — e.g. FutureHUD's concentric rings have no pos/scale, only depth/speed/opacity; `ring_depth` is thickness, not distance.)
+- **Static line art vs. bright animation are separate channels.** Static geometry is an SDF rendered via `ov_alpha(d, glow)` (crisp core + phosphor halo) and composited with `mix(col, color, alpha*opacity)`. Bright animated highlights — pulses, scanners, pulsing nodes, lightcycle trails — are returned on a separate additive "glow" channel and composited as `col += mix(color, vec3(1.0), ~0.5) * glow * opacity`, so they read brighter than the lines and **overlaps add/brighten instead of cutting out** (the function returns e.g. `vec2(sdf, glow)` or a `vec3` emissive). Prefer additive/screen for overlapping glows.
+- Keep it **GLSL 1.20-safe**: no dynamic array indexing (use unrolled `if/else` chains), and `min(max(intUniform, lo), hi)` for clamping int counts.
+
+## Showcase variants
+
+A `BB_<Name>_Showcase/` folder nested **inside the parent shader's folder** demonstrates every element at once (an at-a-glance overview of the library). Conventions:
+
+- GLSL is copied **verbatim** from the parent (GLSL is filename-independent, so byte copies work); only the XML defaults differ — all elements enabled, with `_pos_x/_pos_y/_scale` set to tile them without overlap.
+- Elements that can't be boxed (infinite-tiling patterns like Circuit Trace, or fixed centred elements like FutureHUD's rings/grids) are set to low `_opacity` as faint backdrops rather than tiled.
+- Reuse the parent's proxy: copy its `.png`/`.p` renamed to the showcase's first-pass GLSL name (e.g. `BB_RetroHUD_Showcase.1.glsl.png`).
+- Generate by transforming the parent XML's `Default=` attributes programmatically (each `<Uniform>` is one line keyed by `Name="..."`) rather than by hand — see how the existing showcases were built.

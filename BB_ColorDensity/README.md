@@ -1,11 +1,5 @@
 # BB_ColorDensity - Flame Matchbox Shader
 
-## Why use this?
-
-Get deep, film-like colour density that a normal saturation slider can't produce — it darkens and enriches each colour vector (R, G, B, C, M, Y) independently, the way film-emulation and PowerGrade looks do. Reach for it when you want rich, weighty colour in skies, foliage, skin, or product shots, with ACES-aware handling, instead of the thin, plasticky result of just pushing saturation.
-
----
-
 ## Overview
 Film-style color density adjustment shader for Autodesk Flame. Reduces luminance while boosting saturation to create deep, rich colors similar to PowerGrade Film Emulation methods in DaVinci Resolve / Baselight.
 

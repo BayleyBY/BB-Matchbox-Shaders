@@ -1,6 +1,7 @@
 // Color Density Shader
 // Applies density (luminance reduction with saturation compensation) per color vector
 // Similar to PowerGrade Film Emulation methods in DaVinci Resolve / Baselight
+// Part of the BB Matchbox Shaders collection — logik-matchbook.org/sharing
 
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;

@@ -2,12 +2,6 @@
 
 A Matchbox shader for Autodesk Flame that draws a safe zone overlay for social media delivery formats. Shows which areas of your frame will be covered by platform UI — navigation bars, engagement buttons, captions — so you can keep important content in the clear zone.
 
-## Why use this?
-
-See exactly where each platform's UI (Reels, TikTok, Shorts, Stories, Feed, DemandGen) will cover your frame while you finish, so vertical and social deliverables never hide key action, titles, or logos behind buttons and captions. The accurate per-platform margins are built in, so you're not guessing or rebuilding guides for every format.
-
----
-
 ## Files
 
 | File | Purpose |
