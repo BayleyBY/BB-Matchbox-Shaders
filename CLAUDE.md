@@ -147,10 +147,16 @@ Each shader should have a proxy PNG (268×194, width divisible by 4) and its com
 
 To regenerate a `.p` after updating a PNG, run `make_proxy.py` on the new PNG.
 
+## Showcase images and ignored files
+
+Newer shaders carry a `showcase/` subdirectory of before/after and scene PNGs (referenced from the shader's `README.md` to document look and use cases). These are documentation only — they are not deployed to Flame and are unrelated to the proxy icon.
+
+`.gitignore` excludes `.DS_Store` and an `examples/` directory (reference shaders that are not part of the collection). The `.glsl.p` proxy binaries are intentionally **not** ignored — they are tracked in git.
+
 ## Naming conventions in practice
 
 The conventions above are the intended standard, but existing shaders are not fully consistent — match a shader's *own* existing pattern when editing it rather than assuming the standard:
-- Files are normally prefixed `BB_`, but `BB_SocialSafeZones/` contains files named `SocialSafeZones.*` (no `BB_` prefix). The folder name and the file stem do not have to match.
+- Files are normally prefixed `BB_`, but `BB_SocialSafeZones/` contains files named `SocialSafeZones.*` (no `BB_` prefix). The folder name and the file stem do not have to match. It is also single-pass yet uses the multi-pass `.1.glsl` naming (its XML has only one `<Shader Index="1">` block) — the `.N` suffix does not guarantee multiple passes.
 - `BB_Clouds` is multi-pass yet its icon is `BB_Clouds.glsl.png` (not `.1.glsl.png`). Whichever `.glsl` filename the PNG stem matches is the one Flame reads the icon from.
 
 ## Licensing
