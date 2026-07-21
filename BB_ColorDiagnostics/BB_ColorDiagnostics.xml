@@ -1,0 +1,47 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2020.0.0" LimitInputsToTexture="True" Version="2" Description="Use to inspect a shot with physically-based analysis overlays Flame's scopes don't show - exposure false-colour, clipping zebras, out-of-gamut / sub-black flags, saturation heat, and luminance. A diagnostic node, not a corrective one. Mode Off = pass-through." Name="BB_ColorDiagnostics">
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="Input image" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front" InputType="Front">
+      </Uniform>
+
+      <!-- Col 0: Mode -->
+      <Uniform Default="0" Tooltip="Input color space - sets luminance coefficients" Row="0" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Color Space" Name="colorSpace">
+         <PopupEntry Title="Rec.709" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Scene-Linear" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="ACEScg" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="ACEScct" Value="3">
+         </PopupEntry>
+      </Uniform>
+      <Uniform Default="0" Tooltip="Which diagnostic to display" Row="1" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Mode" Name="mode">
+         <PopupEntry Title="Off" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Exposure (false colour)" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="Clipping (zebra)" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="Out-of-Gamut" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="Saturation" Value="4">
+         </PopupEntry>
+         <PopupEntry Title="Luminance" Value="5">
+         </PopupEntry>
+      </Uniform>
+      <Uniform Row="2" Col="0" Page="0" Default="True" Tooltip="Dim unflagged pixels to grey so the flags stand out (Clipping / Out-of-Gamut modes)" DisplayName="Dim Context" Type="bool" Name="desatContext">
+      </Uniform>
+
+      <!-- Col 1: Thresholds -->
+      <Uniform Max="2.0" Min="0.5" Default="1.0" Inc="0.005" Tooltip="Upper limit - clipping / over-range / super-white" Row="0" Col="1" Page="0" Type="float" ChannelName="highThresh" DisplayName="High Threshold" Name="highThresh">
+      </Uniform>
+      <Uniform Max="0.5" Min="-0.2" Default="0.0" Inc="0.005" Tooltip="Lower limit - crush / sub-black / negative" Row="1" Col="1" Page="0" Type="float" ChannelName="lowThresh" DisplayName="Low Threshold" Name="lowThresh">
+      </Uniform>
+   </Shader>
+
+   <Page Name="Diagnostics" Page="0">
+      <Col Name="Mode" Col="0" Page="0">
+      </Col>
+      <Col Name="Thresholds" Col="1" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>

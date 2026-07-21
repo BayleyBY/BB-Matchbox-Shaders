@@ -21,6 +21,9 @@ A procedural animated sky and cloud layer — no input image required. Casts a p
 ### BB_ColorDensity
 A film-style colour density tool modelled on Beer-Lambert law. Isolates each of the six colour vectors (RGB + CMY) and applies independent density and saturation compensation, producing deep, rich colour shifts similar to film emulation workflows. Supports Rec.709, Scene-Linear, ACEScg, and ACEScct colour spaces.
 
+### BB_ColorDiagnostics
+A physically-based analysis overlay — the collection's one *diagnostic* tool, where the others correct or create. Per-pixel modes that Flame's scopes can't show spatially: exposure false-colour (black-clip / shadow / 18%-grey / skin / near-clip / clip zones), clipping zebras, out-of-gamut and sub-black/negative flags, a saturation heat map (the gamut- and white-balance-fragile regions), and a luminance view. Adjustable high/low thresholds (push high > 1 and low < 0 for scene-linear / wide-gamut), a dim-context toggle so flags stand out, and Rec.709 / Scene-Linear / ACEScg / ACEScct luma. Mode Off is a pass-through.
+
 ### BB_DayForNight
 A physically-based day-for-night grade using the Purkinje mesopic vision model. As the Night amount rises, luminance is recomputed with rod (scotopic, blue-shifted ~507nm) weighting instead of cones, so reds go genuinely dark and blues brighten — the Purkinje shift — while the image desaturates toward a tinted moonlight monochrome, darkens, and can lose acuity and gain scotopic grain. Unlike the usual "crush and tint blue" fake, a bright red car or roses go dark the way they do to the eye at night. Rec.709 / Scene-Linear, identity at Night 0.
 
