@@ -50,20 +50,21 @@ void main()
    vec3 smh = BINV * OD;                 // shading, melanin, haemoglobin
    float s = smh.x, m = smh.y, h = smh.z;
 
-   // visualisation of the isolated pigment maps
-   if (outputMode == 1) { gl_FragColor = vec4(vec3(clamp(m * 0.5, 0.0, 1.0)), src.a); return; }
-   if (outputMode == 2) { gl_FragColor = vec4(vec3(clamp(h * 1.4, 0.0, 1.0)), src.a); return; }
+   vec3 outCol;
+   if (outputMode == 1) {                // melanin map
+      outCol = vec3(clamp(m * 0.5, 0.0, 1.0));
+   } else if (outputMode == 2) {         // haemoglobin map
+      outCol = vec3(clamp(h * 1.4, 0.0, 1.0));
+   } else {                              // graded result
+      float s2 = s * (1.0 + densAmount);
+      float m2 = m * (1.0 + melAmount);
+      float h2 = h * (1.0 + hemAmount);
+      vec3 ODp    = s2 * ONE + m2 * MEL + h2 * HEM;
+      vec3 outLin = exp(-ODp);
+      outCol = fromLinear(outLin, colorSpace);
+      if (colorSpace == 0) outCol = clamp(outCol, 0.0, 1.0);   // display-referred clamp
+      outCol = mix(src.rgb, outCol, mixAmount);
+   }
 
-   float s2 = s * (1.0 + densAmount);
-   float m2 = m * (1.0 + melAmount);
-   float h2 = h * (1.0 + hemAmount);
-
-   vec3 ODp    = s2 * ONE + m2 * MEL + h2 * HEM;
-   vec3 outLin = exp(-ODp);
-
-   vec3 outCol = fromLinear(outLin, colorSpace);
-   if (colorSpace == 0) outCol = clamp(outCol, 0.0, 1.0);   // display-referred clamp
-
-   outCol = mix(src.rgb, outCol, mixAmount);
    gl_FragColor = vec4(outCol, src.a);
 }
