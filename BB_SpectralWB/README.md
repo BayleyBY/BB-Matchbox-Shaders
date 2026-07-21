@@ -47,6 +47,28 @@ Typical use: set **Source Light** to what you shot under and **Target Light** to
 
 ---
 
+## Recommended Pipeline Order
+
+This is a **corrective** tool — a white balance — so it belongs *early*, at the front of the chain,
+not at the finishing end:
+
+1. **BB_SpectralWB** — neutralise the source illuminant first, ideally on a clean scene-referred /
+   linear signal before heavy contrast or saturation moves. Those distort the per-pixel reflectance
+   estimate the correction is built on, so re-lighting works best on the rawest colour you have.
+2. **Primary grade** — exposure, contrast, creative colour, now that the scene reads under a neutral
+   target light.
+3. **Look / finishing** — print emulation, [BB_FilmCoupler], halation, grain. Film-colour "life"
+   effects come *after* the image is correct.
+
+Set **Color Space** to match the image *at this point in the chain* (Scene-Linear for a linear/ACES
+signal, Rec.709 for a display-referred one) so the gamma decode is correct.
+
+For an ordinary smooth cast a tristimulus WB ([BB_WhiteBalance]) is lighter and enough; reach for
+this specifically when the source is spiky / low-CRI (sodium, fluorescent, cheap LED) and channel-gain
+WB goes waxy or green.
+
+---
+
 ## Notes & honest limitations
 
 - **It's a plausible reconstruction, not ground truth.** The RGB→spectrum inverse is
