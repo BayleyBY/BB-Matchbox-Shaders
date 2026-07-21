@@ -56,6 +56,12 @@ Position uniforms from canvas drag handles arrive as normalised 0–1. Convert t
 
 Entry point is `void main()` writing to `gl_FragColor`. GLSL version must remain GLSL 1.20 compatible (no `in`/`out` qualifiers, no `texture()` — use `texture2D()`).
 
+**Matchbox GLSL gotchas** (learned the hard way — violating these can still "look fine" locally but Flame fails to build the render graph, logging `PIPELINE: CProcessShader::RenderFrame::CreateRenderGraph`, and the node won't render):
+- **Never `return` early from `main()`.** Matchbox wraps/injects an epilogue around your `main`; an early `return` skips it and breaks the node. Compute a single output value via `if/else` and write `gl_FragColor` **once** at the end.
+- **Keep `const mat3` / `const vec3` initializers on a single line.**
+- **Avoid short, common global `const` names** (e.g. `ONE`) that a framework may `#define` — inline `vec3(1.0)` or use a prefixed name.
+- `log()`, `exp()`, and `pow(vec3, vec3)` are fine. What *is* risky and unproven in Flame is `float[N](...)` const-array constructors + dynamic array indexing by a loop variable (BB_SpectralWB uses this and is the one shader still unverified on that point); prefer a **bounded loop evaluating analytic functions of the loop variable** (see BB_SpectralFilter) over spectral lookup tables.
+
 ### XML UI structure
 
 The root element is `<ShaderNodePreset>`. Key attributes on the opening tag:
