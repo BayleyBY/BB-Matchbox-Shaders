@@ -1,0 +1,49 @@
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2020.0.0" LimitInputsToTexture="True" Version="2" Description="Use to re-render a grade so it LOOKS the same in a different viewing environment - dark cinema vs dim TV vs bright phone vs HDR - via the CAM16 colour appearance model. Reproduces the Hunt, Stevens and surround effects that no NLE exposes. Set Source = Target for a pass-through (identity)." Name="BB_ViewingCondition">
+   <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
+      <Uniform Index="0" NoInput="Error" Tooltip="Input image" DisplayName="Front" InputColor="67, 77, 83" Mipmaps="False" GL_TEXTURE_WRAP_T="GL_CLAMP_TO_EDGE" GL_TEXTURE_WRAP_S="GL_CLAMP_TO_EDGE" GL_TEXTURE_MAG_FILTER="GL_LINEAR" GL_TEXTURE_MIN_FILTER="GL_LINEAR" Type="sampler2D" Name="front" InputType="Front">
+      </Uniform>
+
+      <!-- Col 0: Source -->
+      <Uniform Default="0" Tooltip="Input color space - the appearance model runs in linear light (D65 white)" Row="0" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Color Space" Name="colorSpace">
+         <PopupEntry Title="Rec.709" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="Scene-Linear" Value="1">
+         </PopupEntry>
+      </Uniform>
+      <Uniform Default="2" Tooltip="Source viewing condition - the environment the image already looks right in (e.g. your grading suite)" Row="1" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Source" Name="srcVC">
+         <PopupEntry Title="Cinema (dark)" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="TV / dim" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="Average / grading" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="Bright / phone" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="HDR" Value="4">
+         </PopupEntry>
+      </Uniform>
+
+      <!-- Col 1: Target -->
+      <Uniform Default="2" Tooltip="Target viewing condition - where the image will actually be seen" Row="0" Col="1" Page="0" Type="int" ValueType="Popup" DisplayName="Target" Name="tgtVC">
+         <PopupEntry Title="Cinema (dark)" Value="0">
+         </PopupEntry>
+         <PopupEntry Title="TV / dim" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="Average / grading" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="Bright / phone" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="HDR" Value="4">
+         </PopupEntry>
+      </Uniform>
+      <Uniform Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Blend the re-rendered result with the original" Row="1" Col="1" Page="0" Type="float" ChannelName="amount" DisplayName="Amount" Name="amount">
+      </Uniform>
+   </Shader>
+
+   <Page Name="Viewing Condition" Page="0">
+      <Col Name="Source" Col="0" Page="0">
+      </Col>
+      <Col Name="Target" Col="1" Page="0">
+      </Col>
+   </Page>
+</ShaderNodePreset>
