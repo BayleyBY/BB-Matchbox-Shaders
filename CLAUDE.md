@@ -165,7 +165,7 @@ To regenerate a `.p` after updating a PNG, run `make_proxy.py` on the new PNG.
 
 Newer shaders carry a `showcase/` subdirectory of before/after and scene PNGs (referenced from the shader's `README.md` to document look and use cases). These are documentation only — they are not deployed to Flame and are unrelated to the proxy icon. Some also hold synthetic `Before_*.png` test charts (labelled *SYNTHETIC TEST PLATE*) built for before/after demos.
 
-`.gitignore` excludes `.DS_Store`, an `examples/` directory (third-party reference shaders), `BB_FutureHUD/Additional ShaderToy HUDS/`, and `presentation/` (local talk/deck working files, tracked separately — do **not** commit its contents to this repo). The `.glsl.p` proxy binaries are intentionally **not** ignored — they are tracked in git.
+`.gitignore` excludes `.DS_Store`, an `examples/` directory (third-party reference shaders), `BB_FutureHUD/Additional ShaderToy HUDS/`, and `presentation/` (talk/deck files for the colour-science shaders — an independent **private** git repo cloned in place; never commit its contents to this repo. It syncs with its own `git pull`/`push` run inside that folder — pull it before editing there; see `presentation/README.md`). The `.glsl.p` proxy binaries are intentionally **not** ignored — they are tracked in git.
 
 ## Naming conventions in practice
 
