@@ -183,6 +183,7 @@ All eleven colour-science shaders (BB_WhiteBalance, BB_SpectralWB, BB_ColorDensi
 - Output clamping applies to Rec.709 only — never clamp linear or log spaces.
 - Luminance coefficients must match the input's primaries: Rec.709 vs. AP1 (ACEScg/ACEScct) vs. AWG4 (LogC4). The AWG4 blue coefficient is negative — that follows the ARRI spec (eq. 5a), not a bug.
 - The ARRI LogC4 maths come from the official spec PDF kept (untracked) at the repo root: `2022-05-arri-logc4-specification-data.pdf`.
+- When changing colour maths, validate against a numpy reference first (the collection's standard practice): derive matrices at double precision and emit them as column-major GLSL literals, then check transfer-curve round-trips, matrix-pair inverses, known values (18% grey), and identity-at-default through the full decode→convert→encode chain before touching the UI.
 
 ## Multi-element HUD shaders (BB_RetroHUD, BB_FutureHUD)
 
