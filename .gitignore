@@ -8,3 +8,6 @@ examples/
 
 # Third-party ShaderToy reference HUDs kept for study — not part of the collection
 BB_FutureHUD/Additional ShaderToy HUDS/
+
+# Presentation deck, outline, and plate generator — not part of the shader collection
+presentation/
