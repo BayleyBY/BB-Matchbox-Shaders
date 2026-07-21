@@ -34,7 +34,7 @@ Pick a **Mode**; the shader replaces the image with a per-pixel diagnostic:
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Mode | Rec.709 / Scene-Linear / ACEScg / ACEScct — sets the luminance coefficients |
+| Color Space | Mode | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — sets the luminance coefficients |
 | Mode | Mode | Off (pass-through) or one of the five diagnostics |
 | Dim Context | Mode | Grey-out unflagged pixels so flags pop (Clipping / Out-of-Gamut) |
 | High Threshold | Thresholds | Clip / over-range / super-white limit |

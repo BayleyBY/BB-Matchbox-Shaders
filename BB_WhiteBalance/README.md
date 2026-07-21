@@ -55,7 +55,7 @@ than a temperature "gain" hack, especially on saturated colours and skin.
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Global | Rec.709 / Scene-Linear / ACEScg / ACEScct — sets gamma, primaries, neutral |
+| Color Space | Global | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — sets gamma, primaries, neutral |
 | Temperature | Global | + warms (counters blue cast), − cools |
 | Tint | Global | + magenta, − green |
 | Mix | Global | Blend the correction with the original |
@@ -82,8 +82,8 @@ not at the finishing end:
    effects come *after* the image is correct.
 
 Set **Color Space** to match the image *at this point in the chain* (Rec.709 / Scene-Linear /
-ACEScg / ACEScct) so the gamma decode, primaries and neutral are correct — the correction itself is
-space-invariant, but it has to know what it's being fed.
+ACEScg / ACEScct / ARRI LogC4) so the gamma decode, primaries and neutral are correct — the
+correction itself is space-invariant, but it has to know what it's being fed.
 
 ---
 
@@ -92,7 +92,7 @@ space-invariant, but it has to know what it's being fed.
 - [ ] Compile-test in Flame (GLSL is written to be GLSL 1.20-safe; not yet run on Flame's runtime)
 - [x] Proxy icon (`.png` + `.p`)
 - [x] Before/after showcase (`showcase/Showcase_1_MixedLighting.png` — dual-illuminant; plus ACEScg/ACEScct working-space and neutral-sampler showcases)
-- [x] ACEScct color space (Rec.709 / Scene-Linear / ACEScg / ACEScct all supported)
+- [x] All five colour spaces supported (Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4)
 - [x] Neutral sampler (single-pass colour eyedropper — sample a colour that should be neutral; Temperature/Tint trim on top)
 - [ ] Fully-automatic gray-world / white-patch (needs a multi-pass reduction; the manual picker covers most cases)
 

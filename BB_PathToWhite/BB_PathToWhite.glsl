@@ -17,6 +17,7 @@ uniform float adsk_result_w, adsk_result_h;
 // 1 = Scene-Linear (Rec.709 primaries)
 // 2 = ACEScg (AP1 primaries, linear)
 // 3 = ACEScct (AP1 primaries, log encoding)
+// 4 = ARRI LogC4 (AWG4 primaries, log encoding)
 uniform int colorSpace;
 
 // Highlight isolation
@@ -40,6 +41,9 @@ uniform float satCyan, satMagenta, satYellow;
 vec3 getLumaCoeff() {
     if (colorSpace == 2 || colorSpace == 3) { // ACEScg or ACEScct (AP1 primaries)
         return vec3(0.2722, 0.6741, 0.0537);
+    }
+    if (colorSpace == 4) { // ARRI LogC4 (AWG4 primaries; negative blue per ARRI spec, sums to 1.0)
+        return vec3(0.2545, 0.7815, -0.0360);
     }
     return vec3(0.2126, 0.7152, 0.0722); // Rec.709 primaries
 }
@@ -107,12 +111,6 @@ void main() {
     float hi = pivot + rolloff;
     float t = smoothstep(lo, hi, brightness);
 
-    if (outputMode == 1) {
-        // Highlight mask preview for dialing Pivot / Rolloff
-        gl_FragColor = vec4(vec3(t), texColor.a);
-        return;
-    }
-
     // Blend the six band parameters by hue membership
     float wR = bandWeight(hueDeg, 0.0);
     float wY = bandWeight(hueDeg, 60.0);
@@ -152,6 +150,13 @@ void main() {
     }
 
     result = fromPerceptual(result);
+
+    // Highlight mask preview for dialing Pivot / Rolloff. Selected here rather
+    // than by an early return - Matchbox breaks if main() returns before its
+    // injected epilogue, so gl_FragColor is written exactly once at the end.
+    if (outputMode == 1) {
+        result = vec3(t);
+    }
 
     gl_FragColor = vec4(result, texColor.a);
 }

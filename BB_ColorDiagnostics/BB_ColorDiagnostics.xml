@@ -13,6 +13,8 @@
          </PopupEntry>
          <PopupEntry Title="ACEScct" Value="3">
          </PopupEntry>
+         <PopupEntry Title="ARRI LogC4" Value="4">
+         </PopupEntry>
       </Uniform>
       <Uniform Default="0" Tooltip="Which diagnostic to display" Row="1" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Mode" Name="mode">
          <PopupEntry Title="Off" Value="0">

@@ -9,6 +9,12 @@
          </PopupEntry>
          <PopupEntry Title="Scene-Linear" Value="1">
          </PopupEntry>
+         <PopupEntry Title="ACEScg" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="ACEScct" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="ARRI LogC4" Value="4">
+         </PopupEntry>
       </Uniform>
       <Uniform Default="2" Tooltip="Source viewing condition - the environment the image already looks right in (e.g. your grading suite)" Row="1" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Source" Name="srcVC">
          <PopupEntry Title="Cinema (dark)" Value="0">

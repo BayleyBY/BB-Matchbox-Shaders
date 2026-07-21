@@ -9,6 +9,12 @@
          </PopupEntry>
          <PopupEntry Title="Scene-Linear" Value="1">
          </PopupEntry>
+         <PopupEntry Title="ACEScg" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="ACEScct" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="ARRI LogC4" Value="4">
+         </PopupEntry>
       </Uniform>
       <Uniform Max="1.0" Min="0.0" Default="0.4" Inc="0.01" Tooltip="Inter-layer effect: cross-channel coupling that increases colour separation and saturation the way film does" Row="1" Col="0" Page="0" Type="float" ChannelName="coupling" DisplayName="Coupling" Name="coupling">
       </Uniform>

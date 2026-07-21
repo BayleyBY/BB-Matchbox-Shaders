@@ -11,6 +11,7 @@ uniform float adsk_result_w, adsk_result_h;
 // 1 = Scene-Linear (Rec.709 primaries)
 // 2 = ACEScg (AP1 primaries, linear)
 // 3 = ACEScct (AP1 primaries, log encoding)
+// 4 = ARRI LogC4 (AWG4 primaries, log encoding)
 uniform int colorSpace;
 
 // Density controls (0.0 = no effect, positive = add density/darken, negative = remove density/lighten)
@@ -40,6 +41,9 @@ uniform bool preserveLuma;
 vec3 getLumaCoeff() {
     if (colorSpace == 2 || colorSpace == 3) { // ACEScg or ACEScct (AP1 primaries)
         return vec3(0.2722, 0.6741, 0.0537);
+    }
+    if (colorSpace == 4) { // ARRI LogC4 (AWG4 primaries; negative blue per ARRI spec, sums to 1.0)
+        return vec3(0.2545, 0.7815, -0.0360);
     }
     // Rec.709, Scene-Linear use Rec.709 primaries
     return vec3(0.2126, 0.7152, 0.0722);

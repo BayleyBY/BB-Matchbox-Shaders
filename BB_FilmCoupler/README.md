@@ -46,8 +46,9 @@ chemistry — which happens early in the real film chain. Place it accordingly:
 3. **Print emulation / density curve / halation / grain** — the film *delivery* stage. Because
    couplers act on the negative, print-side looks belong *after* this node.
 
-Set **Color Space** to match the image *at this point in the chain* (Scene-Linear for a linear/ACES
-signal, Rec.709 for a display-referred one) so the coupler math decodes gamma correctly.
+Set **Color Space** to match the image *at this point in the chain* (Rec.709 / Scene-Linear /
+ACEScg / ACEScct / ARRI LogC4) so the coupler math decodes to linear light correctly. The dye
+"layers" are the native RGB channels of the selected space.
 
 Rule of thumb: **correct it → FilmCoupler (film colour) → print/grain (film delivery).** If you have
 no formal film pipeline, dropping it near the end of an already-graded shot still works — you're just
@@ -59,7 +60,7 @@ applying the coupler behaviour to print-emulated colour rather than raw negative
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Inter-Layer | Rec.709 (sRGB) or Scene-Linear — sets the gamma decode for the coupler math |
+| Color Space | Inter-Layer | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — sets the linear decode for the coupler math |
 | Coupling | Inter-Layer | Inter-layer effect strength (colour separation / saturation) |
 | Amount | Inter-Layer | Blend the coupled result with the original |
 | Acutance | Adjacency | Edge / local-contrast strength from inhibitor diffusion |

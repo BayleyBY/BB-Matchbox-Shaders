@@ -47,7 +47,7 @@ Near-neutral pixels are automatically excluded from hue steering (their hue is u
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Global | Rec.709 / Scene-Linear / ACEScg / ACEScct — sets luma + gamma handling |
+| Color Space | Global | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — sets luma + gamma handling |
 | Highlight Pivot | Global | Brightness where the effect centers; lower reaches further down. Goes above 1.0 for HDR highlights in Scene-Linear / ACEScg |
 | Rolloff | Global | Softness of the highlight transition |
 | Hue Falloff | Global | Hue-band width (°): narrow = distinct bands, wide = smooth continuous blend |

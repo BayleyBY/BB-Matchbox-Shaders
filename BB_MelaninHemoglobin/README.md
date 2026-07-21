@@ -41,7 +41,7 @@ View the isolated **Melanin Map** or **Haemoglobin Map** to see the separation d
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Setup | Rec.709 or Scene-Linear — the separation runs in linear light |
+| Color Space | Setup | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — the separation runs in Rec.709 linear light |
 | Amount | Setup | Blend the result with the original |
 | Output | Setup | Result, or the isolated Melanin / Haemoglobin map |
 | Melanin | Pigments | − lightens / lifts tan, + deepens the brown pigment |

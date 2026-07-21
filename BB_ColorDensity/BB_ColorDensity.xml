@@ -13,6 +13,8 @@
          </PopupEntry>
          <PopupEntry Title="ACEScct" Value="3">
          </PopupEntry>
+         <PopupEntry Title="ARRI LogC4" Value="4">
+         </PopupEntry>
       </Uniform>
 
       <!-- Global Controls - Page 0 -->

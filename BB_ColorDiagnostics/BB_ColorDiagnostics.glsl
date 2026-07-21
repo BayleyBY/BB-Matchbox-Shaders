@@ -6,7 +6,7 @@
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
 
-uniform int   colorSpace;   // 0 Rec.709, 1 Scene-Linear, 2 ACEScg, 3 ACEScct
+uniform int   colorSpace;   // 0 Rec.709, 1 Scene-Linear, 2 ACEScg, 3 ACEScct, 4 ARRI LogC4
 uniform int   mode;         // 0 Off, 1 Exposure, 2 Clipping, 3 Out-of-Gamut, 4 Saturation, 5 Luminance
 uniform float highThresh;   // upper limit (clip / over)
 uniform float lowThresh;    // lower limit (crush / under)
@@ -14,8 +14,10 @@ uniform bool  desatContext; // dim unflagged pixels so flags pop (gamut/clip mod
 
 const vec3 REC709 = vec3(0.2126, 0.7152, 0.0722);
 const vec3 AP1    = vec3(0.2722, 0.6741, 0.0537);
+// AWG4 (ARRI LogC4): negative blue per ARRI spec, sums to 1.0
+const vec3 AWG4   = vec3(0.2545, 0.7815, -0.0360);
 
-vec3 lumaCoeff(int cs){ return (cs >= 2) ? AP1 : REC709; }
+vec3 lumaCoeff(int cs){ if (cs == 4) return AWG4; return (cs >= 2) ? AP1 : REC709; }
 
 // small discrete-band false colour by scalar t in [0,1]
 vec3 falseColour(float t){

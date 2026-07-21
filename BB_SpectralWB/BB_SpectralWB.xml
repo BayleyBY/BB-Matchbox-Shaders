@@ -4,10 +4,16 @@
       </Uniform>
 
       <!-- Col 0: Source (the light the footage was shot under) -->
-      <Uniform Default="0" Tooltip="Input color space - sets the gamma decode" Row="0" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Color Space" Name="colorSpace">
+      <Uniform Default="0" Tooltip="Input color space - sets gamma decode and primaries handling" Row="0" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Color Space" Name="colorSpace">
          <PopupEntry Title="Rec.709" Value="0">
          </PopupEntry>
          <PopupEntry Title="Scene-Linear" Value="1">
+         </PopupEntry>
+         <PopupEntry Title="ACEScg" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="ACEScct" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="ARRI LogC4" Value="4">
          </PopupEntry>
       </Uniform>
       <Uniform Default="1" Tooltip="The illuminant the footage was actually shot under" Row="1" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Source Light" Name="srcIllum">

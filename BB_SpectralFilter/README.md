@@ -36,7 +36,7 @@ shader uses **no arrays and no dynamic indexing** (unlike BB_SpectralWB's spectr
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Filter | Rec.709 or Scene-Linear — the filter runs in linear light |
+| Color Space | Filter | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — the filter runs in Rec.709 linear light |
 | Filter | Filter | None / CTB (cool) / CTO (warm) / Plus Green / Minus Green |
 | Strength | Adjust | Filter density — 0 = clear glass (identity), 1 = full gel |
 | Amount | Adjust | Blend the filtered result with the original |

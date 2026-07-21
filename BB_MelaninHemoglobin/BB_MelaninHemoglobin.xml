@@ -9,6 +9,12 @@
          </PopupEntry>
          <PopupEntry Title="Scene-Linear" Value="1">
          </PopupEntry>
+         <PopupEntry Title="ACEScg" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="ACEScct" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="ARRI LogC4" Value="4">
+         </PopupEntry>
       </Uniform>
       <Uniform Max="1.0" Min="0.0" Default="1.0" Inc="0.01" Tooltip="Blend the result with the original" Row="1" Col="0" Page="0" Type="float" ChannelName="mixAmount" DisplayName="Amount" Name="mixAmount">
       </Uniform>

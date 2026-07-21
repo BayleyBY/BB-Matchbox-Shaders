@@ -40,8 +40,9 @@ This shader recomputes luminance with a rod-weighted response and blends the who
    by **Exposure**, all proportional to Night.
 4. Optional **Detail Softness** (acuity loss) and **Grain** (scotopic noise) complete the look.
 
-Working in Rec.709 the maths runs in linear light (sRGB decode/encode); in Scene-Linear it runs
-directly.
+The maths always runs in Rec.709-primaries linear light: Rec.709 is sRGB-decoded, log spaces
+(ACEScct, ARRI LogC4) are decoded to linear, and wide-gamut primaries (AP1, AWG4) are
+matrix-converted in and restored losslessly on the way out.
 
 ---
 
@@ -49,7 +50,7 @@ directly.
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Amount | Rec.709 (sRGB) or Scene-Linear — sets the gamma decode for the luminance model |
+| Color Space | Amount | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — sets decode and primaries for the luminance model |
 | Night | Amount | Master day→night amount (0 = day / identity, 1 = full night) |
 | Purkinje Shift | Amount | How strongly reds darken / blues brighten toward rod vision |
 | Saturation | Amount | Residual colour at full night (0 = monochrome) |

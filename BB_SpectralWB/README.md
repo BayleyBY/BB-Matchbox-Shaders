@@ -36,7 +36,7 @@ Sodium, White LED and Fluorescent spectra.
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Source | Rec.709 (sRGB) or Scene-Linear — sets the gamma decode |
+| Color Space | Source | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — sets gamma decode and primaries |
 | Source Light | Source | The illuminant the footage was actually shot under |
 | Source Kelvin | Source | Colour temperature when Source Light = Custom Kelvin |
 | Target Light | Target | The illuminant to re-render under (usually Daylight) |
@@ -60,8 +60,9 @@ not at the finishing end:
 3. **Look / finishing** — print emulation, [BB_FilmCoupler], halation, grain. Film-colour "life"
    effects come *after* the image is correct.
 
-Set **Color Space** to match the image *at this point in the chain* (Scene-Linear for a linear/ACES
-signal, Rec.709 for a display-referred one) so the gamma decode is correct.
+Set **Color Space** to match the image *at this point in the chain* (Rec.709 / Scene-Linear /
+ACEScg / ACEScct / ARRI LogC4) so the gamma decode and primaries handling are correct — wide-gamut
+inputs are converted to the shader's Rec.709 spectral working space and restored losslessly.
 
 For an ordinary smooth cast a tristimulus WB ([BB_WhiteBalance]) is lighter and enough; reach for
 this specifically when the source is spiky / low-CRI (sodium, fluorescent, cheap LED) and channel-gain

@@ -24,6 +24,7 @@ Copy all three files to your Flame Matchbox shader directory:
 | 1 | Scene-Linear | Rec.709 primaries, linear light, HDR safe |
 | 2 | ACEScg | AP1 primaries, linear light, HDR safe |
 | 3 | ACEScct | AP1 primaries, log encoding, HDR safe |
+| 4 | ARRI LogC4 | AWG4 primaries, log encoding, HDR safe |
 
 ### Global Controls (Page 1: Primary RGB)
 - **Global Density** (-5.0 to 5.0): Overall density applied to all colors
@@ -69,9 +70,9 @@ result = new_luminance + (saturation_vector × saturation_boost)
 ```
 
 ### 4. Color Space Handling
-- **Rec.709/ACEScct**: Operations applied directly (already perceptual)
+- **Rec.709/ACEScct/ARRI LogC4**: Operations applied directly (already perceptual)
 - **Scene-Linear/ACEScg**: Converts to γ2.4 perceptual space, applies density, converts back
-- **Luminance coefficients**: Rec.709 (0.2126, 0.7152, 0.0722) or ACEScg/ACEScct AP1 (0.2722, 0.6741, 0.0537)
+- **Luminance coefficients**: Rec.709 (0.2126, 0.7152, 0.0722), ACEScg/ACEScct AP1 (0.2722, 0.6741, 0.0537), or ARRI LogC4 AWG4 (0.2545, 0.7815, −0.0360 — negative blue per the ARRI spec)
 
 ---
 

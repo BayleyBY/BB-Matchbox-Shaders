@@ -40,7 +40,7 @@ identity.**
 
 | Control | Location | Notes |
 | --- | --- | --- |
-| Color Space | Source | Rec.709 or Scene-Linear — the model runs in linear light (D65) |
+| Color Space | Source | Rec.709 / Scene-Linear / ACEScg / ACEScct / ARRI LogC4 — the model runs in linear light (D65) |
 | Source | Source | The environment the image already looks right in (usually your grading suite) |
 | Target | Target | Where it will actually be seen |
 | Amount | Target | Blend the re-rendered result with the original |
@@ -56,8 +56,9 @@ Viewing conditions: **Cinema (dark)**, **TV / dim**, **Average / grading**, **Br
   preview "my cinema grade on a phone," set Source = Cinema, Target = Bright. Swap them to invert.
 - **Appearance model, not a display transform.** It compensates for the *environment*, not for a
   gamut/EOTF change — keep your normal ODT/output transform in the chain. Pair it as a trim.
-- **D65 working white** (Rec.709 / Scene-Linear). The presets set adapting luminance + surround;
-  they are representative, not calibrated to your exact suite.
+- **D65 working white.** ACES (AP1) and ARRI (AWG4) inputs are matrix-converted to the Rec.709/D65
+  working space and restored losslessly. The presets set adapting luminance + surround; they are
+  representative, not calibrated to your exact suite.
 - Validated against a numpy port of the exact GLSL: Source = Target round-trips to ~1e-6; the
   hardcoded CAM16 matches the reference model across all presets.
 - Identity when Source = Target; no animation (`adsk_time` unused).

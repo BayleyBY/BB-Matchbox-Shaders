@@ -14,7 +14,7 @@
 uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h, adsk_time;
 
-uniform int   colorSpace;   // 0 = Rec.709 (sRGB), 1 = Scene-Linear
+uniform int   colorSpace;   // 0 Rec.709, 1 Scene-Linear, 2 ACEScg, 3 ACEScct, 4 ARRI LogC4
 uniform float coupling;     // inter-layer effect strength
 uniform float acutance;     // adjacency / edge effect strength
 uniform float radius;       // inhibitor diffusion radius (pixels)
@@ -32,6 +32,33 @@ float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
 }
 
+// ACEScct log (AP1) <-> linear. max() guards log2 against NaN (mix evaluates both
+// branches, and NaN*0 would poison the linear-segment result).
+vec3 acescct2lin(vec3 c) { return mix((c - 0.0729055341958355) / 10.5402377416545, exp2(c * 17.52 - 9.72), step(0.155251141552511, c)); }
+vec3 lin2acescct(vec3 c) { return mix(10.5402377416545 * c + 0.0729055341958355, (log2(max(c, 1e-10)) + 9.72) / 17.52, step(0.0078125, c)); }
+
+// ARRI LogC4 (EI800, AWG4 primaries) <-> linear, constants folded from the 2022 spec.
+vec3 logc42lin(vec3 c) { return mix(c * 0.1135972086 - 0.0180569961, (exp2(c * 15.4331897 + 4.5668103) - 64.0) / 2231.8263091, step(0.0, c)); }
+vec3 lin2logc4(vec3 c) { return mix((c + 0.0180569961) / 0.1135972086, log2(max(c * 2231.8263091 + 64.0, 1e-6)) * 0.0647954196 - 0.2959083927, step(-0.0180569961, c)); }
+
+// Decode to native linear light and back. Unlike the spectral shaders, the coupler
+// math is per-channel with no Rec.709-specific constants, so the dye "layers" are
+// the native RGB channels of the selected space - no primaries conversion needed.
+vec3 toLin(vec3 c) {
+    vec3 lin = c;
+    if (colorSpace == 0) lin = srgb2lin(c);
+    if (colorSpace == 3) lin = acescct2lin(c);
+    if (colorSpace == 4) lin = logc42lin(c);
+    return lin;
+}
+vec3 fromLin(vec3 lin) {
+    vec3 c = lin;
+    if (colorSpace == 0) c = lin2srgb(lin);
+    if (colorSpace == 3) c = lin2acescct(lin);
+    if (colorSpace == 4) c = lin2logc4(lin);
+    return c;
+}
+
 // Inter-layer effect in log-density space: each layer is separated from the mean
 // development of the other two (cross-layer inhibitor). Zero for neutrals.
 vec3 interlayer(vec3 lin) {
@@ -43,8 +70,7 @@ vec3 interlayer(vec3 lin) {
 // Coupled linear colour at a UV (used by the adjacency blur)
 vec3 coupledAt(vec2 uv) {
     vec3 c = texture2D(front, uv).rgb;
-    vec3 lin = (colorSpace == 0) ? srgb2lin(c) : c;
-    return interlayer(lin);
+    return interlayer(toLin(c));
 }
 
 void main() {
@@ -71,9 +97,9 @@ void main() {
         result += n * grain * 0.06;
     }
 
-    vec3 orig = (colorSpace == 0) ? srgb2lin(tex.rgb) : tex.rgb;
+    vec3 orig = toLin(tex.rgb);
     result = mix(orig, result, mixAmount);
 
-    vec3 outc = (colorSpace == 0) ? lin2srgb(result) : result;
+    vec3 outc = fromLin(result);
     gl_FragColor = vec4(outc, tex.a);
 }

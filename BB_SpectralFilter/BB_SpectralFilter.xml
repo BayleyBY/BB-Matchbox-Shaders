@@ -9,6 +9,12 @@
          </PopupEntry>
          <PopupEntry Title="Scene-Linear" Value="1">
          </PopupEntry>
+         <PopupEntry Title="ACEScg" Value="2">
+         </PopupEntry>
+         <PopupEntry Title="ACEScct" Value="3">
+         </PopupEntry>
+         <PopupEntry Title="ARRI LogC4" Value="4">
+         </PopupEntry>
       </Uniform>
       <Uniform Default="0" Tooltip="Which gel / filter to apply" Row="1" Col="0" Page="0" Type="int" ValueType="Popup" DisplayName="Filter" Name="filterType">
          <PopupEntry Title="None" Value="0">

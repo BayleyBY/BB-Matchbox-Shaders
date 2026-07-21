@@ -12,7 +12,7 @@ uniform sampler2D front;
 uniform float adsk_result_w, adsk_result_h;
 
 // 0 = Rec.709 (sRGB gamma), 1 = Scene-Linear (Rec.709 primaries),
-// 2 = ACEScg (AP1 linear), 3 = ACEScct (AP1 log)
+// 2 = ACEScg (AP1 linear), 3 = ACEScct (AP1 log), 4 = ARRI LogC4 (AWG4 log)
 uniform int colorSpace;
 
 uniform float temp;        // global temperature: + warms, - cools
@@ -35,6 +35,8 @@ const mat3 A_SRGB = mat3(0.4226580, 0.0556908, 0.0213792, 0.4913566, 0.9615563, 
 const mat3 B_SRGB = mat3(2.5384479, -0.1460003, -0.0422883, -1.2934823, 1.1166223, -0.0715901, -0.0402433, -0.0223285, 1.0225073);
 const mat3 A_AP1  = mat3(0.6663842, -0.0307139, 0.0013822, 0.2988672, 1.0546582, -0.0367809, -0.0089622, 0.0119044, 1.0426431);
 const mat3 B_AP1  = mat3(1.4812806, 0.0431430, -0.0004417, -0.4191517, 0.9355891, 0.0335601, 0.0175183, -0.0103113, 0.9587140);
+const mat3 A_AWG4 = mat3(0.6987239, -0.0926575, 0.0099841, 0.3243341, 1.2417159, -0.0484835, -0.0816789, -0.1086220, 1.1282661);
+const mat3 B_AWG4 = mat3(1.3826901, 0.1024921, -0.0078312, -0.3585960, 0.7817949, 0.0367683, 0.0655742, 0.0826858, 0.8892886);
 
 vec3 srgb2lin(vec3 c) {
     return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(0.04045, c));
@@ -55,6 +57,20 @@ vec3 lin2acescct(vec3 c) {
     return mix(10.5402377416545 * c + 0.0729055341958355,
                (log2(max(c, 1e-10)) + 9.72) / 17.52,
                step(0.0078125, c));
+}
+
+// ARRI LogC4 (EI800, AWG4 primaries) <-> linear. Constants folded from the 2022
+// spec (a=(2^18-16)/117.45, b=928/1023, c=95/1023) with a linear extension below
+// t. max() guards log2 against NaN for the same reason as lin2acescct above.
+vec3 logc42lin(vec3 c) {
+    return mix(c * 0.1135972086 - 0.0180569961,
+               (exp2(c * 15.4331897 + 4.5668103) - 64.0) / 2231.8263091,
+               step(0.0, c));
+}
+vec3 lin2logc4(vec3 c) {
+    return mix((c + 0.0180569961) / 0.1135972086,
+               log2(max(c * 2231.8263091 + 64.0, 1e-6)) * 0.0647954196 - 0.2959083927,
+               step(-0.0180569961, c));
 }
 
 // Planckian locus: correlated colour temperature -> CIE xy (Kim et al. approximation)
@@ -86,11 +102,13 @@ void main() {
 
     vec3 lin = (colorSpace == 0) ? srgb2lin(c)
              : (colorSpace == 3) ? acescct2lin(c)
+             : (colorSpace == 4) ? logc42lin(c)
              : c;
 
     mat3 A, B; vec3 lumaCoeff;
-    if (colorSpace == 2 || colorSpace == 3) { A = A_AP1;  B = B_AP1;  lumaCoeff = vec3(0.2722, 0.6741, 0.0537); }
-    else                                    { A = A_SRGB; B = B_SRGB; lumaCoeff = vec3(0.2126, 0.7152, 0.0722); }
+    if      (colorSpace == 2 || colorSpace == 3) { A = A_AP1;  B = B_AP1;  lumaCoeff = vec3(0.2722, 0.6741, 0.0537); }
+    else if (colorSpace == 4)                    { A = A_AWG4; B = B_AWG4; lumaCoeff = vec3(0.2545, 0.7815, -0.0360); }
+    else                                         { A = A_SRGB; B = B_SRGB; lumaCoeff = vec3(0.2126, 0.7152, 0.0722); }
 
     // Destination = working neutral (temp=0, tint=0) -> guarantees identity at default
     vec3 coneDst = Ma * whiteXYZ(0.0, 0.0);
@@ -102,6 +120,7 @@ void main() {
     if (pickerEnable) {
         vec3 sl = (colorSpace == 0) ? srgb2lin(pickerColor)
                 : (colorSpace == 3) ? acescct2lin(pickerColor)
+                : (colorSpace == 4) ? logc42lin(pickerColor)
                 : pickerColor;
         sl /= max(dot(sl, lumaCoeff), 1e-5);   // unit luma => chroma-only (no exposure shift)
         Rpick = (A * vec3(1.0)) / (A * sl);    // map the sampled colour to neutral (R=G=B)
@@ -125,6 +144,7 @@ void main() {
 
     vec3 outc = (colorSpace == 0) ? lin2srgb(outLin)
               : (colorSpace == 3) ? lin2acescct(outLin)
+              : (colorSpace == 4) ? lin2logc4(outLin)
               : outLin;
     gl_FragColor = vec4(outc, tex.a);
 }
