@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Animated sci-fi HUD overlay. Camera locked to screen. All elements independently enabled and colour-controlled." Name="BB_FutureHUD">
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="True" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Use to overlay an animated sci-fi HUD, with each element independently toggled and colour-controlled." Name="BB_FutureHUD">
 
    <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
 

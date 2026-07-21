@@ -1,4 +1,4 @@
-<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="False" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Procedural animated ocean. Based on Seascape by Alexander Alekseev aka TDM (CC BY-NC-SA 3.0). No input required – pure generator." Name="BB_Seascape">
+<ShaderNodePreset SupportsAdaptiveDegradation="False" SupportsAction="False" SupportsTransition="False" SupportsTimeline="False" TimelineUseBack="False" MatteProvider="False" CommercialUsePermitted="False" ShaderType="Matchbox" SoftwareVersion="2026.0.0" LimitInputsToTexture="True" Version="2" Description="Use to generate a procedural animated ocean. No input needed - it's a generator." Name="BB_Seascape">
 
    <Shader Clear="0" GridSubdivision="1" OutputBitDepth="Output" Index="1">
 

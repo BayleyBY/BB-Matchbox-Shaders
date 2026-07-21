@@ -63,6 +63,29 @@ Magenta / Yellow.
 
 ---
 
+## Recommended Pipeline Order
+
+This is a **highlight-shaping / look** tool, and the shear it fixes is created by your **tone map /
+display transform** (ACES, filmic, AgX, OpenDRT all bake in a path to white). So it belongs *late*,
+around that transform — not early with the corrective white-balance tools:
+
+1. **Primary grade + white balance** — [BB_WhiteBalance] / [BB_SpectralWB] first. Neutralise and
+   grade so the colour going into the highlights is the colour you actually mean to hold.
+2. **BB_PathToWhite** — placed to work with the tone map, in one of two ways:
+   - **Pre-emptive (scene-linear, before the view transform):** steer HDR highlights so they *land*
+     correctly after the transform. Set Color Space to Scene-Linear / ACEScg and push **Highlight
+     Pivot** above 1.0 to reach the HDR values.
+   - **Corrective (display-referred, after the view transform):** steer highlights that have
+     *already* sheared back to where you want them. Set Color Space to Rec.709 / ACEScct and keep
+     Pivot ≤ 1.0.
+3. **Look / finishing** — [BB_FilmCoupler], halation, grain, etc.
+
+Set **Color Space** to match the image *at the point you insert it* — that determines the luma
+metric and where the Highlight Pivot lands. Use **Output → Highlight Mask** to dial Pivot / Rolloff
+onto the highlights you're targeting before touching the per-band controls.
+
+---
+
 ## Which way does Hue Steer go?
 
 Hue Steer rotates around the colour wheel:
