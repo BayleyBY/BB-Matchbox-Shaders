@@ -33,6 +33,28 @@ This shader models the two signature DIR effects:
 
 ---
 
+## Recommended Pipeline Order
+
+This is a **look/finishing** effect, not a corrective one, and it models the *camera negative*
+chemistry — which happens early in the real film chain. Place it accordingly:
+
+1. **Primary grade** — exposure, white balance, contrast. Get the image *correct* first.
+   In particular, nail white balance before this: the coupler ignores true neutrals and acts
+   only on colour differences, so you want it enriching the colours you actually intend, not
+   amplifying an uncorrected cast.
+2. **BB_FilmCoupler** — adds the film colour "life" (inter-layer separation + adjacency acutance).
+3. **Print emulation / density curve / halation / grain** — the film *delivery* stage. Because
+   couplers act on the negative, print-side looks belong *after* this node.
+
+Set **Color Space** to match the image *at this point in the chain* (Scene-Linear for a linear/ACES
+signal, Rec.709 for a display-referred one) so the coupler math decodes gamma correctly.
+
+Rule of thumb: **correct it → FilmCoupler (film colour) → print/grain (film delivery).** If you have
+no formal film pipeline, dropping it near the end of an already-graded shot still works — you're just
+applying the coupler behaviour to print-emulated colour rather than raw negative colour.
+
+---
+
 ## Controls
 
 | Control | Location | Notes |
