@@ -17,11 +17,11 @@ Procedural bokeh generator for Autodesk Flame. Generates cinematic lens bokeh en
 
 | File | Purpose |
 |------|---------|
-| `BB_BokehGenerator.glsl` | Root stub — load this in Flame |
-| `BB_BokehGenerator.1.glsl` | Pass 1 — bokeh rendering |
+| `BB_BokehGenerator.1.glsl` | Pass 1 — bokeh rendering (load this in Flame) |
 | `BB_BokehGenerator.2.glsl` | Pass 2 — lens blur |
 | `BB_BokehGenerator.xml` | UI controls and defaults |
-| `BB_BokehGenerator.md` | This documentation file |
+| `BB_BokehGenerator.1.glsl.png` / `.p` | Proxy icon |
+| `README.md` | This documentation file |
 
 All files must be in the same directory.
 
@@ -29,12 +29,12 @@ All files must be in the same directory.
 
 ## Installation
 
-Copy all four files to:
+Copy the shader folder to:
 ```
 /opt/Autodesk/presets/<version>/matchbox/shaders/
 ```
 
-Load in Flame via the Matchbox browser by selecting `BB_BokehGenerator.glsl`.
+Load in Flame via the Matchbox browser by selecting `BB_BokehGenerator.1.glsl`.
 
 ---
 
@@ -46,13 +46,13 @@ Load in Flame via the Matchbox browser by selecting `BB_BokehGenerator.glsl`.
 |-----------|---------|-------------|
 | Bokeh Count | 40 | Total number of bokeh discs. Split 50/50 between near and far depth layers. Max 200. |
 | Seed | 0 | Random seed. Change to get a completely different arrangement. |
-| Size | 120 | Base size of bokeh discs in pixels. |
+| Size | 120 | Base diameter of bokeh discs in pixels (far layer, before Size Variation). |
 | Size Variation | 0.4 | Per-bokeh size randomness. 0=all identical, 1=maximum variation. |
 | R / G / B | 1.0 / 0.95 / 0.8 | Base bokeh color (warm white by default). |
 | Color Variation | 0.15 | How much hue and saturation varies per bokeh. |
 | Brightness | 1.2 | Master brightness multiplier for all bokeh. |
 | Brightness Variation | 0.3 | Per-bokeh brightness randomness. |
-| Global Opacity | 1.0 | Master opacity for the entire effect. |
+| Global Opacity | 1.0 | Master opacity of the bokeh layer. Does not affect the background. |
 | Background Mix | 1.0 | Mix between the background input and the full bokeh render. |
 | Blend Mode | Screen | How bokeh composites over the background. Options: Add, Screen, Normal, Multiply, Overlay. |
 
@@ -74,7 +74,7 @@ Load in Flame via the Matchbox browser by selecting `BB_BokehGenerator.glsl`.
 |-----------|---------|-------------|
 | Chromatic Aberration | 0.0 | RGB fringing on bokeh edges. Simulates lens chromatic aberration. |
 | Diffraction Spikes | 0.0 | Intensity of star-pattern spikes radiating from each bokeh. Common on bladed apertures. |
-| Spike Count | 6 | Number of diffraction spikes. Usually matches the number of Sides. |
+| Spike Count | 6 | Number of diffraction spikes per bokeh. Usually matches the number of Sides. |
 | Spike Blur | 0.0 | Softness of spike edges. 0=razor sharp, 1=wide feathered glow. |
 | Spike Length | 2.0 | Length of spikes as a multiplier of bokeh size. |
 | Lens Blur | 0.0 | Final circular blur applied to the entire output in pass 2. Simulates overall defocus. |
@@ -126,6 +126,7 @@ Load in Flame via the Matchbox browser by selecting `BB_BokehGenerator.glsl`.
 - Max 200 bokeh (GLSL loop limit). For more, the shader would need to be restructured.
 - Lens Blur in pass 2 is a 48-sample circular kernel — good quality but not a true optical bokeh blur.
 - Distribution X/Y have no effect when Density Falloff is 0.
+- Output is not clamped, so overlapping bokeh can exceed 1.0. Overlay is a 0–1 formula and is only predictable on a display-referred background.
 
 ---
 
@@ -134,3 +135,4 @@ Load in Flame via the Matchbox browser by selecting `BB_BokehGenerator.glsl`.
 | Date | Change |
 |------|--------|
 | 2026-03-15 | Initial version |
+| 2026-10-05 | Background no longer counted twice in the blend (bokeh now accumulate over black; Global Opacity scales bokeh only). Spike Count now gives that many spikes (was double). Size is now a true pixel diameter (was scaled down by the frame aspect, so discs are larger at the same value). Output clamp removed from both passes; Screen rewritten to keep values above 1.0. Docs: removed the root stub reference. Not yet tested in Flame. |
