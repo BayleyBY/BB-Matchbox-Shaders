@@ -11,3 +11,6 @@ BB_FutureHUD/Additional ShaderToy HUDS/
 
 # Presentation deck, outline, and plate generator — not part of the shader collection
 presentation/
+
+# Local reference material (Autodesk docs, old notes, superseded drafts) — not part of the collection
+reference/
