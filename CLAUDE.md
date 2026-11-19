@@ -8,6 +8,17 @@ A collection of custom Matchbox shaders for Autodesk Flame. Each shader lives in
 
 The root `README.md` holds the per-shader catalog (what each `BB_*` shader does and its ported source, if any), and most shader folders also carry their own `README.md` with deeper per-shader docs (file roles, control breakdowns) — read both before modifying a shader to understand its intended behaviour. The `examples/` directory contains third-party reference shaders (`crok_*`, `KE_*`) kept for learning Matchbox conventions; it is gitignored and **not** part of this collection — never edit, ship, or treat those as BB shaders.
 
+## Local reference (untracked)
+
+These folders are gitignored and exist only on Rhea's Mac:
+
+- `examples/LOGIK_Matchbox/`: the community LOGIK shader collection, kept for reference only. Never edit it. `examples/LOGIK_Matchbox/CATALOG.md` indexes it by category, so check it for prior art before writing a new shader.
+- `reference/matchbox-authoring-reference.md`: Autodesk's Matchbox authoring docs (uniform types, XML structure, `adsk_` built-ins, multipass). Check it before guessing at syntax.
+- `reference/matchbox-notes.md`: older project notes carried over from OpenClaw.
+- `reference/BB_BokehGenerator-pre-2026-10-05/`: an older loose working copy of BokehGenerator from before commit 56eeef7, with its `.md` changelog. The repo version supersedes it.
+
+Platform note: macOS Flame supports GLSL 1.20 and Linux Flame supports 1.30, so write to 1.20.
+
 ## Licensing
 
 The collection is **CC BY-SA 4.0** (see `LICENSE`). The one exception is `BB_Seascape`, a direct port that keeps its upstream **CC BY-NC-SA 3.0** (non-commercial) license — never relicense it as CC BY-SA, and its XML `CommercialUsePermitted` must stay `False`. When porting a new shader from third-party work, keep the upstream attribution header in the `.glsl`; if the port stays a derivative under a non-commercial/share-alike license, add it to the README License-section exception and set `CommercialUsePermitted="False"`.

@@ -92,7 +92,7 @@ vec2 rotate2D(vec2 p, float angle) {
 // Spike blur: wider angular smoothstep = softer spikes
 float spikeMask(vec2 p, float nSpikes, float size, float sharpness, float blur) {
     float a = atan(p.y, p.x);
-    float interval = 3.14159265 / nSpikes;
+    float interval = 3.14159265 * 2.0 / max(1.0, nSpikes);
     float spike = abs(mod(a + interval * 0.5, interval) - interval * 0.5);
     float r = length(p);
     float edgeWidth = mix(0.005, 1.2, blur);
@@ -151,9 +151,13 @@ void main() {
     float t = time_offset;
 
     vec3 bokeh_color = vec3(bokeh_r, bokeh_g, bokeh_b);
-    float uvSize = bokeh_size / adsk_result_w;
+    // drawBokeh works in height-normalised units (it scales x by the frame
+    // aspect), so dividing by the height makes bokeh_size a diameter in pixels
+    float ar = adsk_result_w / adsk_result_h;
+    float uvSize = bokeh_size / adsk_result_h;
 
-    vec3 col = texture2D(bg_input, uv).rgb;
+    // Bokeh layer accumulates over black; the background is blended in once below
+    vec3 col = vec3(0.0);
     int count = int(max(1.0, bokeh_count));
     int halfCount = count / 2;
 
@@ -222,7 +226,8 @@ void main() {
 
         // Chromatic aberration
         if (chroma_amount > 0.001) {
-            float offset = sz * chroma_amount * 0.3;
+            // sz is in height units, bpos.x is in width units
+            float offset = sz * chroma_amount * 0.3 / ar;
             vec3 colR = drawBokeh(uv, bpos + vec2(offset, 0.0), sz, bokeh_sides, rot,
                 vec3(1,0,0) * bColor.r, edge_softness, hollow_amount, rim_brightness,
                 diff_spikes, spike_count, spike_blur, spike_length);
@@ -248,8 +253,8 @@ void main() {
     int bmode = blend_mode;
 
     if (bmode == 1) {
-        // Screen: 1 - (1-a)(1-b)
-        blended = 1.0 - (1.0 - bg) * (1.0 - col);
+        // Screen: 1 - (1-a)(1-b), written so values above 1.0 survive
+        blended = bg + col * (1.0 - clamp(bg, 0.0, 1.0));
     } else if (bmode == 2) {
         // Normal: standard alpha composite
         blended = mix(bg, col, clamp(length(col) * 2.0, 0.0, 1.0));
@@ -267,5 +272,6 @@ void main() {
     }
 
     col = mix(bg, blended, mix_amount);
-    gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+    // No output clamp: keep highlights above 1.0 for float/scene-linear work
+    gl_FragColor = vec4(col, 1.0);
 }
